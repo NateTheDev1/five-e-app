@@ -1,14 +1,17 @@
 import { Suspense } from "react";
 import BaseSchema from "./components/BaseSchema";
 import Loading from "./components/Loading";
+import ErrorBoundary from "./ErrorBoundary";
 import Router from "./Router";
 
 const App = () => {
   return (
-    <Suspense fallback={<Loading />}>
-      <BaseSchema />
-      <Router />
-    </Suspense>
+    <ErrorBoundary>
+      <Suspense fallback={<Loading />}>
+        <BaseSchema />
+        <Router />
+      </Suspense>
+    </ErrorBoundary>
   );
 };
 
