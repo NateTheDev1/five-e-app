@@ -7,6 +7,7 @@ import {
   StartingProficiency,
   StartingProficiencyChoices,
   LanguageChoices,
+  AbilityBonusChoices,
 } from "../constants";
 
 export class BaseRace {
@@ -24,5 +25,6 @@ export class BaseRace {
   startingProficiencies?: StartingProficiency[];
   startingProficiencyChoices?: StartingProficiencyChoices;
   abilityBonuses!: AbilityBonus[];
+  abilityBonusOptions?: AbilityBonusChoices;
   avatar?: string;
 }

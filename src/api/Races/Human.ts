@@ -8,7 +8,6 @@ import {
   LanguageChoices,
 } from "../constants";
 import { LanguageList } from "../languages";
-import { SizeList } from "../size";
 import { BaseRace } from "./BaseRace";
 
 export class Human implements BaseRace {
@@ -20,7 +19,11 @@ export class Human implements BaseRace {
     "Humans tend toward no particular alignment. The best and the worst are found among them.";
   age =
     "Humans reach adulthood in their late teens and live less than a century.";
-  size: RaceSize = SizeList.medium;
+  size: RaceSize = {
+    title: "Medium",
+    description:
+      "Humans vary widely in height and build, from barely 5 feet to well over 6 feet tall. Regardless of your position in that range, your size is Medium.",
+  };
   languages: Language[] = [LanguageList.common];
   languageChoices: LanguageChoices = {
     from: [
@@ -31,7 +34,7 @@ export class Human implements BaseRace {
       LanguageList.goblin,
       LanguageList.halfling,
       LanguageList.orc,
-      LanguageList.abyssall,
+      LanguageList.abyssal,
       LanguageList.celestial,
       LanguageList.draconic,
       LanguageList.deepSpeech,
@@ -43,7 +46,7 @@ export class Human implements BaseRace {
     choose: 1,
   };
   languageDesc =
-    "You can speak, read, and write Common and Dwarvish. Dwarvish is full of hard consonants and guttural sounds, and those characteristics spill over into whatever other language a dwarf might speak.";
+    "You can speak, read, and write Common and one extra language of your choice. Humans typically learn the languages of other peoples they deal with, including obscure dialects. They are fond of sprinkling their speech with words borrowed from other tongues: Orc curses, Elvish musical expressions, Dwarvish military phrases, and so on.";
   traits: RaceTrait[] = [];
   subraces: SubRace[] = [];
   abilityBonuses: AbilityBonus[] = [

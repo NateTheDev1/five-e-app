@@ -1,6 +1,13 @@
 export enum RaceConstants {
   DWARF = "DWARF",
   HUMAN = "HUMAN",
+  ELF = "ELF",
+  GNOME = "GNOME",
+  DRAGONBORN = "DRAGONBORN",
+  HALF_ELF = "HALF_ELF",
+  HALF_ORC = "HALF_ORC",
+  HALFLING = "HALFLING",
+  TIEFLING = "TIEFLING",
 }
 
 export enum AbilityScoreConstants {
@@ -15,15 +22,15 @@ export enum AbilityScoreConstants {
 export enum ClassConstants {}
 
 export type RaceSize = { title: string; description: string };
-export type RaceTrait = { title: string; breadcrumbId: number };
-export type SubRace = { title: string; breadcrumbId: number };
+export type RaceTrait = { title: string; breadcrumbId: string };
+export type SubRace = { title: string; breadcrumbId: string };
 export type AbilityBonus = { title: string; bonus: number };
 export type StartingProficiency = {
   title: string;
-  breadcrumbId: number;
+  breadcrumbId: string;
   type?: string;
 };
-export type Language = { name: string; breadcumbId: number };
+export type Language = { name: string; breadcumbId: string };
 
 export type StartingProficiencyChoices = {
   from: StartingProficiency[];
@@ -32,5 +39,10 @@ export type StartingProficiencyChoices = {
 
 export type LanguageChoices = {
   from: Language[];
+  choose: number;
+};
+
+export type AbilityBonusChoices = {
+  from: AbilityBonus[];
   choose: number;
 };
