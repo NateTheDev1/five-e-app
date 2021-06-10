@@ -7,7 +7,10 @@ const Signup = lazy(() => import('./Onboarding/Signup'));
 
 const Home = () => {
 	return (
-		<div className=" bg-gray-800">
+		<div
+			className=" bg-gray-800 h-screen w-screen"
+			style={{ overflow: 'hidden' }}
+		>
 			<Switch>
 				<Route path="/register">
 					<Signup />
