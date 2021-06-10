@@ -1,6 +1,8 @@
 // import { lazy } from "react";
 import { Route, Switch, useLocation } from 'react-router';
 import NotFound from './components/NotFound';
+import { PrivateRoute } from './components/PrivateRoute';
+import { PublicRoute } from './components/PublicRoute';
 import Home from './pages/Home';
 
 const Router = () => {
@@ -8,9 +10,12 @@ const Router = () => {
 
 	return (
 		<Switch location={location}>
-			<Route path="/">
+			<PrivateRoute path="/app">
+				<h1>App</h1>
+			</PrivateRoute>
+			<PublicRoute path="/">
 				<Home />
-			</Route>
+			</PublicRoute>
 			<Route component={NotFound} />
 		</Switch>
 	);

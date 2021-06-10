@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Logo from '../../components/Logo';
 import { useLoginMutation } from '../../graphql';
 import { Animate, AnimateGroup } from 'react-simple-animate';
+import { UserActions } from '../../redux/User/actions';
 
 const animProps = {
 	start: { opacity: 0 },
@@ -15,6 +16,8 @@ const Login = () => {
 		password: ''
 	});
 
+	const setLoggedIn = UserActions.useLogin();
+
 	const [loginUser, data] = useLoginMutation();
 
 	const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,7 +27,11 @@ const Login = () => {
 	const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		loginUser({ variables: { credentials: credentials } });
+		loginUser({ variables: { credentials: credentials } }).then(res => {
+			if (!res.errors && res.data) {
+				setLoggedIn(res.data.login.token as string);
+			}
+		});
 	};
 
 	return (
