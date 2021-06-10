@@ -10,6 +10,10 @@ export enum RaceConstants {
   TIEFLING = "TIEFLING",
 }
 
+export enum ClassConstants {
+  FIGHTER = "FIGHTER",
+}
+
 export enum AbilityScoreConstants {
   CONSTITUTION = "CONSTITUTION",
   DEXTERITY = "DEXTERITY",
@@ -18,8 +22,6 @@ export enum AbilityScoreConstants {
   WISDOM = "WISDOM",
   CHARISMA = "CHARISMA",
 }
-
-export enum ClassConstants {}
 
 export type RaceSize = { title: string; description: string };
 export type RaceTrait = { title: string; breadcrumbId: string };
@@ -46,3 +48,23 @@ export type AbilityBonusChoices = {
   from: AbilityBonus[];
   choose: number;
 };
+
+export type StartingEquipmentOptions = StartingEquipmentOption[];
+export type StartingEquipmentOption = {
+  choose: number;
+  from: (StartingEquipment | StartingEquipmentGroup)[];
+};
+
+export type StartingEquipment = {
+  title: string;
+  breadcrumbId: string;
+  quantity: number;
+};
+
+export type StartingEquipmentGroup = StartingEquipment[];
+
+export type CharacterProficiencies = {
+  title: string;
+  breadcrumbId: string;
+  type?: string;
+}[];

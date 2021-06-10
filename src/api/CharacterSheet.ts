@@ -1,4 +1,10 @@
-import { RaceConstants } from "./constants";
+import { BaseClass } from "./Classes/BaseClass";
+import { Fighter } from "./Classes/Fighter";
+import {
+  CharacterProficiencies,
+  ClassConstants,
+  RaceConstants,
+} from "./constants";
 import { BaseRace } from "./Races/BaseRace";
 import { Dragonborn } from "./Races/Dragonborn";
 import { Dwarf } from "./Races/Dwarf";
@@ -14,10 +20,41 @@ export class CharacterSheet {
   name: string = "";
   avatar: string = "";
   race!: BaseRace;
-  class: any;
+  class_!: BaseClass;
   level: number = 1;
+  proficiencies: CharacterProficiencies = [];
+  fightingStyle?: { title: string; breadcrumnbId: string };
 
-  constructor(race: RaceConstants) {
+  constructor(race: RaceConstants, classInput: ClassConstants) {
+    this.constructClass(classInput);
+    this.constructRace(race);
+  }
+
+  constructClass(
+    classInput: ClassConstants,
+    fightingStyle?: { title: string; breadcrumnbId: string },
+    proficiencyChoices?: CharacterProficiencies
+  ) {
+    switch (classInput) {
+      case ClassConstants.FIGHTER: {
+        this.class_ = new Fighter();
+
+        break;
+      }
+    }
+
+    this.proficiencies = [...this.proficiencies, ...this.class_.proficiencies];
+
+    if (proficiencyChoices) {
+      this.proficiencies = [...this.proficiencies, ...proficiencyChoices];
+    }
+
+    if (fightingStyle) {
+      this.fightingStyle = fightingStyle;
+    }
+  }
+
+  constructRace(race: RaceConstants) {
     switch (race) {
       case RaceConstants.DWARF: {
         this.race = new Dwarf();
