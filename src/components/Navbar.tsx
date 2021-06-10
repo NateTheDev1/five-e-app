@@ -1,9 +1,9 @@
 import { UserActions } from '../redux/User/actions';
 import { Menu, Transition } from '@headlessui/react';
-import { ChevronDownIcon } from '@heroicons/react/solid';
+import { ChevronLeftIcon, ChevronDownIcon } from '@heroicons/react/solid';
 import Logo from './Logo';
 import { Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 
 //@ts-ignore
 function classNames(...classes) {
@@ -12,6 +12,8 @@ function classNames(...classes) {
 
 const Navbar = () => {
 	const logout = UserActions.useLogout();
+	const history = useHistory();
+	const location = useLocation();
 
 	return (
 		<nav className="w-screen bg-white text-black shadow-lg px-3 h-12 flex items-center justify-between">
@@ -22,7 +24,18 @@ const Navbar = () => {
 				<Menu as="div" className="relative inline-block text-left">
 					{({ open }) => (
 						<>
-							<div>
+							<div className="flex">
+								{location.pathname !== '/app' && (
+									<button
+										onClick={() => history.goBack()}
+										className="inline-flex justify-between w-full mr-5 rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-white"
+									>
+										<ChevronLeftIcon
+											className="-h-5 w-5"
+											aria-hidden="true"
+										/>
+									</button>
+								)}
 								<Menu.Button className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-white">
 									Navigate
 									<ChevronDownIcon
@@ -64,8 +77,8 @@ const Navbar = () => {
 										</Menu.Item>
 										<Menu.Item>
 											{({ active }) => (
-												<a
-													href="g"
+												<Link
+													to="/app/characters"
 													className={classNames(
 														active
 															? 'bg-gray-100 text-gray-900'
@@ -74,7 +87,7 @@ const Navbar = () => {
 													)}
 												>
 													Characters
-												</a>
+												</Link>
 											)}
 										</Menu.Item>
 										<Menu.Item>

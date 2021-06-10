@@ -5,7 +5,7 @@ import { useLoginMutation } from '../../graphql';
 import { Animate, AnimateGroup } from 'react-simple-animate';
 import { UserActions } from '../../redux/User/actions';
 
-const animProps = {
+export const animProps = {
 	start: { opacity: 0 },
 	end: { opacity: 1 }
 };
@@ -84,7 +84,7 @@ const Login = () => {
 									<div className="mb-8">
 										<label
 											className="block text-gray-700 text-sm font-bold mb-2"
-											htmlFor="Password"
+											htmlFor="password"
 										>
 											Password
 										</label>
