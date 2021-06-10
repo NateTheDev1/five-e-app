@@ -1,15 +1,16 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Logo from '../../components/Logo';
-import { useLoginMutation } from '../../graphql';
+import { useSignupMutation } from '../../graphql';
 
-const Login = () => {
+const Signup = () => {
 	const [credentials, setCredentials] = useState({
+		name: '',
 		email: '',
 		password: ''
 	});
 
-	const [loginUser, data] = useLoginMutation();
+	const [signup, data] = useSignupMutation();
 
 	const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setCredentials({ ...credentials, [e.target.name]: e.target.value });
@@ -18,7 +19,7 @@ const Login = () => {
 	const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		loginUser({ variables: { credentials: credentials } });
+		signup({ variables: { user: credentials } });
 	};
 
 	return (
@@ -35,6 +36,26 @@ const Login = () => {
 						</h2>
 					</div>
 					<div className="mb-6">
+						<div className="mb-12">
+							<label
+								className="block text-gray-700 text-sm font-bold mb-2"
+								htmlFor="name"
+							>
+								Name
+							</label>
+							<input
+								onChange={onChange}
+								minLength={3}
+								maxLength={100}
+								className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+								id="name"
+								name="name"
+								value={credentials.name}
+								type="text"
+								required
+								placeholder="John Doe"
+							/>
+						</div>
 						<div className="mb-12">
 							<label
 								className="block text-gray-700 text-sm font-bold mb-2"
@@ -80,14 +101,14 @@ const Login = () => {
 						<div className="bottom w-full flex flex-col items-center justify-center mt-5">
 							{data.error && (
 								<span className="flex items-center font-medium tracking-wide text-red-500 mb-4 mt-1 text-sm ml-1">
-									Incorrect username or password
+									Something went wrong. Please try again.
 								</span>
 							)}
 							<Link
-								to="/register"
+								to="/"
 								className="underline text-opacity-90 text-gray-500 text-center"
 							>
-								Don't have an account?
+								Already have an account?
 							</Link>
 						</div>
 					</div>
@@ -97,4 +118,4 @@ const Login = () => {
 	);
 };
 
-export default Login;
+export default Signup;
