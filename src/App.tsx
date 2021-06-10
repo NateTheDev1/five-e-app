@@ -1,5 +1,4 @@
 import { Suspense } from "react";
-import { Fighter } from "./api/Classes/Fighter";
 import BaseSchema from "./components/BaseSchema";
 import Loading from "./components/Loading";
 import ErrorBoundary from "./ErrorBoundary";

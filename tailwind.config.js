@@ -1,11 +1,16 @@
 module.exports = {
-  purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
-  darkMode: false, // or 'media' or 'class'
-  theme: {
-    extend: {},
-  },
-  variants: {
-    extend: {},
-  },
-  plugins: [],
+	purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
+	darkMode: 'media', // or 'media' or 'class'
+	theme: {
+		extend: {},
+		borderColor: theme => ({
+			...theme('colors'),
+			DEFAULT: theme('colors.gray.300', 'currentColor'),
+			dndRed: '#E6010A'
+		})
+	},
+	variants: {
+		extend: {}
+	},
+	plugins: []
 };
