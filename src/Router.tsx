@@ -12,15 +12,17 @@ const Router = () => {
 	const location = useLocation();
 
 	return (
-		<Switch location={location}>
-			<PrivateRoute path="/app">
-				<Dashboard />
-			</PrivateRoute>
-			<PublicRoute path="/">
-				<Home />
-			</PublicRoute>
-			<Route component={NotFound} />
-		</Switch>
+		<div className="bg-dark">
+			<Switch location={location}>
+				<PrivateRoute path="/app">
+					<Dashboard />
+				</PrivateRoute>
+				<PublicRoute path="/">
+					<Home />
+				</PublicRoute>
+				<Route component={NotFound} />
+			</Switch>
+		</div>
 	);
 };
 

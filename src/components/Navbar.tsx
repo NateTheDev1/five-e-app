@@ -3,6 +3,7 @@ import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/solid';
 import Logo from './Logo';
 import { Fragment } from 'react';
+import { Link } from 'react-router-dom';
 
 //@ts-ignore
 function classNames(...classes) {
@@ -48,6 +49,21 @@ const Navbar = () => {
 									<div className="py-1">
 										<Menu.Item>
 											{({ active }) => (
+												<Link
+													to="/app"
+													className={classNames(
+														active
+															? 'bg-gray-100 text-gray-900'
+															: 'text-gray-700',
+														'block px-4 py-2 text-sm'
+													)}
+												>
+													Home
+												</Link>
+											)}
+										</Menu.Item>
+										<Menu.Item>
+											{({ active }) => (
 												<a
 													href="g"
 													className={classNames(
@@ -73,6 +89,51 @@ const Navbar = () => {
 													)}
 												>
 													Soundboard
+												</a>
+											)}
+										</Menu.Item>
+										<Menu.Item>
+											{({ active }) => (
+												<a
+													href="g"
+													className={classNames(
+														active
+															? 'bg-gray-100 text-gray-900'
+															: 'text-gray-700',
+														'block px-4 py-2 text-sm'
+													)}
+												>
+													Party Manager
+												</a>
+											)}
+										</Menu.Item>
+										<Menu.Item>
+											{({ active }) => (
+												<a
+													href="g"
+													className={classNames(
+														active
+															? 'bg-gray-100 text-gray-900'
+															: 'text-gray-700',
+														'block px-4 py-2 text-sm'
+													)}
+												>
+													Homebrewing
+												</a>
+											)}
+										</Menu.Item>
+										<Menu.Item>
+											{({ active }) => (
+												<a
+													href="g"
+													className={classNames(
+														active
+															? 'bg-gray-100 text-gray-900'
+															: 'text-gray-700',
+														'block px-4 py-2 text-sm'
+													)}
+												>
+													Notebook
 												</a>
 											)}
 										</Menu.Item>

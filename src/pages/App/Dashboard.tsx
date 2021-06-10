@@ -7,7 +7,7 @@ const DashboardHome = lazy(() => import('./DashboardHome'));
 
 const Dashboard = () => {
 	return (
-		<div className=" bg-gray-800 h-screen w-screen text-white">
+		<div className=" bg-gray-800 h-screen pb-10 w-screen text-white">
 			<Navbar />
 			<Switch>
 				<Route exact path="/app">
