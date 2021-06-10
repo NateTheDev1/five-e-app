@@ -1,5 +1,7 @@
-import { UserState } from "../User/types";
+import { CharacterState } from '../Character/types';
+import { UserState } from '../User/types';
 
 export interface RootState {
-  user: UserState;
+	user: UserState;
+	character: CharacterState;
 }
