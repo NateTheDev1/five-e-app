@@ -31,7 +31,7 @@ const Login = () => {
 					<div className="mb-6 flex justify-center flex-col items-center">
 						<Logo />
 						<h2 className="mt-5 font-light opacity-50 text-lg">
-							Login
+							Welcome Back
 						</h2>
 					</div>
 					<div className="mb-6">
