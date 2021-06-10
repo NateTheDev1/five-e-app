@@ -1,80 +1,87 @@
-import { useDispatch } from "react-redux";
-import { useGetUserLazyQuery } from "../../graphql";
+import { useDispatch } from 'react-redux';
+import { useGetUserLazyQuery } from '../../graphql';
 import {
-  LoginUser,
-  UserActionConstants,
-  LogoutUser,
-  SetLoading,
-  FetchUser,
-} from "./types";
+	LoginUser,
+	UserActionConstants,
+	LogoutUser,
+	SetLoading,
+	FetchUser
+} from './types';
 
-import decode from "jwt-decode";
-import { RootActions } from "../types/action-types";
+import decode from 'jwt-decode';
+import { RootActions } from '../types/action-types';
 
-export const UserActions: RootActions["user"] = {
-  useLogin() {
-    const dispatch = useDispatch();
-    const fetchUser = UserActions.useFetchUser();
+export const UserActions: RootActions['user'] = {
+	useLogin() {
+		const dispatch = useDispatch();
+		const fetchUser = UserActions.useFetchUser();
 
-    return async (token: string) => {
-      const action: LoginUser = {
-        type: UserActionConstants.USER_LOGGED_IN,
-        payload: token,
-      };
+		return async (token: string) => {
+			const action: LoginUser = {
+				type: UserActionConstants.USER_LOGGED_IN,
+				payload: token
+			};
 
-      localStorage.setItem(process.env.REACT_APP_TOKEN_KEY as string, token);
+			localStorage.setItem(
+				process.env.REACT_APP_TOKEN_KEY as string,
+				token
+			);
 
-      dispatch(action);
+			dispatch(action);
 
-      fetchUser();
+			fetchUser();
 
-      return true;
-    };
-  },
-  useLogout() {
-    const dispatch = useDispatch();
+			return true;
+		};
+	},
+	useLogout() {
+		const dispatch = useDispatch();
 
-    return async () => {
-      const action: LogoutUser = {
-        type: UserActionConstants.USER_LOGGED_OUT,
-        payload: undefined,
-      };
+		return async () => {
+			const action: LogoutUser = {
+				type: UserActionConstants.USER_LOGGED_OUT,
+				payload: undefined
+			};
 
-      dispatch(action);
-    };
-  },
-  useFetchUser() {
-    const dispatch = useDispatch();
+			localStorage.removeItem(process.env.REACT_APP_TOKEN_KEY as string);
 
-    const [getUser] = useGetUserLazyQuery({
-      onCompleted: (data) => {
-        const action: FetchUser = {
-          type: UserActionConstants.APP_FETCHED_USER,
-          payload: data.getUser as any,
-        };
+			dispatch(action);
+		};
+	},
+	useFetchUser() {
+		const dispatch = useDispatch();
 
-        dispatch(action);
-      },
-    });
+		const [getUser] = useGetUserLazyQuery({
+			onCompleted: data => {
+				const action: FetchUser = {
+					type: UserActionConstants.APP_FETCHED_USER,
+					payload: data.getUser as any
+				};
 
-    return async () => {
-      const token = localStorage.getItem(process.env.REACT_APP_TOKEN_KEY!)!;
+				dispatch(action);
+			}
+		});
 
-      const jwt: { userId: number } = decode(token);
+		return async () => {
+			const token = localStorage.getItem(
+				process.env.REACT_APP_TOKEN_KEY!
+			)!;
 
-      getUser({ variables: { id: jwt.userId } });
-    };
-  },
-  useSetLoading() {
-    const dispatch = useDispatch();
+			const jwt: { userId: number } = decode(token);
 
-    return (loadState: boolean) => {
-      const action: SetLoading = {
-        type: UserActionConstants.SET_LOADING,
-        payload: loadState,
-      };
+			getUser({ variables: { id: jwt.userId } });
+		};
+	},
+	useSetLoading() {
+		const dispatch = useDispatch();
 
-      dispatch(action);
-    };
-  },
+		return (loadState: boolean) => {
+			const action: SetLoading = {
+				type: UserActionConstants.SET_LOADING,
+				payload: loadState
+			};
+
+			dispatch(action);
+		};
+	}
 };

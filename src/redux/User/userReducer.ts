@@ -39,7 +39,13 @@ export const userReducer = (
 			return { ...state, loading: action.payload };
 		}
 		case UserActionConstants.USER_LOGGED_OUT: {
-			return { ...initialUserState };
+			return {
+				...initialUserState,
+				authenticated: false,
+				token: '',
+				user: undefined,
+				userId: undefined
+			};
 		}
 		default: {
 			return { ...state };
