@@ -2,10 +2,16 @@ import { ChevronDownIcon } from '@heroicons/react/solid';
 import { useState } from 'react';
 import { useHistory } from 'react-router';
 import { Animate, AnimateGroup } from 'react-simple-animate';
+import DndCharacter from '../../../core/dndcharacter';
+import { CharacterActions } from '../../../redux/Character/actions';
+import { CharacterSelectors } from '../../../redux/Character/selectors';
 
 import { animProps } from '../../Onboarding/Login';
 
 const CharactersView = () => {
+	const newCharacterRef = CharacterSelectors.useSelectNewCharacter();
+	const resetCharacter = CharacterActions.useUpdateNewCharacter();
+
 	const [noteOpen, setNoteOpen] = useState(true);
 	const history = useHistory();
 
@@ -69,14 +75,35 @@ const CharactersView = () => {
 								{...animProps}
 							>
 								<button
-									onClick={() =>
-										history.push('/app/characters/new')
-									}
+									onClick={() => {
+										resetCharacter(new DndCharacter());
+										history.push('/app/characters/new');
+									}}
 									className="md:w-10/12 w-full mt-8 mr-5 rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-white"
 								>
 									Create One
 								</button>
 							</Animate>
+							{newCharacterRef &&
+								newCharacterRef.playerName.length > 0 && (
+									<Animate
+										sequenceIndex={2}
+										delay={0.2}
+										duration={0.2}
+										{...animProps}
+									>
+										<button
+											onClick={() =>
+												history.push(
+													'/app/characters/new'
+												)
+											}
+											className="md:w-10/12 w-full mt-8 mr-5 rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-white"
+										>
+											Continue Character In Progress
+										</button>
+									</Animate>
+								)}
 						</div>
 					</AnimateGroup>
 				</div>

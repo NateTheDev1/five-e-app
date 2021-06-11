@@ -2,12 +2,13 @@ import { lazy } from 'react';
 import { Switch, Route } from 'react-router';
 
 const GeneralInfo = lazy(() => import('./GeneralInfo'));
+const Races = lazy(() => import('./Races'));
 
 const NewCharacter = () => {
 	return (
 		<Switch>
 			<Route exact path="/app/characters/new/races">
-				<h1>Races</h1>
+				<Races />
 			</Route>
 			<Route exact path="/app/characters/new">
 				<GeneralInfo />

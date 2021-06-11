@@ -18,7 +18,9 @@ export interface UpdateNewCharacter {
 }
 
 export type CharacterActions = {
-	useUpdateNewUser(): (newCharacter: CharacterState['newCharacter']) => void;
+	useUpdateNewCharacter(): (
+		newCharacter: CharacterState['newCharacter']
+	) => void;
 };
 
 // SELECTORS

@@ -4,23 +4,29 @@ import { Animate } from 'react-simple-animate';
 import { animProps } from '../../../Onboarding/Login';
 import { CharacterActions } from '../../../../redux/Character/actions';
 import DndCharacter from '../../../../core/dndcharacter';
+import { CharacterSelectors } from '../../../../redux/Character/selectors';
+import { useHistory } from 'react-router';
 
 const GeneralInfo = () => {
+	const newCharacterRef = CharacterSelectors.useSelectNewCharacter();
+
+	const history = useHistory();
+
 	const [generalInfo, setGeneralInfo] = useState({
-		playerName: '',
-		characterName: '',
-		backstory: '',
-		height: '',
-		weight: '',
-		appearance: '',
-		eyes: '',
-		skin: '',
-		hair: '',
-		age: '20',
-		factionLogo: ''
+		playerName: newCharacterRef?.playerName ?? '',
+		characterName: newCharacterRef?.characterName ?? '',
+		backstory: newCharacterRef?.backstory ?? '',
+		height: newCharacterRef?.height ?? '',
+		weight: newCharacterRef?.weight ?? '',
+		appearance: newCharacterRef?.appearance ?? '',
+		eyes: newCharacterRef?.eyes ?? '',
+		skin: newCharacterRef?.skin ?? '',
+		hair: newCharacterRef?.skin ?? '',
+		age: newCharacterRef?.age ?? '',
+		factionLogo: newCharacterRef?.factionLogo ?? ''
 	});
 
-	const updateNewCharacter = CharacterActions.useUpdateNewUser();
+	const updateNewCharacter = CharacterActions.useUpdateNewCharacter();
 
 	const generateRandomName = () => {
 		setGeneralInfo({
@@ -55,6 +61,8 @@ const GeneralInfo = () => {
 		newCharacter.age = generalInfo.age;
 
 		updateNewCharacter(newCharacter);
+
+		history.push('/app/characters/new/races');
 	};
 
 	return (

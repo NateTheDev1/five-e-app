@@ -7,7 +7,7 @@ import {
 import { RootActions } from '../types/action-types';
 
 export const CharacterActions: RootActions['character'] = {
-	useUpdateNewUser() {
+	useUpdateNewCharacter() {
 		const dispatch = useDispatch();
 
 		return (newCharacter: CharacterState['newCharacter']) => {
