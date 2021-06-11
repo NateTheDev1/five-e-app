@@ -73,4 +73,59 @@ export default class DndCharacter {
 	public allStatsAssigned: boolean = false;
 
 	public equipmentText: string = '';
+
+	loadFromSerialize(data: any) {
+		for (const [key, val] of Object.entries(data)) {
+			//@ts-ignore
+			this[key] = val;
+		}
+
+		return this;
+	}
+
+	serialize() {
+		console.log({
+			characterName: this.characterName,
+			playerName: '',
+			race: this.race,
+			class: this.class,
+			archetype: this.archetype,
+			alignment: this.alignment,
+			backgroundSpecialty: this.backgroundSpecialty,
+			background: this.background,
+			backgroundToolChoice: this.backgroundToolChoice,
+			statArray: this.statArray,
+			statModifiers: this.statModifiers,
+			statTotals: this.statTotals,
+			xp: this.xp,
+			languageids: this.languageids,
+			proficiencies: this.proficiencies,
+			equipment: this.equipment,
+			equipChoices: this.equipChoices,
+			trait: this.trait,
+			ideal: this.ideal,
+			bond: this.bond,
+			flaw: this.flaw,
+			age: this.age,
+			height: this.height,
+			weight: this.weight,
+			eyes: this.eyes,
+			skin: this.skin,
+			hair: this.hair,
+			appearance: this.appearance, // Image
+			factionLogo: this.factionLogo, // Image
+			organizations: this.organizations,
+			allies: this.allies,
+			backstory: this.backstory,
+			treasure: this.treasure,
+			additionalFeaturesAndTraits: this.additionalFeaturesAndTraits,
+
+			level: this.level,
+
+			allEquipmentChosen: this.allEquipmentChosen,
+			allStatsAssigned: this.allStatsAssigned,
+
+			equipmentText: this.equipmentText
+		});
+	}
 }

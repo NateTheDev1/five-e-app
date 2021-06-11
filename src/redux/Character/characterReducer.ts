@@ -3,7 +3,11 @@ import { ActionType } from '../types/action-types';
 import { CharacterActionConstants, CharacterState } from './types';
 
 export const initialCharacterState: CharacterState = {
-	newCharacter: new DndCharacter()
+	newCharacter: localStorage.getItem('characterInProgress')
+		? new DndCharacter().loadFromSerialize(
+				JSON.parse(localStorage.getItem('characterInProgress') as any)
+		  )
+		: new DndCharacter()
 };
 
 export const characterReducer = (
@@ -12,6 +16,10 @@ export const characterReducer = (
 ): CharacterState => {
 	switch (action.type) {
 		case CharacterActionConstants.UPDATE_NEW_CHARACTER: {
+			localStorage.setItem(
+				'characterInProgress',
+				JSON.stringify(action.payload)
+			);
 			return { ...state, newCharacter: action.payload };
 		}
 		default: {

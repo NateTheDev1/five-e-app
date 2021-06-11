@@ -1,6 +1,6 @@
 import { ChevronRightIcon } from '@heroicons/react/solid';
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import phb from '../../../../core/phb';
 import reference from '../../../../core/reference';
@@ -23,6 +23,7 @@ const Race = ({
 }) => {
 	const history = useHistory();
 
+	const [ogLanguages, setogLanguages] = useState<number[]>([]);
 	const [languagesSelectedLength, setLanguagesSelectedLength] = useState(0);
 
 	const [open, setOpen] = useState(false);
@@ -88,15 +89,22 @@ const Race = ({
 		return str;
 	};
 
+	useEffect(() => {
+		setogLanguages(Array.from(race.languages));
+	}, [history]);
+
 	return (
 		<div
 			className="race flex flex-col shadow-md bg-white mb-5 px-4 pt-3 pb-3 cursor-pointer"
 			key={keyVal}
 			onClick={() => {
-				if (!raceData && !individual) {
+				if (!raceData) {
 					getRaceData();
-					setOpen(!open);
 				}
+				if (!individual) {
+					setOpen(true);
+				}
+
 				if (individual) {
 					history.push('/app/characters/new/classes');
 				}
@@ -186,11 +194,22 @@ const Race = ({
 															{reference.languages.map(
 																(lang, key) => (
 																	<div
+																		className="flex items-center"
 																		key={
 																			key
 																		}
 																	>
 																		<input
+																			disabled={
+																				ogLanguages.includes(
+																					lang.id
+																				) ||
+																				(!race.languages.includes(
+																					lang.id
+																				) &&
+																					languagesSelectedLength ===
+																						race.extraLanguages)
+																			}
 																			onChange={e => {
 																				if (
 																					race.languages.includes(
@@ -245,7 +264,7 @@ const Race = ({
 																			)}
 																			type="checkbox"
 																		/>
-																		<p>
+																		<p className="ml-3">
 																			{
 																				lang.text
 																			}
@@ -310,16 +329,21 @@ const Race = ({
 									<button
 										className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
 										type="button"
-										onClick={() => setOpen(false)}
+										onClick={e => {
+											e.stopPropagation();
+
+											setOpen(false);
+										}}
 									>
 										Close
 									</button>
 									<button
 										className="text-red-500 background-transparent  font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
 										type="button"
-										onClick={() => {
-											setSelectedRace(race);
+										onClick={e => {
 											setOpen(false);
+											e.stopPropagation();
+											setSelectedRace(race);
 										}}
 									>
 										{selectedRace?.text === race.text ||
