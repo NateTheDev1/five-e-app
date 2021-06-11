@@ -32,7 +32,14 @@ const ClassView = ({
 
 		axios.get(BASE_URL + classRef.text).then(res => {
 			console.log(res);
+
+			let classRes = res.data.results.find(
+				(result: any) => result.name === classRef.text
+			);
+
+			setClassData(classRes);
 		});
+		setLoading(false);
 	};
 
 	return (
@@ -81,10 +88,65 @@ const ClassView = ({
 											{classData && (
 												<div className="">
 													<p className="font-bold my-2">
-														Description
+														Hit Dice
 													</p>
-													<p className="my-4 text-gray-500 text-md leading-relaxed">
-														{classData.desc}
+													<p className="my-4 text-gray-500 text-md whitespace-pre-line leading-relaxed">
+														{classData.hit_dice}
+													</p>
+													<p className="font-bold my-2">
+														Hit Points At 1'st Level
+													</p>
+													<p className="my-4 text-gray-500 text-md whitespace-pre-line leading-relaxed">
+														{
+															classData.hp_at_1st_level
+														}
+													</p>
+													<p className="font-bold my-2">
+														Hit Points At Higher
+														Levels
+													</p>
+													<p className="my-4 text-gray-500 text-md whitespace-pre-line leading-relaxed">
+														{
+															classData.hp_at_higher_levels
+														}
+													</p>
+													<p className="font-bold my-2">
+														Additional Skill
+														Proficiencies
+													</p>
+													<p className="my-4 text-red-500 text-xs whitespace-pre-line leading-relaxed">
+														Will be chosen after you
+														select a background.
+													</p>
+													<p className="my-4 text-gray-500 text-md whitespace-pre-line leading-relaxed">
+														{classData.prof_skills}
+													</p>
+													<p className="font-bold my-2">
+														Saving Throw
+														Proficiencies
+													</p>
+													<p className="my-4 text-gray-500 text-md whitespace-pre-line leading-relaxed">
+														{
+															classData.prof_saving_throws
+														}
+													</p>
+													<p className="font-bold my-2">
+														Weapon Proficiencies
+													</p>
+													<p className="my-4 text-gray-500 text-md whitespace-pre-line leading-relaxed">
+														{classData.prof_weapons}
+													</p>
+													<p className="font-bold my-2">
+														Tool Proficiencies
+													</p>
+													<p className="my-4 text-gray-500 text-md whitespace-pre-line leading-relaxed">
+														{classData.prof_tools}
+													</p>
+													<p className="font-bold my-2">
+														Armor Proficiencies
+													</p>
+													<p className="my-4 text-gray-500 text-md whitespace-pre-line leading-relaxed">
+														{classData.prof_armor}
 													</p>
 												</div>
 											)}

@@ -84,7 +84,7 @@ export default class DndCharacter {
 	}
 
 	serialize() {
-		console.log({
+		return {
 			characterName: this.characterName,
 			playerName: '',
 			race: this.race,
@@ -126,6 +126,6 @@ export default class DndCharacter {
 			allStatsAssigned: this.allStatsAssigned,
 
 			equipmentText: this.equipmentText
-		});
+		};
 	}
 }

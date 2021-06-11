@@ -48,6 +48,10 @@ const GeneralInfo = () => {
 
 		const newCharacter = new DndCharacter();
 
+		newCharacter.loadFromSerialize(
+			JSON.parse(localStorage.getItem('characterInProgress') as any) ?? {}
+		);
+
 		newCharacter.playerName = generalInfo.playerName;
 		newCharacter.characterName = generalInfo.characterName;
 		newCharacter.backstory = generalInfo.backstory;
@@ -259,7 +263,10 @@ const GeneralInfo = () => {
 							</div>
 						</div>
 					</div>
-					<button className="bg-red-500 w-full mb-4 hover:bg-red-500 text-white font-bold py-2 px-4 mt-1 rounded">
+					<button
+						type="submit"
+						className="bg-red-500 w-full mb-4 cursor-pointer hover:bg-red-500 text-white font-bold py-2 px-4 mt-1 rounded"
+					>
 						Continue
 					</button>
 				</form>

@@ -17,7 +17,6 @@ const Classes = () => {
 		useState<ClassType | undefined>(undefined);
 
 	useEffect(() => {
-		newCharacter?.serialize();
 		if (selectedClass) {
 			const newChar = newCharacter;
 
