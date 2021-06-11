@@ -1,6 +1,7 @@
 // import { lazy } from "react";
 import { lazy } from 'react';
 import { Route, Switch, useLocation } from 'react-router';
+import GoogleAd from './components/GoogleAd';
 import NotFound from './components/NotFound';
 import { PrivateRoute } from './components/PrivateRoute';
 import { PublicRoute } from './components/PublicRoute';
@@ -22,6 +23,7 @@ const Router = () => {
 				</PublicRoute>
 				<Route component={NotFound} />
 			</Switch>
+			<GoogleAd />
 		</div>
 	);
 };
