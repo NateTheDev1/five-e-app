@@ -5,10 +5,14 @@ const GeneralInfo = lazy(() => import('./GeneralInfo'));
 const Races = lazy(() => import('./Races'));
 const Classes = lazy(() => import('./Classes'));
 const Stats = lazy(() => import('./Stats'));
+const Finish = lazy(() => import('./Finish'));
 
 const NewCharacter = () => {
 	return (
 		<Switch>
+			<Route exact path="/app/characters/new/finish">
+				<Finish />
+			</Route>
 			<Route exact path="/app/characters/new/stats">
 				<Stats />
 			</Route>

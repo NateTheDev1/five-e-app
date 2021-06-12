@@ -1,12 +1,18 @@
 import { useState } from 'react';
+import { useHistory } from 'react-router';
 import { Animate } from 'react-simple-animate';
 import reference from '../../../../core/reference';
 import Util from '../../../../core/util';
+import { CharacterActions } from '../../../../redux/Character/actions';
 import { CharacterSelectors } from '../../../../redux/Character/selectors';
 import { animProps } from '../../../Onboarding/Login';
 
 const Stats = () => {
+	const history = useHistory();
+
 	const newCharacter = CharacterSelectors.useSelectNewCharacter();
+	const updateCharacter = CharacterActions.useUpdateNewCharacter();
+
 	const [genMethod, setGenMethod] = useState('Standard Array');
 	const [rolls, setRolls] = useState<number[]>(reference.standardStatArray);
 	const [statRolls, setStatRolls] = useState({
@@ -17,8 +23,6 @@ const Stats = () => {
 		Wisdom: -1,
 		Charisma: -1
 	});
-
-	const [selectedRolls, setSelectedRolls] = useState<number[]>([]);
 
 	const rollStats = () => {
 		const tmpRolls: number[] = [];
@@ -83,7 +87,23 @@ const Stats = () => {
 						</button>
 					)}
 				</div>
-				<div className="stats mt-8">
+				<form
+					className="stats mt-8"
+					onSubmit={() => {
+						const newChar = newCharacter;
+
+						if (newChar) {
+							newChar.statArray = Array.from(
+								Object.values(statRolls)
+							);
+							newChar.statModifiers = Array.from(
+								newChar.race.bonuses
+							);
+							updateCharacter(newChar);
+							history.push('/app/characters/new/finish');
+						}
+					}}
+				>
 					{reference.statBlocks.map((stat, key) => (
 						<div
 							className="stat flex justify-between mt-8"
@@ -93,8 +113,9 @@ const Stats = () => {
 								{stat.text} +{newCharacter?.race.bonuses[key]}
 							</h4>
 							<input
+								required
 								type="number"
-								className=" text-black text-center w-2/5 md:w-3/5 "
+								className=" text-gray-500 text-center w-2/5 md:w-3/5 "
 								placeholder="0"
 								//@ts-ignore
 								onChange={e =>
@@ -112,12 +133,18 @@ const Stats = () => {
 										? //@ts-ignore
 
 										  Number(statRolls[stat.text])
-										: null
+										: ''
 								}
 							/>
 						</div>
 					))}
-				</div>
+					<button
+						type="submit"
+						className="bg-red-500 w-full h-auto mb-4 hover:bg-red-500 text-white font-bold py-2 px-4 mt-8 rounded"
+					>
+						Continue
+					</button>
+				</form>
 			</div>
 		</Animate>
 	);
