@@ -14,7 +14,8 @@ export enum StatConstants {
 	Charisma = 'Charisma',
 	Constitution = 'Constitution',
 	Dexterity = 'Dexterity',
-	Intelligence = 'Intelligence'
+	Intelligence = 'Intelligence',
+	Wisdom = 'Wisdom'
 }
 
 export enum LanguageConstants {
