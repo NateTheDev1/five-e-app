@@ -1,5 +1,5 @@
 import { CharacterClass } from './CharacterClasses/CharacterClass';
-import { Race } from './Race';
+import { Race, StatBonus } from './Race';
 
 export class Character {
 	characterName: string = '';
@@ -14,6 +14,8 @@ export class Character {
 	height: string = '';
 	weight: string = '';
 	age: string = '21';
+	languages: string[] = [];
+	bonuses: StatBonus[] = [];
 
 	levelUp() {
 		// TODO: update level and xp

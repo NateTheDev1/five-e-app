@@ -32,7 +32,7 @@ export enum LanguageConstants {
 
 export interface StatBonus {
 	amount: number;
-	stat: StatConstants;
+	stat: StatConstants | string;
 }
 
 export interface Trait {

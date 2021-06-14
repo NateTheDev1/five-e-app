@@ -95,11 +95,12 @@ const CharactersView = () => {
 										{...animProps}
 									>
 										<button
-											onClick={() =>
+											onClick={() => {
+												resetCharacter(new Character());
 												history.push(
 													'/app/characters/new'
-												)
-											}
+												);
+											}}
 											className="md:w-10/12 w-full mt-8 mr-5 rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-white"
 										>
 											Continue Character In Progress

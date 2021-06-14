@@ -8,8 +8,14 @@ import {
 import { animProps } from '../../../Onboarding/Login';
 import RaceTrait from './RaceTraits';
 import { Animate } from 'react-simple-animate';
+import { CharacterActions } from '../../../../redux/Character/actions';
+import { CharacterSelectors } from '../../../../redux/Character/selectors';
+import { useEffect } from 'react';
 
 const Race = ({ race }: { race: RaceType }) => {
+	const newCharacter = CharacterSelectors.useSelectNewCharacter();
+	const updateCharacter = CharacterActions.useUpdateNewCharacter();
+
 	const [selectedLanguages, setSelectedLanguages] = useState<
 		OptionsType<{
 			label: any;
@@ -53,12 +59,51 @@ const Race = ({ race }: { race: RaceType }) => {
 						disabled: false
 					}))
 			: Object.keys(StatConstants)
-					.filter(bon => !race.bonuses.find(b => b.stat === bon))
+					.filter(bon =>
+						race.bonuses.find(b => b.stat === bon) ? false : true
+					)
 					.map(bon => ({
 						label: bon,
 						value: bon,
 						disabled: false
 					}));
+
+	useEffect(() => {
+		const newChar = newCharacter;
+
+		if (newChar) {
+			newChar.languages = [
+				...race.languages,
+				...selectedLanguages.map(lang => lang.label)
+			];
+
+			if (race.name === 'Human') {
+				newChar.bonuses = [
+					...Object.keys(StatConstants).map(stat => ({
+						amount: 1,
+						stat: stat
+					}))
+				];
+			}
+
+			if (race && race.extraBonuses !== undefined) {
+				newChar.bonuses = [
+					...race.bonuses,
+					...selectedBonuses.map(bonus => ({
+						amount: race.extraBonuses?.increase ?? 0,
+						stat: bonus.label
+					}))
+				];
+			}
+			updateCharacter(newChar);
+		}
+	}, [
+		selectedBonuses,
+		selectedLanguages,
+		race,
+		updateCharacter,
+		newCharacter
+	]);
 
 	return (
 		<Animate play {...animProps}>
@@ -78,6 +123,9 @@ const Race = ({ race }: { race: RaceType }) => {
 						- {b.stat} +{b.amount}
 					</p>
 				))}
+				{race.bonuses.length < 1 && (
+					<p className="my-2 text-sm">None</p>
+				)}
 				<div className="mt-5">
 					{race.extraBonuses && (
 						<>
@@ -89,6 +137,7 @@ const Race = ({ race }: { race: RaceType }) => {
 								to increase by {race.extraBonuses.increase}
 							</p>
 							<Select
+								isSearchable={false}
 								onChange={e => {
 									if (e) {
 										setSelectedBonuses(e);
@@ -130,6 +179,7 @@ const Race = ({ race }: { race: RaceType }) => {
 										setSelectedLanguages(e);
 									}
 								}}
+								isSearchable={false}
 								value={selectedLanguages}
 								options={extraLanguages}
 								isMulti={true}

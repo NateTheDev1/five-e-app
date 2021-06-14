@@ -76,6 +76,9 @@ const Races = () => {
 							options={raceOptions}
 							onChange={e => {
 								if (e) {
+									const newChar = newCharacter;
+									newChar.race = e.value;
+									updateCharacter(newCharacter);
 									setSelectedRace(e.value);
 								}
 							}}
