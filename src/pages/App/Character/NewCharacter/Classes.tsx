@@ -9,32 +9,32 @@ import { animProps } from '../../../Onboarding/Login';
 import ClassView from './ClassView';
 
 const Classes = () => {
-	const history = useHistory();
-	const newCharacter = CharacterSelectors.useSelectNewCharacter();
-	const updateCharacter = CharacterActions.useUpdateNewCharacter();
+	// const history = useHistory();
+	// const newCharacter = CharacterSelectors.useSelectNewCharacter();
+	// const updateCharacter = CharacterActions.useUpdateNewCharacter();
 
-	const [selectedClass, setSelectedClass] =
-		useState<ClassType | undefined>(undefined);
+	// const [selectedClass, setSelectedClass] =
+	// 	useState<ClassType | undefined>(undefined);
 
-	useEffect(() => {
-		if (selectedClass) {
-			const newChar = newCharacter;
+	// useEffect(() => {
+	// 	if (selectedClass) {
+	// 		const newChar = newCharacter;
 
-			if (newChar) {
-				newChar.class = selectedClass;
-				updateCharacter(newChar);
-				history.push('/app/characters/new/stats');
-			}
-		}
-	}, [newCharacter, history, selectedClass, updateCharacter]);
+	// 		if (newChar) {
+	// 			newChar.c = selectedClass;
+	// 			updateCharacter(newChar);
+	// 			history.push('/app/characters/new/stats');
+	// 		}
+	// 	}
+	// }, [newCharacter, history, selectedClass, updateCharacter]);
 
-	if (!newCharacter || newCharacter.playerName.length < 1) {
-		return <Redirect to="/app/characters/new" />;
-	}
+	// if (!newCharacter || newCharacter.playerName.length < 1) {
+	// 	return <Redirect to="/app/characters/new" />;
+	// }
 
 	return (
 		<Animate duration={0.2} play {...animProps}>
-			<div className="px-5 mt-10 container w-full max-w-prose mx-auto">
+			{/* <div className="px-5 mt-10 container w-full max-w-prose mx-auto">
 				<h3 className="text-lg mb-3 font-bold">Select a class</h3>
 				<hr />
 				<div className="classes mt-8 text-black pb-5 mx-auto">
@@ -57,7 +57,7 @@ const Classes = () => {
 						/>
 					))}
 				</div>
-			</div>
+			</div> */}
 		</Animate>
 	);
 };

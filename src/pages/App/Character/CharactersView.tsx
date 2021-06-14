@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useHistory } from 'react-router';
 import { Animate, AnimateGroup } from 'react-simple-animate';
 import DndCharacter from '../../../core/dndcharacter';
+import { Character } from '../../../corev2/Character';
 import { CharacterActions } from '../../../redux/Character/actions';
 import { CharacterSelectors } from '../../../redux/Character/selectors';
 
@@ -76,7 +77,7 @@ const CharactersView = () => {
 							>
 								<button
 									onClick={() => {
-										resetCharacter(new DndCharacter());
+										resetCharacter(new Character());
 										history.push('/app/characters/new');
 									}}
 									className="md:w-10/12 w-full mt-8 mr-5 rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-white"
@@ -85,7 +86,7 @@ const CharactersView = () => {
 								</button>
 							</Animate>
 							{newCharacterRef &&
-								newCharacterRef.playerName.length > 0 && (
+								newCharacterRef.characterName.length > 0 && (
 									<Animate
 										sequenceIndex={2}
 										delay={0.2}

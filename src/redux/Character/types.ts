@@ -1,9 +1,9 @@
-import DndCharacter from '../../core/dndcharacter';
+import { Character } from '../../corev2/Character';
 
 // STATE
 
 export type CharacterState = {
-	newCharacter: DndCharacter | undefined;
+	newCharacter: Character | undefined;
 };
 
 // ACTIONS

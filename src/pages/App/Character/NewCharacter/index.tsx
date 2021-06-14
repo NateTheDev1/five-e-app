@@ -10,7 +10,7 @@ const Finish = lazy(() => import('./Finish'));
 const NewCharacter = () => {
 	return (
 		<Switch>
-			<Route exact path="/app/characters/new/finish">
+			{/* <Route exact path="/app/characters/new/finish">
 				<Finish />
 			</Route>
 			<Route exact path="/app/characters/new/stats">
@@ -21,7 +21,7 @@ const NewCharacter = () => {
 			</Route>
 			<Route exact path="/app/characters/new/races">
 				<Races />
-			</Route>
+			</Route> */}
 			<Route exact path="/app/characters/new">
 				<GeneralInfo />
 			</Route>
