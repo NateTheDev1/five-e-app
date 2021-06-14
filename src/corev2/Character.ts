@@ -5,15 +5,15 @@ export class Character {
 	characterName: string = '';
 	race?: Race;
 	class?: CharacterClass;
-	eyes: string = '';
-	skin: string = '';
-	hair: string = '';
+	eyes: string = 'Blue';
+	skin: string = 'Brown';
+	hair: string = 'Black';
 	avatarImage: string = '';
 	factionImage: string = '';
 	backstory: string = '';
 	height: string = '';
 	weight: string = '';
-	age: string = '';
+	age: string = '21';
 
 	levelUp() {
 		// TODO: update level and xp

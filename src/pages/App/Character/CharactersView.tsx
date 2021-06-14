@@ -2,7 +2,6 @@ import { ChevronDownIcon } from '@heroicons/react/solid';
 import { useState } from 'react';
 import { useHistory } from 'react-router';
 import { Animate, AnimateGroup } from 'react-simple-animate';
-import DndCharacter from '../../../core/dndcharacter';
 import { Character } from '../../../corev2/Character';
 import { CharacterActions } from '../../../redux/Character/actions';
 import { CharacterSelectors } from '../../../redux/Character/selectors';
@@ -10,11 +9,12 @@ import { CharacterSelectors } from '../../../redux/Character/selectors';
 import { animProps } from '../../Onboarding/Login';
 
 const CharactersView = () => {
+	const history = useHistory();
+
 	const newCharacterRef = CharacterSelectors.useSelectNewCharacter();
 	const resetCharacter = CharacterActions.useUpdateNewCharacter();
 
 	const [noteOpen, setNoteOpen] = useState(true);
-	const history = useHistory();
 
 	return (
 		<Animate duration={0.2} play {...animProps}>
@@ -86,6 +86,7 @@ const CharactersView = () => {
 								</button>
 							</Animate>
 							{newCharacterRef &&
+								newCharacterRef.characterName &&
 								newCharacterRef.characterName.length > 0 && (
 									<Animate
 										sequenceIndex={2}

@@ -6,11 +6,14 @@ import { CharacterActions } from '../../../../redux/Character/actions';
 import { CharacterSelectors } from '../../../../redux/Character/selectors';
 import { useHistory } from 'react-router';
 import { Character } from '../../../../corev2/Character';
+import { useEffect } from 'react';
 
 const GeneralInfo = () => {
 	const newCharacterRef = CharacterSelectors.useSelectNewCharacter();
 
 	const history = useHistory();
+
+	const [play, setPlay] = useState(false);
 
 	const [generalInfo, setGeneralInfo] = useState({
 		characterName: newCharacterRef?.characterName ?? '',
@@ -63,8 +66,14 @@ const GeneralInfo = () => {
 		history.push('/app/characters/new/races');
 	};
 
+	useEffect(() => {
+		if (!play) {
+			setPlay(true);
+		}
+	}, [play, setPlay]);
+
 	return (
-		<Animate duration={0.2} play {...animProps}>
+		<Animate duration={0.2} play={play} {...animProps}>
 			<div className="px-4 pb-5 mt-5 container w-full max-w-prose mx-auto ">
 				<div className="bg-white p-3 text-black rounded-md">
 					<h3 className="text-lg mb-3 font-light opacity-80">
@@ -135,7 +144,6 @@ const GeneralInfo = () => {
 									type="text"
 									autoComplete="height"
 									name="height"
-									required
 									placeholder="6'1"
 								/>
 							</div>
@@ -154,7 +162,6 @@ const GeneralInfo = () => {
 									type="text"
 									autoComplete="weight"
 									name="weight"
-									required
 									placeholder="170"
 								/>
 							</div>
@@ -175,7 +182,6 @@ const GeneralInfo = () => {
 									type="text"
 									autoComplete="eyes"
 									name="eyes"
-									required
 									placeholder="Blue"
 								/>
 							</div>
@@ -194,7 +200,6 @@ const GeneralInfo = () => {
 									type="text"
 									autoComplete="hair"
 									name="hair"
-									required
 									placeholder="Black"
 								/>
 							</div>
@@ -215,7 +220,6 @@ const GeneralInfo = () => {
 									type="text"
 									autoComplete="skin"
 									name="skin"
-									required
 									placeholder="Brown"
 								/>
 							</div>
@@ -234,7 +238,6 @@ const GeneralInfo = () => {
 									type="text"
 									autoComplete="age"
 									name="age"
-									required
 									placeholder="20"
 								/>
 							</div>

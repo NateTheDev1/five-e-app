@@ -19,7 +19,8 @@ import {
 	Human,
 	RockGnome,
 	Tiefling,
-	StatConstants
+	StatConstants,
+	Race
 } from './Race';
 
 export class Core {
@@ -35,7 +36,7 @@ export class Core {
 		];
 	}
 
-	classes = {
+	static classes = {
 		barbarian: new Barbarian(),
 		bard: new Bard(),
 		cleric: new Cleric(),
@@ -63,22 +64,6 @@ export class Core {
 		];
 	}
 
-	races = {
-		dragonborn: new Dragonborn(),
-		hilldwarf: new HillDwarf(),
-		mountaindwarf: new MountainDwarf(),
-		eladrin: new Eladrin(),
-		highelf: new HighElf(),
-		woodelf: new WoodElf(),
-		halfelf: new HalfElf(),
-		halforc: new HalfOrc(),
-		lightfoothalfling: new LightfootHalfling(),
-		stouthalfling: new StoutHalfling(),
-		human: new Human(),
-		rockgnome: new RockGnome(),
-		tiefling: new Tiefling()
-	};
-
 	static get stats(): string[] {
 		return [
 			StatConstants.Constitution,
@@ -89,4 +74,46 @@ export class Core {
 			StatConstants.Wisdom
 		];
 	}
+
+	getRaces() {
+		return races;
+	}
+
+	getRace(name: string): Race {
+		const races = Object.create({
+			dragonborn: new Dragonborn(),
+			hilldwarf: new HillDwarf(),
+			mountaindwarf: new MountainDwarf(),
+			eladrin: new Eladrin(),
+			highelf: new HighElf(),
+			woodelf: new WoodElf(),
+			halfelf: new HalfElf(),
+			halforc: new HalfOrc(),
+			lightfoothalfling: new LightfootHalfling(),
+			stouthalfling: new StoutHalfling(),
+			human: new Human(),
+			rockgnome: new RockGnome(),
+			tiefling: new Tiefling()
+		});
+
+		return races[name];
+	}
 }
+
+export const core = new Core();
+
+export const races: { [key: string]: Race } = {
+	dragonborn: new Dragonborn(),
+	hilldwarf: new HillDwarf(),
+	mountaindwarf: new MountainDwarf(),
+	eladrin: new Eladrin(),
+	highelf: new HighElf(),
+	woodelf: new WoodElf(),
+	halfelf: new HalfElf(),
+	halforc: new HalfOrc(),
+	lightfoothalfling: new LightfootHalfling(),
+	stouthalfling: new StoutHalfling(),
+	human: new Human(),
+	rockgnome: new RockGnome(),
+	tiefling: new Tiefling()
+};
