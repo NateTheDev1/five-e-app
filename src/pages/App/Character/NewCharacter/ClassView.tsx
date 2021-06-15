@@ -6,8 +6,13 @@ import { CharacterClass } from '../../../../corev2/CharacterClasses/CharacterCla
 import { instruments, SkillConstants } from '../../../../corev2/core';
 import { animProps } from '../../../Onboarding/Login';
 import { useEffect } from 'react';
+import ClassTrait from './ClassTrait';
+import { CharacterSelectors } from '../../../../redux/Character/selectors';
+import { CharacterActions } from '../../../../redux/Character/actions';
 
 export const ClassView = ({ classRef }: { classRef: CharacterClass }) => {
+	const newCharacter = CharacterSelectors.useSelectNewCharacter();
+	const updateCharacter = CharacterActions.useUpdateNewCharacter();
 	const [selectedSkills, setSelectedSkills] = useState<
 		OptionsType<{
 			label: any;
@@ -45,13 +50,48 @@ export const ClassView = ({ classRef }: { classRef: CharacterClass }) => {
 		})
 		.filter(cls => cls !== null);
 
-	console.log(selectedProfs);
-
 	useEffect(() => {
-		setSelectedInstruments([]);
-		setSelectedProfs([]);
-		setSelectedSkills([]);
-	}, [classRef]);
+		const newChar = newCharacter;
+
+		if (newChar) {
+			newChar.proficiencies = [
+				...selectedInstruments.map(s => s.value),
+				...selectedSkills.map(s => s.value)
+			];
+
+			for (const [key, val] of Object.entries(selectedProfs)) {
+				//@ts-ignore
+				if (val['value']['items']) {
+					newChar.inventory = [
+						...newChar.inventory,
+						//@ts-ignore
+						...val['value']['items'].map(item => ({
+							name: item.name,
+							quantity: item.quantity
+						}))
+					];
+				} else {
+					newChar.inventory = [
+						...newChar.inventory,
+						{
+							//@ts-ignore
+							name: val['value'].name,
+							//@ts-ignore
+							quantity: val['value'].quantity
+						}
+					];
+				}
+			}
+
+			updateCharacter(newChar);
+		}
+	}, [
+		selectedProfs,
+		selectedInstruments,
+		selectedSkills,
+		updateCharacter,
+		newCharacter
+	]);
 
 	return (
 		<Animate play {...animProps}>
@@ -175,11 +215,23 @@ export const ClassView = ({ classRef }: { classRef: CharacterClass }) => {
 					?.filter(eq => !eq.choose)
 					.map((eq, key) => (
 						<p key={key}>
-							- {eq.title} ({eq.quantity})
+							- {eq.title} ({eq.quantity ?? 1})
 						</p>
 					))}
 
 				<h5 className="font-semibold mt-5">Equipment Options</h5>
+				<p
+					className="text-sm underline mt-3 cursor-pointer"
+					onClick={() => {
+						const newChar = newCharacter;
+						if (newChar) {
+							newChar.inventory = [];
+						}
+						updateCharacter(newChar);
+					}}
+				>
+					Reset
+				</p>
 
 				{equipmentOptions?.map((eq, key) => (
 					<div key={key} className="mt-5">
@@ -212,6 +264,12 @@ export const ClassView = ({ classRef }: { classRef: CharacterClass }) => {
 						))}
 					</>
 				)}
+
+				<h5 className="font-semibold mt-5">Traits</h5>
+
+				{classRef.traits.sort().map((t, key) => (
+					<ClassTrait trait={t} key={key} />
+				))}
 			</div>
 		</Animate>
 	);

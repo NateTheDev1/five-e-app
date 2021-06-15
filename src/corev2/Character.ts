@@ -16,6 +16,10 @@ export class Character {
 	age: string = '21';
 	languages: string[] = [];
 	bonuses: StatBonus[] = [];
+	level: number = 1;
+	xp: number = 0;
+	proficiencies: string[] = [];
+	inventory: { name: string; quantity: number }[] = [];
 
 	levelUp() {
 		// TODO: update level and xp

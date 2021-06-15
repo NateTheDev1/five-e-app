@@ -236,7 +236,7 @@ export class MountainDwarf extends Race {
 			DwarvenResillience,
 			DwarvenCombatTraining,
 			{
-				title: 'ToolProficiency',
+				title: 'Tool Proficiency',
 				description:
 					'You gain proficiency with the artisan’s tools of your choice: smith’s tools, brewer’s supplies, or mason’s tools.',
 				choose: {

@@ -88,6 +88,8 @@ const Race = ({ race }: { race: RaceType }) => {
 				}
 			}
 
+			newChar.bonuses = [...race.bonuses];
+
 			if (race && race.extraBonuses !== undefined) {
 				newChar.bonuses = [
 					...race.bonuses,
