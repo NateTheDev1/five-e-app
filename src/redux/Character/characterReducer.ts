@@ -1,13 +1,13 @@
-import DndCharacter from '../../core/dndcharacter';
+import { Character } from '../../corev2/Character';
 import { ActionType } from '../types/action-types';
 import { CharacterActionConstants, CharacterState } from './types';
 
 export const initialCharacterState: CharacterState = {
 	newCharacter: localStorage.getItem('characterInProgress')
-		? new DndCharacter().loadFromSerialize(
+		? new Character().loadFromSerialize(
 				JSON.parse(localStorage.getItem('characterInProgress') as any)
 		  )
-		: new DndCharacter()
+		: new Character()
 };
 
 export const characterReducer = (

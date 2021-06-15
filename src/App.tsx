@@ -6,6 +6,10 @@ import ErrorBoundary from './ErrorBoundary';
 import { store } from './redux/store';
 import Router from './Router';
 
+// Causing insane performance block
+// import LogRocket from 'logrocket';
+// LogRocket.init('5e-sidekick/5e-sidekick');
+
 const App = () => {
 	return (
 		<ErrorBoundary>

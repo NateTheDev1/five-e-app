@@ -35,7 +35,8 @@ export class Bard extends CharacterClass {
 			{ title: 'Shortswords' },
 			{
 				title: 'Choose three musical instruments of your choice',
-				choose: { from: [], num: 3, all: true }
+				choose: { from: [], num: 3, all: true },
+				type: 'instruments'
 			},
 			{
 				title: 'Choose any three skills',

@@ -1,5 +1,3 @@
-import { StatConstants } from '../Race';
-
 export class CharacterClass {
 	public name: string = '';
 	public description: string = '';
@@ -25,6 +23,7 @@ export class CharacterClass {
 		title: string;
 		choose?: { num: number; from: string[]; all?: boolean };
 		skills?: boolean;
+		type?: string;
 	}[] = [];
 	public traits: { title: string; description: string; atLevel: number }[] =
 		[];

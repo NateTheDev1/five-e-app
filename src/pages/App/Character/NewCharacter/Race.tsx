@@ -1,372 +1,210 @@
-import { ChevronRightIcon } from '@heroicons/react/solid';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { useHistory } from 'react-router';
-import phb from '../../../../core/phb';
-import reference from '../../../../core/reference';
-import { Race as RaceType } from '../../../../core/types';
+import { useState } from 'react';
+import Select, { OptionsType } from 'react-select';
+import {
+	LanguageConstants,
+	Race as RaceType,
+	StatConstants
+} from '../../../../corev2/Race';
+import { animProps } from '../../../Onboarding/Login';
+import RaceTrait from './RaceTraits';
+import { Animate } from 'react-simple-animate';
+import { CharacterActions } from '../../../../redux/Character/actions';
+import { CharacterSelectors } from '../../../../redux/Character/selectors';
+import { useEffect } from 'react';
 
-const BASE_URL = 'https://api.open5e.com/races/?search=';
+const Race = ({ race }: { race: RaceType }) => {
+	const newCharacter = CharacterSelectors.useSelectNewCharacter();
+	const updateCharacter = CharacterActions.useUpdateNewCharacter();
 
-const Race = ({
-	race,
-	keyVal,
-	setSelectedRace,
-	selectedRace,
-	individual = false
-}: {
-	race: RaceType;
-	keyVal: number;
-	setSelectedRace: React.Dispatch<React.SetStateAction<RaceType | undefined>>;
-	selectedRace: RaceType | undefined;
-	individual?: boolean;
-}) => {
-	const history = useHistory();
+	const [selectedLanguages, setSelectedLanguages] = useState<
+		OptionsType<{
+			label: any;
+			value: any;
+			disabled: boolean;
+		}>
+	>([]);
 
-	const [ogLanguages, setogLanguages] = useState<number[]>([]);
-	const [languagesSelectedLength, setLanguagesSelectedLength] = useState(0);
+	const [selectedBonuses, setSelectedBonuses] = useState<
+		OptionsType<{
+			label: any;
+			value: any;
+			disabled: boolean;
+		}>
+	>([]);
 
-	const [open, setOpen] = useState(false);
-	const [loading, setLoading] = useState(true);
-	const [raceData, setRaceData] = useState<any>(undefined);
+	const extraLanguages =
+		race.extraLanguage && !race.extraLanguage.all
+			? race.extraLanguage.languages
+					.filter(lang => !race.languages.includes(lang))
+					.map(l => ({
+						label: l,
+						value: l,
+						disabled: false
+					}))
+			: Object.keys(LanguageConstants)
+					.filter(lang => !race.languages.includes(lang))
+					.map(lang => ({
+						label: lang,
+						value: lang,
+						disabled: false
+					}));
 
-	const getRaceData = () => {
-		setLoading(true);
-		axios
-			.get(BASE_URL + race.text)
-			.then(res => {
-				let raceRes = res.data.results.find(
-					(result: any) => result.name === race.text
-				);
-
-				if (!raceRes) {
-					if (race.text.includes('Elf')) {
-						raceRes = res.data.results
-							.find((result: any) => result.name === 'Elf')
-							.subraces.find(
-								(sub: any) => sub.name === race.text
-							);
-					} else if (race.text.includes('Dwarf')) {
-						raceRes = res.data.results
-							.find((result: any) => result.name === 'Dwarf')
-							.subraces.find(
-								(sub: any) => sub.name === race.text
-							);
-					} else if (race.text.includes('Halfling')) {
-						raceRes = res.data.results
-							.find((result: any) => result.name === 'Halfling')
-							.subraces.find(
-								(sub: any) =>
-									sub.name === 'Lightfoot' ||
-									sub.name === 'Stout'
-							);
-					} else if (race.text.includes('Gnome')) {
-						raceRes = res.data.results
-							.find((result: any) => result.name === 'Gnome')
-							.subraces.find(
-								(sub: any) => sub.name === race.text
-							);
-					}
-				}
-
-				if (raceRes) {
-					const desc = getDesc(raceRes.desc);
-					setRaceData({ ...raceRes, desc });
-				} else {
-					setRaceData(raceRes);
-				}
-				setLoading(false);
-			})
-			.catch(e => console.error(e));
-	};
-
-	const getDesc = (text: string) => {
-		let str = text;
-		str = str.replaceAll('#', '');
-
-		str = str.replace(`${race.text} Traits`, '');
-
-		return str;
-	};
+	const extraBonuses =
+		race.extraBonuses && !race.extraBonuses.all
+			? race.extraBonuses.stats
+					.filter(bon => !race.bonuses.find(b => b.stat === bon))
+					.map(bon => ({
+						label: bon,
+						value: bon,
+						disabled: false
+					}))
+			: Object.keys(StatConstants)
+					.filter(bon =>
+						race.bonuses.find(b => b.stat === bon) ? false : true
+					)
+					.map(bon => ({
+						label: bon,
+						value: bon,
+						disabled: false
+					}));
 
 	useEffect(() => {
-		setogLanguages(Array.from(race.languages));
-	}, [history]);
+		const newChar = newCharacter;
+
+		if (newChar) {
+			newChar.languages = [
+				...race.languages,
+				...selectedLanguages.map(lang => lang.label)
+			];
+
+			if (race.abilityIncrease) {
+				if (race.abilityIncrease.all) {
+					newChar.bonuses = [
+						...Object.keys(StatConstants).map(stat => ({
+							amount: 1,
+							stat: stat
+						}))
+					];
+				}
+			}
+
+			newChar.bonuses = [...race.bonuses];
+
+			if (race && race.extraBonuses !== undefined) {
+				newChar.bonuses = [
+					...race.bonuses,
+					...selectedBonuses.map(bonus => ({
+						amount: race.extraBonuses?.increase ?? 0,
+						stat: bonus.label
+					}))
+				];
+			}
+			updateCharacter(newChar);
+		}
+	}, [
+		selectedBonuses,
+		selectedLanguages,
+		race,
+		updateCharacter,
+		newCharacter
+	]);
 
 	return (
-		<div
-			className="race flex flex-col shadow-md bg-white mb-5 px-4 pt-3 pb-3 cursor-pointer"
-			key={keyVal}
-			onClick={() => {
-				if (!raceData) {
-					getRaceData();
-				}
-				if (!individual) {
-					setOpen(true);
-				}
-
-				if (individual) {
-					history.push('/app/characters/new/classes');
-				}
-			}}
-		>
-			<div className="top flex justify-between items-center">
-				<h4>{race.text}</h4>
-
-				<div className="has-tooltip cursor-pointer flex rounded-md">
-					{!individual && <ChevronRightIcon className="h-6 w-6 " />}
+		<Animate play {...animProps}>
+			<div className="w-full mb-8 rounded-md bg-gray-200 text-whiteshadow-lg p-4 shadow-xl">
+				<h4
+					className="font-medium text-red-500 uppercase leading-10"
+					style={{ letterSpacing: '1rem' }}
+				>
+					{race.name}
+				</h4>
+				<p className="mt-2 leading-10 font-light sm: text-sm">
+					{race.description}
+				</p>
+				<h5 className="font-semibold mt-5">Bonuses</h5>
+				{race.bonuses.map((b, key) => (
+					<p className="my-2 text-sm" key={key}>
+						- {b.stat} +{b.amount}
+					</p>
+				))}
+				{race.bonuses.length < 1 && (
+					<p className="my-2 text-sm">None</p>
+				)}
+				<div className="mt-5">
+					{race.extraBonuses && (
+						<>
+							<p className="mb-2 font-light">
+								Select {race.extraBonuses?.choose} additional{' '}
+								{race.extraBonuses.choose > 1
+									? 'bonuses'
+									: 'bonuse'}{' '}
+								to increase by {race.extraBonuses.increase}
+							</p>
+							<Select
+								isSearchable={false}
+								onChange={e => {
+									if (e) {
+										setSelectedBonuses(e);
+									}
+								}}
+								value={selectedBonuses}
+								options={extraBonuses}
+								isMulti={true}
+								isOptionDisabled={option =>
+									(!selectedBonuses.includes(option) &&
+										race.extraBonuses &&
+										selectedBonuses.length ===
+											race.extraBonuses.choose) ??
+									false
+								}
+							/>
+						</>
+					)}
 				</div>
+				<h5 className="font-semibold mt-5">Languages</h5>
+				{race.languages.map((l, key) => (
+					<p className="my-2 text-sm" key={key}>
+						- {l}
+					</p>
+				))}
+
+				<div className="mt-5">
+					{race.extraLanguage && (
+						<>
+							<p className="mb-2 font-light">
+								Select {race.extraLanguage?.choose} additional{' '}
+								{race.extraLanguage.choose > 1
+									? 'languages'
+									: 'language'}
+							</p>
+							<Select
+								onChange={e => {
+									if (e) {
+										setSelectedLanguages(e);
+									}
+								}}
+								isSearchable={false}
+								value={selectedLanguages}
+								options={extraLanguages}
+								isMulti={true}
+								isOptionDisabled={option =>
+									(!selectedLanguages.includes(option) &&
+										race.extraLanguage &&
+										selectedLanguages.length ===
+											race.extraLanguage.choose) ??
+									false
+								}
+							/>
+						</>
+					)}
+				</div>
+				<h5 className="font-semibold mt-5">Traits</h5>
+				<p className="mt-2 mb-4 text-sm">{race.traitDescription}</p>
+				{race.traits.map((trait, key) => (
+					<RaceTrait trait={trait} key={key} />
+				))}
 			</div>
-			{open && (
-				<>
-					<div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-						<div className="relative w-11/12 my-6 mx-auto max-w-3xl ">
-							<div
-								className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none"
-								style={{ maxHeight: '80vh' }}
-							>
-								<div className="flex items-start justify-between p-4 border-b border-solid border-blueGray-200 rounded-t">
-									<h3 className="text-xl font-semibold">
-										{race.text}
-									</h3>
-								</div>
-								<div
-									style={{ maxHeight: '80vh' }}
-									className="overflow-y-scroll"
-								>
-									{!loading ? (
-										<div className="relative p-6 flex-auto">
-											<p>
-												{!raceData &&
-													'Content not yet available for this race'}
-											</p>
-											{raceData && (
-												<div className="">
-													<p className="font-bold my-2">
-														Description
-													</p>
-													<p className="my-4 text-gray-500 text-md leading-relaxed">
-														{raceData.desc}
-													</p>
-													<p className="font-bold my-2">
-														Speed
-													</p>
-													<p className="my-4 text-gray-500 text-md leading-relaxed">
-														{race.speed} feet
-													</p>
-
-													{raceData.size && (
-														<>
-															<p className="font-bold my-2">
-																Size
-															</p>
-															<p className="my-4 text-gray-500 text-md leading-relaxed">
-																{raceData.size.replace(
-																	'**_Size._**',
-																	''
-																)}
-															</p>
-														</>
-													)}
-													<p className="font-bold my-2">
-														Ability Score Increase
-													</p>
-													{raceData.asi.map(
-														(
-															asi: any,
-															key: number
-														) => (
-															<p
-																key={key}
-																className="my-4 text-gray-500 text-md leading-relaxed"
-															>
-																-{' '}
-																{asi.attributes}{' '}
-																+{asi.value}
-															</p>
-														)
-													)}
-													<p className="font-bold my-2">
-														Extra Language Selection
-														Choose (
-														{race.extraLanguages})
-													</p>
-
-													{race.extraLanguages > 0 ? (
-														<>
-															{reference.languages.map(
-																(lang, key) => (
-																	<div
-																		className="flex items-center"
-																		key={
-																			key
-																		}
-																	>
-																		<input
-																			disabled={
-																				ogLanguages.includes(
-																					lang.id
-																				) ||
-																				(!race.languages.includes(
-																					lang.id
-																				) &&
-																					languagesSelectedLength ===
-																						race.extraLanguages)
-																			}
-																			onChange={e => {
-																				if (
-																					race.languages.includes(
-																						Number(
-																							e
-																								.target
-																								.value
-																						) as any
-																					)
-																				) {
-																					const index =
-																						race.languages.indexOf(
-																							Number(
-																								e
-																									.target
-																									.value
-																							) as any
-																						);
-																					race.languages.splice(
-																						index,
-																						1
-																					);
-																					setLanguagesSelectedLength(
-																						languagesSelectedLength -
-																							1
-																					);
-																				} else {
-																					if (
-																						!race.languages.includes(
-																							lang.id
-																						)
-																					) {
-																						race.languages.push(
-																							Number(
-																								e
-																									.target
-																									.value
-																							) as any
-																						);
-																						setLanguagesSelectedLength(
-																							languagesSelectedLength +
-																								1
-																						);
-																					}
-																				}
-																			}}
-																			value={
-																				lang.id
-																			}
-																			checked={race.languages.includes(
-																				lang.id
-																			)}
-																			type="checkbox"
-																		/>
-																		<p className="ml-3">
-																			{
-																				lang.text
-																			}
-																		</p>
-																	</div>
-																)
-															)}
-														</>
-													) : (
-														<p className="my-4 text-gray-500 text-md leading-relaxed">
-															No extra languages
-															for this race.
-														</p>
-													)}
-													<p className="font-bold my-2">
-														Languages
-													</p>
-													{race.languages.map(
-														(language, key) => (
-															<p
-																key={key}
-																className="my-4 text-gray-500 text-md leading-relaxed"
-															>
-																-{' '}
-																{
-																	reference
-																		.languages[
-																		language
-																	].text
-																}
-															</p>
-														)
-													)}
-													<p className="font-bold my-2">
-														Extra Features
-													</p>
-													{race.extraFeatures.map(
-														(f, key) => (
-															<p
-																key={key}
-																className="my-4 text-gray-500 text-md leading-relaxed"
-															>
-																- {f.text}
-															</p>
-														)
-													)}
-													{race.extraFeatures.length <
-														1 && (
-														<p className="my-4 text-gray-500 text-md leading-relaxed">
-															No extra features
-															for this race.
-														</p>
-													)}
-												</div>
-											)}
-										</div>
-									) : (
-										<div className="mt-5 mb-5 mx-auto loader ease-linear rounded-full border-4 border-t-4 border-gray-200 w-16 h-16 "></div>
-									)}
-								</div>
-								<div className="flex items-center justify-between p-3 border-t border-solid border-blueGray-200 rounded-b">
-									<button
-										className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-										type="button"
-										onClick={e => {
-											e.stopPropagation();
-
-											setOpen(false);
-										}}
-									>
-										Close
-									</button>
-									<button
-										className="text-red-500 background-transparent  font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-										type="button"
-										onClick={e => {
-											setOpen(false);
-											e.stopPropagation();
-											setSelectedRace(race);
-										}}
-									>
-										{selectedRace?.text === race.text ||
-										individual
-											? 'Continue'
-											: 'Confirm'}
-									</button>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
-				</>
-			)}
-			{individual && (
-				<button className="bg-red-500 w-50 h-auto mb-4 hover:bg-red-500 text-white font-bold py-2 px-4 mt-5 rounded">
-					Continue
-				</button>
-			)}
-		</div>
+		</Animate>
 	);
 };
 
