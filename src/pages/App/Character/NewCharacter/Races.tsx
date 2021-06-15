@@ -64,7 +64,12 @@ const Races = () => {
 					<hr className=" border-gray-300" />
 					<div className="mt-8">
 						{selectedRace && (
-							<button className="bg-red-500 w-full h-auto mb-4 hover:bg-red-500 text-white font-bold py-2 px-4 rounded">
+							<button
+								onClick={() =>
+									history.push('/app/characters/new/classes')
+								}
+								className="bg-red-500 w-full h-auto mb-4 hover:bg-red-500 text-white font-bold py-2 px-4 rounded"
+							>
 								Continue
 							</button>
 						)}
@@ -73,6 +78,7 @@ const Races = () => {
 								label: selectedRace?.name,
 								value: selectedRace
 							}}
+							isSearchable={false}
 							options={raceOptions}
 							onChange={e => {
 								if (e) {

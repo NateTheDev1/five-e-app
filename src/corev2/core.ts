@@ -1,5 +1,6 @@
 import { Barbarian } from './CharacterClasses/Barbarian';
 import { Bard } from './CharacterClasses/Bard';
+import { CharacterClass } from './CharacterClasses/CharacterClass';
 import { Cleric } from './CharacterClasses/Cleric';
 import { Druid } from './CharacterClasses/Druid';
 import { Fighter } from './CharacterClasses/Fighter';
@@ -116,4 +117,48 @@ export const races: { [key: string]: Race } = {
 	human: new Human(),
 	rockgnome: new RockGnome(),
 	tiefling: new Tiefling()
+};
+
+export const classes: { [key: string]: CharacterClass } = {
+	barbarian: new Barbarian(),
+	bard: new Bard(),
+	cleric: new Cleric(),
+	druid: new Druid(),
+	fighter: new Fighter(),
+	monk: new Monk(),
+	paladin: new Paladin()
+};
+
+export const SkillConstants = {
+	acrobatics: 'Acrobatics',
+	animalHandling: 'Animal Handling',
+	arcana: 'Arcana',
+	athletics: 'Athletics',
+	deception: 'Deception',
+	history: 'History',
+	insight: 'Insight',
+	intimidation: 'Intimidation',
+	investigation: 'Investigation',
+	medicine: 'Medicine',
+	nature: 'Nature',
+	perception: 'Perception',
+	performance: 'Performance',
+	persuasion: 'Persuasion',
+	religion: 'Religion',
+	sleightOfHand: 'Sleight of Hand',
+	stealth: 'Stealth',
+	survival: 'Survival'
+};
+
+export const instruments = {
+	bagpipes: 'Bagpipes',
+	drum: 'Drum',
+	dulcimer: 'Dulcimer',
+	flute: 'Flute',
+	horn: 'Horn',
+	lute: 'Lute',
+	lyre: 'Lyre',
+	panFlute: 'Pan Flute',
+	shawm: 'Shawm',
+	Viol: 'Viol'
 };

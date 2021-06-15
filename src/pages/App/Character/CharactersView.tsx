@@ -96,7 +96,6 @@ const CharactersView = () => {
 									>
 										<button
 											onClick={() => {
-												resetCharacter(new Character());
 												history.push(
 													'/app/characters/new'
 												);

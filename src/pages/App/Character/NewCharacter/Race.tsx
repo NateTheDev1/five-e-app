@@ -77,13 +77,15 @@ const Race = ({ race }: { race: RaceType }) => {
 				...selectedLanguages.map(lang => lang.label)
 			];
 
-			if (race.name === 'Human') {
-				newChar.bonuses = [
-					...Object.keys(StatConstants).map(stat => ({
-						amount: 1,
-						stat: stat
-					}))
-				];
+			if (race.abilityIncrease) {
+				if (race.abilityIncrease.all) {
+					newChar.bonuses = [
+						...Object.keys(StatConstants).map(stat => ({
+							amount: 1,
+							stat: stat
+						}))
+					];
+				}
 			}
 
 			if (race && race.extraBonuses !== undefined) {
