@@ -6,6 +6,7 @@ import { Druid } from './CharacterClasses/Druid';
 import { Fighter } from './CharacterClasses/Fighter';
 import { Monk } from './CharacterClasses/Monk';
 import { Paladin } from './CharacterClasses/Paladin';
+import { Ranger } from './CharacterClasses/Ranger';
 import {
 	Dragonborn,
 	Eladrin,
@@ -33,7 +34,8 @@ export class Core {
 			'Druid',
 			'Fighter',
 			'Monk',
-			'Paladin'
+			'Paladin',
+			'Ranger'
 		];
 	}
 
@@ -44,7 +46,8 @@ export class Core {
 		druid: new Druid(),
 		fighter: new Fighter(),
 		monk: new Monk(),
-		paladin: new Paladin()
+		paladin: new Paladin(),
+		ranger: new Ranger()
 	};
 
 	static get availableRaces(): string[] {
@@ -126,7 +129,8 @@ export const classes: { [key: string]: CharacterClass } = {
 	druid: new Druid(),
 	fighter: new Fighter(),
 	monk: new Monk(),
-	paladin: new Paladin()
+	paladin: new Paladin(),
+	ranger: new Ranger()
 };
 
 export const SkillConstants = {

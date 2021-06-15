@@ -56,7 +56,7 @@ const Classes = () => {
 
 	return (
 		<Animate duration={0.2} play={play} {...animProps}>
-			<div className="px-4 pb-5 mt-5 container w-full max-w-prose mx-auto">
+			<div className=" mt-5 container w-full max-w-prose mx-auto">
 				<div className="bg-white p-3 text-black rounded-md">
 					<h3 className="text-lg mb-3 font-light opacity-90">
 						Class selection
