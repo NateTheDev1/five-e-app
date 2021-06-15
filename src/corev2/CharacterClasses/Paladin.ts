@@ -160,7 +160,75 @@ export class Paladin extends CharacterClass {
 				description: `When you reach 19th level, you can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. As normal, you can’t increase an ability score above 20 using this feature. Using the optional feats rule, you can forgo taking this feature to take a feat of your choice instead.`
 			}
 		];
-		this.equipmentChoices = [];
+		this.equipmentChoices = [
+			{
+				title: '(a) a martial weapon and a shield or (b) two martial weapons',
+				choose: {
+					from: [
+						{
+							items: [
+								{
+									groupType: 'Martial Weapons',
+									quantity: 1,
+									name: 'Martial Weapon'
+								},
+								{
+									quantity: 1,
+									name: 'Shield'
+								}
+							]
+						},
+						{
+							groupType: 'Martial Weapons',
+							quantity: 2,
+							name: 'Martial Weapons'
+						}
+					],
+					num: 1
+				}
+			},
+			{
+				title: '(a) five javelins or (b) any simple melee weapon',
+				choose: {
+					from: [
+						{
+							name: 'Javelin',
+							quantity: 5
+						},
+						{
+							name: 'Any simple weapon',
+							quantity: 1,
+							groupType: 'Simple Weapons'
+						}
+					],
+					num: 1
+				}
+			},
+			{
+				title: '(a) a priest’s pack or (b) an explorer’s pack',
+				choose: {
+					from: [
+						{
+							name: "Priest's Pack",
+							quantity: 1
+						},
+						{
+							name: "Explorer's Pack",
+							quantity: 1
+						}
+					],
+					num: 1
+				}
+			},
+			{
+				title: 'Chain Mail',
+				quantity: 1
+			},
+			{
+				title: 'Holy Symbol',
+				quantity: 1
+			}
+		];
 		this.proficiencies = [
 			{ title: 'All Armor' },
 			{ title: 'Shields' },
