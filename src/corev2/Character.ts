@@ -3,23 +3,36 @@ import { Race, StatBonus } from './Race';
 
 export class Character {
 	characterName: string = '';
-	race?: Race;
-	class?: CharacterClass;
-	eyes: string = 'Blue';
-	skin: string = 'Brown';
-	hair: string = 'Black';
 	avatarImage: string = '';
 	factionImage: string = '';
-	backstory: string = '';
-	height: string = '';
-	weight: string = '';
-	age: string = '21';
+
+	race?: Race;
+	class?: CharacterClass;
+
 	languages: string[] = [];
 	bonuses: StatBonus[] = [];
 	level: number = 1;
 	xp: number = 0;
 	proficiencies: string[] = [];
 	inventory: { name: string; quantity: number }[] = [];
+
+	eyes: string = 'Blue';
+	skin: string = 'Brown';
+	hair: string = 'Black';
+
+	backstory: string = '';
+	height: string = '';
+	weight: string = '';
+	age: string = '21';
+	alignment: string = '';
+	gender: string = '';
+	personalityTraits: string = '';
+	ideals: string = '';
+	bonds: string = '';
+	flaws: string = '';
+	faith: string = '';
+	lifestyle: string = '';
+	backgroundFeatures: string[] = [];
 
 	levelUp() {
 		// TODO: update level and xp
