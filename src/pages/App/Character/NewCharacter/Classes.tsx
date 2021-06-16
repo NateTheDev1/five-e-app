@@ -70,6 +70,7 @@ const Classes = () => {
 									) {
 										const newChar = newCharacter;
 										newChar.inventory = [
+											...newCharacter.inventory,
 											...selectedClass.equipmentChoices
 												.filter(eq => !eq.choose)
 												.map((item: any) => ({

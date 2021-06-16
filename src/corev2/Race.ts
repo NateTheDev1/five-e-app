@@ -19,15 +19,23 @@ export enum StatConstants {
 }
 
 export enum LanguageConstants {
-	Dwarvish = 'Dwarvish',
 	Common = 'Common',
+	Dwarvish = 'Dwarvish',
 	Elvish = 'Elvish',
 	Giant = 'Giant',
 	Gnomish = 'Gnomish',
 	Goblin = 'Goblin',
 	Halfling = 'Halfing',
 	Orc = 'Orc',
-	Draconic = 'Draconic'
+	Draconic = 'Draconic',
+	Abyssal = 'Abyssal',
+	Celestial = 'Celestial',
+	DeepSpeech = 'Deep Speech',
+	Infernal = 'Infernal',
+	Primordial = 'Primordial',
+	Sylvan = 'Sylvan',
+	Undercommon = 'Undercommon',
+	Druidic = 'Druidic'
 }
 
 export interface StatBonus {

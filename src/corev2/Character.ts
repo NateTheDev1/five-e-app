@@ -1,3 +1,4 @@
+import { CharacterBackground } from './Backgrounds/CharacterBackgrounds';
 import { CharacterClass } from './CharacterClasses/CharacterClass';
 import { Race, StatBonus } from './Race';
 
@@ -33,6 +34,7 @@ export class Character {
 	faith: string = '';
 	lifestyle: string = '';
 	backgroundFeatures: string[] = [];
+	background?: CharacterBackground;
 
 	levelUp() {
 		// TODO: update level and xp

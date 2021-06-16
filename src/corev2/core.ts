@@ -1,3 +1,11 @@
+import { Acolyte } from './Backgrounds/Acolyte';
+import { CharacterBackground } from './Backgrounds/CharacterBackgrounds';
+import { Criminal } from './Backgrounds/Criminal';
+import { FolkHero } from './Backgrounds/FolkHero';
+import { HauntedOne } from './Backgrounds/HauntedOne';
+import { Noble } from './Backgrounds/Noble';
+import { Sage } from './Backgrounds/Sage';
+import { Soldier } from './Backgrounds/Soldier';
 import { Barbarian } from './CharacterClasses/Barbarian';
 import { Bard } from './CharacterClasses/Bard';
 import { CharacterClass } from './CharacterClasses/CharacterClass';
@@ -25,7 +33,6 @@ import {
 	Human,
 	RockGnome,
 	Tiefling,
-	StatConstants,
 	Race
 } from './Race';
 
@@ -47,21 +54,6 @@ export class Core {
 		];
 	}
 
-	static classes = {
-		barbarian: new Barbarian(),
-		bard: new Bard(),
-		cleric: new Cleric(),
-		druid: new Druid(),
-		fighter: new Fighter(),
-		monk: new Monk(),
-		paladin: new Paladin(),
-		ranger: new Ranger(),
-		rogue: new Rogue(),
-		sorcerer: new Sorcerer(),
-		warlock: new Warlock(),
-		wizard: new Wizard()
-	};
-
 	static get availableRaces(): string[] {
 		return [
 			'Dragonborn',
@@ -80,40 +72,39 @@ export class Core {
 		];
 	}
 
-	static get stats(): string[] {
+	static get availableBackgroundes(): string[] {
 		return [
-			StatConstants.Constitution,
-			StatConstants.Strength,
-			StatConstants.Charisma,
-			StatConstants.Dexterity,
-			StatConstants.Intelligence,
-			StatConstants.Wisdom
+			'Acolyte',
+			'Criminal',
+			'Folk Hero',
+			'Haunted One',
+			'Noble',
+			'Sage',
+			'Soldier'
 		];
 	}
 
-	getRaces() {
-		return races;
+	public static d6() {
+		// D6 roll
+		return Math.floor(Math.random() * 6) + 1;
 	}
 
-	getRace(name: string): Race {
-		const races = Object.create({
-			dragonborn: new Dragonborn(),
-			hilldwarf: new HillDwarf(),
-			mountaindwarf: new MountainDwarf(),
-			eladrin: new Eladrin(),
-			highelf: new HighElf(),
-			woodelf: new WoodElf(),
-			halfelf: new HalfElf(),
-			halforc: new HalfOrc(),
-			lightfoothalfling: new LightfootHalfling(),
-			stouthalfling: new StoutHalfling(),
-			human: new Human(),
-			rockgnome: new RockGnome(),
-			tiefling: new Tiefling()
-		});
-
-		return races[name];
+	public static dX(x: number) {
+		// DX roll
+		return Math.floor(Math.random() * x) + 1;
 	}
+
+	public static statRoll(): number {
+		// Standard stat roll: 4d6, subtract lowest, get total of remaining
+		var diceArray = [...new Array(4)]
+			.map(() => this.d6())
+			.sort((a, b) => a - b)
+			.reverse();
+		diceArray.pop();
+		return diceArray.reduce((a, b) => a + b, 0);
+	}
+
+	public standardStatArray: number[] = [15, 14, 13, 12, 10, 8];
 }
 
 export const core = new Core();
@@ -182,3 +173,25 @@ export const instruments = {
 	shawm: 'Shawm',
 	Viol: 'Viol'
 };
+
+export const backgrounds: { [key: string]: CharacterBackground } = {
+	acolyte: new Acolyte(),
+	criminal: new Criminal(),
+	folkhero: new FolkHero(),
+	hauntedone: new HauntedOne(),
+	noble: new Noble(),
+	sage: new Sage(),
+	soldier: new Soldier()
+};
+
+export const alignments = [
+	'Lawful Good',
+	'Neutral Good',
+	'Chaotic Good',
+	'Lawful Neutral',
+	'True Neutral',
+	'Chaotic Neutral',
+	'Lawful Evil',
+	'Neutral Evil',
+	'Chaotic Evil'
+];
