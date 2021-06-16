@@ -6,6 +6,11 @@ import { Druid } from './CharacterClasses/Druid';
 import { Fighter } from './CharacterClasses/Fighter';
 import { Monk } from './CharacterClasses/Monk';
 import { Paladin } from './CharacterClasses/Paladin';
+import { Ranger } from './CharacterClasses/Ranger';
+import { Rogue } from './CharacterClasses/Rogue';
+import { Sorcerer } from './CharacterClasses/Sorcerer';
+import { Warlock } from './CharacterClasses/Warlock';
+import { Wizard } from './CharacterClasses/Wizard';
 import {
 	Dragonborn,
 	Eladrin,
@@ -33,7 +38,12 @@ export class Core {
 			'Druid',
 			'Fighter',
 			'Monk',
-			'Paladin'
+			'Paladin',
+			'Ranger',
+			'Rogue',
+			'Sorcerer',
+			'Warlock',
+			'Wizard'
 		];
 	}
 
@@ -44,7 +54,12 @@ export class Core {
 		druid: new Druid(),
 		fighter: new Fighter(),
 		monk: new Monk(),
-		paladin: new Paladin()
+		paladin: new Paladin(),
+		ranger: new Ranger(),
+		rogue: new Rogue(),
+		sorcerer: new Sorcerer(),
+		warlock: new Warlock(),
+		wizard: new Wizard()
 	};
 
 	static get availableRaces(): string[] {
@@ -126,7 +141,12 @@ export const classes: { [key: string]: CharacterClass } = {
 	druid: new Druid(),
 	fighter: new Fighter(),
 	monk: new Monk(),
-	paladin: new Paladin()
+	paladin: new Paladin(),
+	ranger: new Ranger(),
+	rogue: new Rogue(),
+	sorcerer: new Sorcerer(),
+	warlock: new Warlock(),
+	wizard: new Wizard()
 };
 
 export const SkillConstants = {

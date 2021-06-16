@@ -1,4 +1,8 @@
+import { useHistory } from 'react-router-dom';
+
 const DashboardHome = () => {
+	const history = useHistory();
+
 	return (
 		<div className="home px-5 mt-12 ">
 			<h2 className="font-bold text-center text-lg">
@@ -8,8 +12,11 @@ const DashboardHome = () => {
 				Make a selection or use the navigation menu in the top right to
 				use the app.
 			</p>
-			<div className="container w-11/12 mx-auto  mt-8 text-black flex flex-col items-center ">
-				<div className="selection shadow-lg bg-white rounded-md mt-12 h-20 w-11/12  pl-5 pr-5 flex justify-between items-center border">
+			<div className="container w-11/12 mx-auto  mt-8 text-black flex flex-col items-center">
+				<div
+					className="selection shadow-lg bg-white rounded-md mt-12 h-20 w-11/12  pl-5 pr-5 flex justify-between items-center border cursor-pointer"
+					onClick={() => history.push('/app/characters')}
+				>
 					<p className=" text-gray-500 font-bold">
 						Create a character
 					</p>
@@ -28,9 +35,12 @@ const DashboardHome = () => {
 						/>
 					</svg>
 				</div>
-				<div className="selection shadow-lg bg-white rounded-md mt-12 h-20 w-11/12  pl-5 pr-5 flex justify-between items-center border">
+				<div
+					className="selection shadow-lg bg-white rounded-md mt-12 h-20 w-11/12  pl-5 pr-5 flex justify-between items-center border cursor-pointer"
+					onClick={() => history.push('/app/soundboard')}
+				>
 					<p className=" text-gray-500 font-bold">
-						Create a soundtrack
+						Create a soundboard
 					</p>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -47,7 +57,10 @@ const DashboardHome = () => {
 						/>
 					</svg>
 				</div>
-				<div className="selection shadow-lg bg-white rounded-md mt-12 h-20 w-11/12  pl-5 pr-5 flex justify-between items-center border">
+				<div
+					className="selection shadow-lg bg-white rounded-md mt-12 h-20 w-11/12  pl-5 pr-5 flex justify-between items-center border cursor-pointer"
+					onClick={() => history.push('/app/compendium')}
+				>
 					<p className=" text-gray-500 font-bold">
 						Read the compendium
 					</p>
@@ -71,7 +84,7 @@ const DashboardHome = () => {
 				Other Useful Selections
 			</h3>
 			<div className="container w-11/12 mx-auto text-black flex flex-col items-center ">
-				<div className="selection shadow-lg bg-white rounded-md mt-12 h-20 w-11/12  pl-5 pr-5 flex justify-between items-center border">
+				<div className="selection shadow-lg bg-white rounded-md mt-12 h-20 w-11/12  pl-5 pr-5 flex justify-between items-center border cursor-pointer">
 					<p className=" text-gray-500 font-bold">Party Manager</p>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -88,7 +101,7 @@ const DashboardHome = () => {
 						/>
 					</svg>
 				</div>
-				<div className="selection shadow-lg bg-white rounded-md mt-12 h-20 w-11/12  mb-5 pl-5 pr-5 flex justify-between items-center border">
+				<div className="selection shadow-lg bg-white rounded-md mt-12 h-20 w-11/12  mb-5 pl-5 pr-5 flex justify-between items-center border cursor-pointer">
 					<p className=" text-gray-500 font-bold">Homebrewing</p>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"

@@ -387,7 +387,7 @@ export class HalfOrc extends Race {
 	constructor() {
 		super();
 
-		this.name = 'Half-Orce';
+		this.name = 'Half-Orc';
 		this.description =
 			'Half-orcs’ grayish pigmentation, sloping foreheads, jutting jaws, prominent teeth, and towering builds make their orcish heritage plain for all to see.';
 		this.traits = [

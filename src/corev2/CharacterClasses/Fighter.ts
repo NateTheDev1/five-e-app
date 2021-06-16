@@ -121,7 +121,6 @@ export class Fighter extends CharacterClass {
 				}
 			}
 		];
-		// TODO: Finish traits
 		this.traits = [
 			{
 				atLevel: 1,
