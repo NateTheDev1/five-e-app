@@ -1,12 +1,3 @@
-// import { useEffect, useState } from 'react';
-// import { Redirect, useHistory } from 'react-router';
-// import phb from '../../../../core/phb';
-// import { Class as ClassType } from '../../../../core/types';
-// import { CharacterActions } from '../../../../redux/Character/actions';
-// import { CharacterSelectors } from '../../../../redux/Character/selectors';
-// import { animProps } from '../../../Onboarding/Login';
-// import ClassView from './ClassView';
-
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { Animate } from 'react-simple-animate';
@@ -48,6 +39,7 @@ const Classes = () => {
 				updateCharacter(newChar);
 			}
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [play, setPlay]);
 
 	if (!newCharacter || newCharacter.characterName.length < 1) {
@@ -71,11 +63,27 @@ const Classes = () => {
 					<div className="mt-8">
 						{selectedClass && (
 							<button
-								onClick={() =>
+								onClick={() => {
+									if (
+										selectedClass &&
+										selectedClass.equipmentChoices
+									) {
+										const newChar = newCharacter;
+										newChar.inventory = [
+											...selectedClass.equipmentChoices
+												.filter(eq => !eq.choose)
+												.map((item: any) => ({
+													name: item.title,
+													quantity: item.quantity
+												}))
+										];
+										updateCharacter(newChar);
+									}
+
 									history.push(
 										'/app/characters/new/background'
-									)
-								}
+									);
+								}}
 								className="bg-red-500 w-full h-auto mb-4 hover:bg-red-500 text-white font-bold py-2 px-4 rounded"
 							>
 								Continue

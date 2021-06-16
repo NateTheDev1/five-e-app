@@ -59,27 +59,41 @@ export const ClassView = ({ classRef }: { classRef: CharacterClass }) => {
 				...selectedSkills.map(s => s.value)
 			];
 
-			for (const [key, val] of Object.entries(selectedProfs)) {
+			for (const [, val] of Object.entries(selectedProfs)) {
 				//@ts-ignore
-				if (val['value']['items']) {
+				if (val['value']['items'] && classRef.equipmentChoices) {
 					newChar.inventory = [
 						...newChar.inventory,
 						//@ts-ignore
-						...val['value']['items'].map(item => ({
-							name: item.name,
-							quantity: item.quantity
-						}))
+						...val['value']['items']
+							.filter(
+								(item: any) =>
+									!newChar.inventory.find(
+										i => i.name === item.name
+									)
+							)
+							.map((item: any) => ({
+								name: item.name,
+								quantity: item.quantity
+							}))
 					];
 				} else {
-					newChar.inventory = [
-						...newChar.inventory,
-						{
+					if (
+						!newChar.inventory.find(
 							//@ts-ignore
-							name: val['value'].name,
-							//@ts-ignore
-							quantity: val['value'].quantity
-						}
-					];
+							i => i.name === val['value'].name
+						)
+					) {
+						newChar.inventory = [
+							...newChar.inventory,
+							{
+								//@ts-ignore
+								name: val['value'].name,
+								//@ts-ignore
+								quantity: val['value'].quantity
+							}
+						];
+					}
 				}
 			}
 
@@ -92,6 +106,20 @@ export const ClassView = ({ classRef }: { classRef: CharacterClass }) => {
 		updateCharacter,
 		newCharacter
 	]);
+
+	useEffect(() => {
+		setSelectedProfs([]);
+		setSelectedSkills([]);
+		setSelectedInstruments([]);
+
+		const newChar = newCharacter;
+		if (newChar) {
+			newChar.proficiencies = [];
+			newChar.inventory = [];
+		}
+		updateCharacter(newChar);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [classRef]);
 
 	return (
 		<Animate play {...animProps}>
@@ -122,14 +150,6 @@ export const ClassView = ({ classRef }: { classRef: CharacterClass }) => {
 					{classRef.hitPoints.higherLevels.base} average) +{' '}
 					{classRef.hitPoints.higherLevels.modifierKey} modifier
 				</p>
-				<h5 className="font-semibold mt-5">
-					Hit Points At Higher Levels
-				</h5>
-				<p className="my-2 text-sm">
-					{classRef.hitDie.amount}d{classRef.hitDie.sides} (
-					{classRef.hitPoints.higherLevels.base} average) +{' '}
-					{classRef.hitPoints.higherLevels.modifierKey} modifier
-				</p>
 				<h5 className="font-semibold mt-5">Primary Abilities</h5>
 				<p className="my-2 text-sm">{classRef.primaryAbility}</p>
 				<h5 className="font-semibold mt-5">Saving Throws</h5>
@@ -151,7 +171,7 @@ export const ClassView = ({ classRef }: { classRef: CharacterClass }) => {
 											setSelectedSkills(e);
 										}
 									}}
-									value={selectedSkills}
+									value={selectedSkills || ''}
 									options={
 										!p.choose?.all
 											? p.choose?.from.map(el => ({
@@ -184,7 +204,8 @@ export const ClassView = ({ classRef }: { classRef: CharacterClass }) => {
 											setSelectedInstruments(e);
 										}
 									}}
-									value={selectedInstruments}
+									isDisabled={selectedInstruments.length > 0}
+									value={selectedInstruments || ''}
 									options={
 										!p?.choose?.all
 											? p?.choose?.from.map(el => ({
@@ -223,6 +244,8 @@ export const ClassView = ({ classRef }: { classRef: CharacterClass }) => {
 				<p
 					className="text-sm underline mt-3 cursor-pointer"
 					onClick={() => {
+						setSelectedInstruments([]);
+						setSelectedProfs([]);
 						const newChar = newCharacter;
 						if (newChar) {
 							newChar.inventory = [];
@@ -230,13 +253,14 @@ export const ClassView = ({ classRef }: { classRef: CharacterClass }) => {
 						updateCharacter(newChar);
 					}}
 				>
-					Reset
+					Click to reselect
 				</p>
 
 				{equipmentOptions?.map((eq, key) => (
 					<div key={key} className="mt-5">
 						<p className="mb-2 font-light">{eq?.title}</p>
 						<Select
+							isDisabled={selectedProfs[key] ? true : false}
 							isSearchable={false}
 							options={eq?.choose?.from.map((el, key) => ({
 								label: key === 0 ? 'a' : key === 1 ? 'b' : 'c',
@@ -251,7 +275,7 @@ export const ClassView = ({ classRef }: { classRef: CharacterClass }) => {
 									});
 								}
 							}}
-							value={selectedProfs[key]}
+							value={selectedProfs[key] || ''}
 						/>
 					</div>
 				))}
@@ -267,9 +291,11 @@ export const ClassView = ({ classRef }: { classRef: CharacterClass }) => {
 
 				<h5 className="font-semibold mt-5">Traits</h5>
 
-				{classRef.traits.sort().map((t, key) => (
-					<ClassTrait trait={t} key={key} />
-				))}
+				{classRef.traits
+					.sort((t, next) => t.atLevel - next.atLevel)
+					.map((t, key) => (
+						<ClassTrait trait={t} key={key} />
+					))}
 			</div>
 		</Animate>
 	);

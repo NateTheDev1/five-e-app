@@ -5,7 +5,7 @@ export class Ranger extends CharacterClass {
 	constructor() {
 		super();
 
-		this.name = 'name';
+		this.name = 'Ranger';
 		this.description =
 			'A warrior who combats threats on the edges of civilization';
 		this.primaryAbility = 'Dexterity and Wisdom';
@@ -35,8 +35,9 @@ export class Ranger extends CharacterClass {
 			{ title: 'Martial Weapons' },
 			{
 				title: 'Choose three from Animal Handling, Athletics, Insight, Investigation, Nature, Perception, Stealth, and Survival',
+				skills: true,
 				choose: {
-					num: 2,
+					num: 3,
 					from: [
 						'Animal handling',
 						'Athletics',
@@ -96,7 +97,6 @@ export class Ranger extends CharacterClass {
 			}
 		];
 
-		// TODO: Finish traits for ranger
 		this.traits = [
 			{
 				atLevel: 1,

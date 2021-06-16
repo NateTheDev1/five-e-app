@@ -1,0 +1,612 @@
+{
+    "extension": "linecounter",
+    "version": "0.2.7",
+    "workspace": "/Users/nathaniel/Documents/5ESidekick/five-e-app",
+    "linecount": [
+        {
+            "version": "0.2.7",
+            "counttime": "2021-06-15 12:47:57",
+            "filesum": 87,
+            "codesum": 61199,
+            "commentsum": 549,
+            "blanksum": 764,
+            "statistics": {
+                ".ts": {
+                    "code": 10266,
+                    "comment": 185,
+                    "blank": 444
+                },
+                ".tsx": {
+                    "code": 2042,
+                    "comment": 227,
+                    "blank": 214
+                },
+                ".scss": {
+                    "code": 149,
+                    "comment": 131,
+                    "blank": 75
+                },
+                ".svg": {
+                    "code": 22,
+                    "comment": 0,
+                    "blank": 0
+                },
+                ".graphql": {
+                    "code": 20,
+                    "comment": 0,
+                    "blank": 0
+                },
+                ".css": {
+                    "code": 35,
+                    "comment": 0,
+                    "blank": 5
+                },
+                "": {
+                    "code": 30,
+                    "comment": 1,
+                    "blank": 5
+                },
+                ".json": {
+                    "code": 48548,
+                    "comment": 0,
+                    "blank": 13
+                },
+                ".yml": {
+                    "code": 16,
+                    "comment": 0,
+                    "blank": 0
+                },
+                ".template": {
+                    "code": 1,
+                    "comment": 0,
+                    "blank": 0
+                },
+                ".md": {
+                    "code": 3,
+                    "comment": 2,
+                    "blank": 2
+                },
+                ".js": {
+                    "code": 24,
+                    "comment": 1,
+                    "blank": 0
+                },
+                ".txt": {
+                    "code": 3,
+                    "comment": 1,
+                    "blank": 0
+                },
+                ".html": {
+                    "code": 40,
+                    "comment": 1,
+                    "blank": 6
+                }
+            },
+            "filelist": [
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": ".env"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": ".env.template"
+                },
+                {
+                    "blank": 5,
+                    "code": 19,
+                    "comment": 1,
+                    "filename": ".gitignore"
+                },
+                {
+                    "blank": 0,
+                    "code": 10,
+                    "comment": 0,
+                    "filename": ".prettierrc"
+                },
+                {
+                    "blank": 0,
+                    "code": 16,
+                    "comment": 0,
+                    "filename": "codegen.yml"
+                },
+                {
+                    "blank": 0,
+                    "code": 7,
+                    "comment": 0,
+                    "filename": "craco.config.js"
+                },
+                {
+                    "blank": 8,
+                    "code": 48422,
+                    "comment": 0,
+                    "filename": "package-lock.json"
+                },
+                {
+                    "blank": 3,
+                    "code": 87,
+                    "comment": 0,
+                    "filename": "package.json"
+                },
+                {
+                    "filename": "public/favicon.png",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "blank": 6,
+                    "code": 40,
+                    "comment": 1,
+                    "filename": "public/index.html"
+                },
+                {
+                    "blank": 0,
+                    "code": 15,
+                    "comment": 0,
+                    "filename": "public/manifest.json"
+                },
+                {
+                    "blank": 0,
+                    "code": 3,
+                    "comment": 1,
+                    "filename": "public/robots.txt"
+                },
+                {
+                    "blank": 2,
+                    "code": 3,
+                    "comment": 2,
+                    "filename": "README.md"
+                },
+                {
+                    "blank": 3,
+                    "code": 20,
+                    "comment": 3,
+                    "filename": "src/App.tsx"
+                },
+                {
+                    "blank": 0,
+                    "code": 11,
+                    "comment": 0,
+                    "filename": "src/assets/LogoDark.svg"
+                },
+                {
+                    "blank": 0,
+                    "code": 11,
+                    "comment": 0,
+                    "filename": "src/assets/LogoLight.svg"
+                },
+                {
+                    "blank": 8,
+                    "code": 57,
+                    "comment": 1,
+                    "filename": "src/client.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 19,
+                    "comment": 1,
+                    "filename": "src/components/BaseSchema.tsx"
+                },
+                {
+                    "blank": 1,
+                    "code": 8,
+                    "comment": 0,
+                    "filename": "src/components/Footer.tsx"
+                },
+                {
+                    "blank": 3,
+                    "code": 8,
+                    "comment": 0,
+                    "filename": "src/components/GoogleAd.tsx"
+                },
+                {
+                    "blank": 4,
+                    "code": 16,
+                    "comment": 0,
+                    "filename": "src/components/Loading.tsx"
+                },
+                {
+                    "blank": 2,
+                    "code": 15,
+                    "comment": 0,
+                    "filename": "src/components/Logo.tsx"
+                },
+                {
+                    "blank": 16,
+                    "code": 195,
+                    "comment": 1,
+                    "filename": "src/components/Navbar.tsx"
+                },
+                {
+                    "blank": 2,
+                    "code": 5,
+                    "comment": 0,
+                    "filename": "src/components/NotFound.tsx"
+                },
+                {
+                    "blank": 4,
+                    "code": 20,
+                    "comment": 0,
+                    "filename": "src/components/PrivateRoute.tsx"
+                },
+                {
+                    "blank": 4,
+                    "code": 20,
+                    "comment": 0,
+                    "filename": "src/components/PublicRoute.tsx"
+                },
+                {
+                    "blank": 14,
+                    "code": 115,
+                    "comment": 6,
+                    "filename": "src/core/dndcharacter.ts"
+                },
+                {
+                    "blank": 10,
+                    "code": 5131,
+                    "comment": 139,
+                    "filename": "src/core/phb.ts"
+                },
+                {
+                    "blank": 3,
+                    "code": 1534,
+                    "comment": 24,
+                    "filename": "src/core/reference.ts"
+                },
+                {
+                    "blank": 34,
+                    "code": 202,
+                    "comment": 0,
+                    "filename": "src/core/types.ts"
+                },
+                {
+                    "blank": 7,
+                    "code": 33,
+                    "comment": 4,
+                    "filename": "src/core/util.ts"
+                },
+                {
+                    "blank": 4,
+                    "code": 30,
+                    "comment": 4,
+                    "filename": "src/corev2/Character.ts"
+                },
+                {
+                    "blank": 21,
+                    "code": 186,
+                    "comment": 0,
+                    "filename": "src/corev2/CharacterClasses/Barbarian.ts"
+                },
+                {
+                    "blank": 39,
+                    "code": 223,
+                    "comment": 0,
+                    "filename": "src/corev2/CharacterClasses/Bard.ts"
+                },
+                {
+                    "blank": 0,
+                    "code": 49,
+                    "comment": 0,
+                    "filename": "src/corev2/CharacterClasses/CharacterClass.ts"
+                },
+                {
+                    "blank": 27,
+                    "code": 185,
+                    "comment": 0,
+                    "filename": "src/corev2/CharacterClasses/Cleric.ts"
+                },
+                {
+                    "blank": 16,
+                    "code": 208,
+                    "comment": 0,
+                    "filename": "src/corev2/CharacterClasses/Druid.ts"
+                },
+                {
+                    "blank": 13,
+                    "code": 208,
+                    "comment": 0,
+                    "filename": "src/corev2/CharacterClasses/Fighter.ts"
+                },
+                {
+                    "blank": 20,
+                    "code": 248,
+                    "comment": 0,
+                    "filename": "src/corev2/CharacterClasses/Monk.ts"
+                },
+                {
+                    "blank": 24,
+                    "code": 230,
+                    "comment": 0,
+                    "filename": "src/corev2/CharacterClasses/Paladin.ts"
+                },
+                {
+                    "blank": 30,
+                    "code": 214,
+                    "comment": 0,
+                    "filename": "src/corev2/CharacterClasses/Ranger.ts"
+                },
+                {
+                    "blank": 15,
+                    "code": 198,
+                    "comment": 0,
+                    "filename": "src/corev2/CharacterClasses/Rogue.ts"
+                },
+                {
+                    "blank": 23,
+                    "code": 188,
+                    "comment": 0,
+                    "filename": "src/corev2/CharacterClasses/Sorcerer.ts"
+                },
+                {
+                    "blank": 14,
+                    "code": 162,
+                    "comment": 0,
+                    "filename": "src/corev2/core.ts"
+                },
+                {
+                    "blank": 15,
+                    "code": 33,
+                    "comment": 0,
+                    "filename": "src/corev2/DB.ts"
+                },
+                {
+                    "blank": 54,
+                    "code": 533,
+                    "comment": 0,
+                    "filename": "src/corev2/Race.ts"
+                },
+                {
+                    "blank": 7,
+                    "code": 21,
+                    "comment": 0,
+                    "filename": "src/ErrorBoundary.tsx"
+                },
+                {
+                    "blank": 28,
+                    "code": 115,
+                    "comment": 52,
+                    "filename": "src/graphql.tsx"
+                },
+                {
+                    "blank": 0,
+                    "code": 6,
+                    "comment": 0,
+                    "filename": "src/graphql/mutations/login.graphql"
+                },
+                {
+                    "blank": 0,
+                    "code": 6,
+                    "comment": 0,
+                    "filename": "src/graphql/mutations/signup.graphql"
+                },
+                {
+                    "blank": 0,
+                    "code": 8,
+                    "comment": 0,
+                    "filename": "src/graphql/queries/getUser.graphql"
+                },
+                {
+                    "blank": 3,
+                    "code": 27,
+                    "comment": 0,
+                    "filename": "src/index.tsx"
+                },
+                {
+                    "blank": 75,
+                    "code": 149,
+                    "comment": 131,
+                    "filename": "src/normalize.scss"
+                },
+                {
+                    "blank": 8,
+                    "code": 61,
+                    "comment": 0,
+                    "filename": "src/pages/App/Character/CharactersView.tsx"
+                },
+                {
+                    "blank": 12,
+                    "code": 97,
+                    "comment": 8,
+                    "filename": "src/pages/App/Character/NewCharacter/Classes.tsx"
+                },
+                {
+                    "blank": 2,
+                    "code": 33,
+                    "comment": 0,
+                    "filename": "src/pages/App/Character/NewCharacter/ClassTrait.tsx"
+                },
+                {
+                    "blank": 19,
+                    "code": 276,
+                    "comment": 6,
+                    "filename": "src/pages/App/Character/NewCharacter/ClassView.tsx"
+                },
+                {
+                    "blank": 8,
+                    "code": 15,
+                    "comment": 24,
+                    "filename": "src/pages/App/Character/NewCharacter/Finish.tsx"
+                },
+                {
+                    "blank": 18,
+                    "code": 240,
+                    "comment": 0,
+                    "filename": "src/pages/App/Character/NewCharacter/GeneralInfo.tsx"
+                },
+                {
+                    "blank": 3,
+                    "code": 29,
+                    "comment": 0,
+                    "filename": "src/pages/App/Character/NewCharacter/index.tsx"
+                },
+                {
+                    "blank": 13,
+                    "code": 198,
+                    "comment": 0,
+                    "filename": "src/pages/App/Character/NewCharacter/Race.tsx"
+                },
+                {
+                    "blank": 9,
+                    "code": 98,
+                    "comment": 0,
+                    "filename": "src/pages/App/Character/NewCharacter/Races.tsx"
+                },
+                {
+                    "blank": 2,
+                    "code": 27,
+                    "comment": 0,
+                    "filename": "src/pages/App/Character/NewCharacter/RaceTraits.tsx"
+                },
+                {
+                    "blank": 12,
+                    "code": 12,
+                    "comment": 131,
+                    "filename": "src/pages/App/Character/NewCharacter/Stats.tsx"
+                },
+                {
+                    "blank": 2,
+                    "code": 27,
+                    "comment": 0,
+                    "filename": "src/pages/App/Dashboard.tsx"
+                },
+                {
+                    "blank": 3,
+                    "code": 123,
+                    "comment": 0,
+                    "filename": "src/pages/App/DashboardHome.tsx"
+                },
+                {
+                    "blank": 3,
+                    "code": 23,
+                    "comment": 0,
+                    "filename": "src/pages/Home.tsx"
+                },
+                {
+                    "blank": 8,
+                    "code": 115,
+                    "comment": 0,
+                    "filename": "src/pages/Onboarding/Login.tsx"
+                },
+                {
+                    "blank": 9,
+                    "code": 153,
+                    "comment": 0,
+                    "filename": "src/pages/Onboarding/Signup.tsx"
+                },
+                {
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 1,
+                    "filename": "src/react-app-env.d.ts"
+                },
+                {
+                    "blank": 3,
+                    "code": 19,
+                    "comment": 0,
+                    "filename": "src/redux/Character/actions.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 27,
+                    "comment": 0,
+                    "filename": "src/redux/Character/characterReducer.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 11,
+                    "comment": 0,
+                    "filename": "src/redux/Character/selectors.ts"
+                },
+                {
+                    "blank": 8,
+                    "code": 19,
+                    "comment": 3,
+                    "filename": "src/redux/Character/types.ts"
+                },
+                {
+                    "blank": 1,
+                    "code": 7,
+                    "comment": 0,
+                    "filename": "src/redux/reducer.index.ts"
+                },
+                {
+                    "blank": 1,
+                    "code": 10,
+                    "comment": 0,
+                    "filename": "src/redux/store.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 7,
+                    "comment": 0,
+                    "filename": "src/redux/types/action-types.ts"
+                },
+                {
+                    "blank": 1,
+                    "code": 6,
+                    "comment": 0,
+                    "filename": "src/redux/types/selector-types.ts"
+                },
+                {
+                    "blank": 1,
+                    "code": 6,
+                    "comment": 0,
+                    "filename": "src/redux/types/state-types.ts"
+                },
+                {
+                    "blank": 17,
+                    "code": 70,
+                    "comment": 0,
+                    "filename": "src/redux/User/actions.ts"
+                },
+                {
+                    "blank": 3,
+                    "code": 23,
+                    "comment": 0,
+                    "filename": "src/redux/User/selectors.ts"
+                },
+                {
+                    "blank": 10,
+                    "code": 42,
+                    "comment": 3,
+                    "filename": "src/redux/User/types.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 52,
+                    "comment": 0,
+                    "filename": "src/redux/User/userReducer.ts"
+                },
+                {
+                    "blank": 4,
+                    "code": 26,
+                    "comment": 1,
+                    "filename": "src/Router.tsx"
+                },
+                {
+                    "blank": 5,
+                    "code": 35,
+                    "comment": 0,
+                    "filename": "src/tailwind.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 17,
+                    "comment": 1,
+                    "filename": "tailwind.config.js"
+                },
+                {
+                    "blank": 2,
+                    "code": 24,
+                    "comment": 0,
+                    "filename": "tsconfig.json"
+                }
+            ]
+        }
+    ]
+}
