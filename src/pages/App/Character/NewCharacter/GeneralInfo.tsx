@@ -63,6 +63,8 @@ const GeneralInfo = () => {
 
 		updateNewCharacter(newCharacter);
 
+		window.scrollTo(0, 0);
+
 		history.push('/app/characters/new/races');
 	};
 

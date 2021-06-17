@@ -81,6 +81,8 @@ const Classes = () => {
 										updateCharacter(newChar);
 									}
 
+									window.scrollTo(0, 0);
+
 									history.push(
 										'/app/characters/new/background'
 									);
