@@ -28,15 +28,6 @@ const Races = () => {
 		if (!play) {
 			setPlay(true);
 		}
-
-		if (selectedRace) {
-			const newChar = newCharacter;
-
-			if (newChar) {
-				newChar.race = selectedRace;
-				updateCharacter(newChar);
-			}
-		}
 	}, [play, setPlay, selectedRace, newCharacter, updateCharacter]);
 
 	if (!newCharacter || newCharacter.characterName.length < 1) {
@@ -84,6 +75,9 @@ const Races = () => {
 								if (e) {
 									const newChar = newCharacter;
 									newChar.race = e.value;
+									newChar.bonuses = [];
+									newChar.languages = [];
+
 									updateCharacter(newCharacter);
 									setSelectedRace(e.value);
 								}

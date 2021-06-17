@@ -22,7 +22,15 @@ const Race = ({ race }: { race: RaceType }) => {
 			value: any;
 			disabled: boolean;
 		}>
-	>([]);
+	>(
+		newCharacter?.languages
+			.filter(lang => !race.languages.includes(lang))
+			.map(l => ({
+				label: l,
+				value: l,
+				disabled: false
+			})) ?? []
+	);
 
 	const [selectedBonuses, setSelectedBonuses] = useState<
 		OptionsType<{
@@ -30,7 +38,15 @@ const Race = ({ race }: { race: RaceType }) => {
 			value: any;
 			disabled: boolean;
 		}>
-	>([]);
+	>(
+		newCharacter?.bonuses
+			.filter(bon => !race.bonuses.find(b => b.stat === bon.stat))
+			.map(bonus => ({
+				label: bonus.stat,
+				value: bonus,
+				disabled: false
+			})) ?? []
+	);
 
 	const extraLanguages =
 		race.extraLanguage && !race.extraLanguage.all

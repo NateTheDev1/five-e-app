@@ -25,14 +25,14 @@ export class Character {
 	height: string = '';
 	weight: string = '';
 	age: string = '21';
-	alignment: string = '';
+	alignment?: { title: string; description: string };
 	gender: string = '';
 	personalityTraits: string = '';
 	ideals: string = '';
 	bonds: string = '';
 	flaws: string = '';
 	faith: string = '';
-	lifestyle: string = '';
+	lifestyle?: { title: string; description: string };
 	backgroundFeatures: string[] = [];
 	background?: CharacterBackground;
 
