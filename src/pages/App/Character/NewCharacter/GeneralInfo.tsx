@@ -63,6 +63,8 @@ const GeneralInfo = () => {
 
 		updateNewCharacter(newCharacter);
 
+		window.scrollTo(0, 0);
+
 		history.push('/app/characters/new/races');
 	};
 
@@ -107,6 +109,10 @@ const GeneralInfo = () => {
 								placeholder="Doredren The Blacksmith"
 							/>
 						</div>
+						<h4 className="font-medium opacity-50 mt-10 text-lg text-center">
+							These details can be left blank and chosen again
+							later when you select a background.
+						</h4>
 						<div className="mb-4">
 							<label
 								className="block mt-5 text-black text-sm font-bold mb-4"

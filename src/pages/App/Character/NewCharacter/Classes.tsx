@@ -70,6 +70,7 @@ const Classes = () => {
 									) {
 										const newChar = newCharacter;
 										newChar.inventory = [
+											...newCharacter.inventory,
 											...selectedClass.equipmentChoices
 												.filter(eq => !eq.choose)
 												.map((item: any) => ({
@@ -79,6 +80,8 @@ const Classes = () => {
 										];
 										updateCharacter(newChar);
 									}
+
+									window.scrollTo(0, 0);
 
 									history.push(
 										'/app/characters/new/background'

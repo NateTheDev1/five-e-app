@@ -28,15 +28,6 @@ const Races = () => {
 		if (!play) {
 			setPlay(true);
 		}
-
-		if (selectedRace) {
-			const newChar = newCharacter;
-
-			if (newChar) {
-				newChar.race = selectedRace;
-				updateCharacter(newChar);
-			}
-		}
 	}, [play, setPlay, selectedRace, newCharacter, updateCharacter]);
 
 	if (!newCharacter || newCharacter.characterName.length < 1) {
@@ -65,9 +56,11 @@ const Races = () => {
 					<div className="mt-8">
 						{selectedRace && (
 							<button
-								onClick={() =>
-									history.push('/app/characters/new/classes')
-								}
+								onClick={() => {
+									window.scrollTo(0, 0);
+
+									history.push('/app/characters/new/classes');
+								}}
 								className="bg-red-500 w-full h-auto mb-4 hover:bg-red-500 text-white font-bold py-2 px-4 rounded"
 							>
 								Continue
@@ -84,6 +77,9 @@ const Races = () => {
 								if (e) {
 									const newChar = newCharacter;
 									newChar.race = e.value;
+									newChar.bonuses = [];
+									newChar.languages = [];
+
 									updateCharacter(newCharacter);
 									setSelectedRace(e.value);
 								}

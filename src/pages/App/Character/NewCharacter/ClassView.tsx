@@ -99,6 +99,7 @@ export const ClassView = ({ classRef }: { classRef: CharacterClass }) => {
 
 			updateCharacter(newChar);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
 		selectedProfs,
 		selectedInstruments,
@@ -112,12 +113,6 @@ export const ClassView = ({ classRef }: { classRef: CharacterClass }) => {
 		setSelectedSkills([]);
 		setSelectedInstruments([]);
 
-		const newChar = newCharacter;
-		if (newChar) {
-			newChar.proficiencies = [];
-			newChar.inventory = [];
-		}
-		updateCharacter(newChar);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [classRef]);
 

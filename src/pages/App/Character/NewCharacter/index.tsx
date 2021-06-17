@@ -6,6 +6,7 @@ const Races = lazy(() => import('./Races'));
 const Classes = lazy(() => import('./Classes'));
 const Stats = lazy(() => import('./Stats'));
 const Finish = lazy(() => import('./Finish'));
+const BackgroundView = lazy(() => import('./BackgroundView'));
 
 const NewCharacter = () => {
 	return (
@@ -15,6 +16,9 @@ const NewCharacter = () => {
 			</Route>
 			<Route exact path="/app/characters/new/stats">
 				<Stats />
+			</Route>
+			<Route exact path="/app/characters/new/background">
+				<BackgroundView />
 			</Route>
 			<Route exact path="/app/characters/new/classes">
 				<Classes />

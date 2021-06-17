@@ -40,7 +40,15 @@ export class Warlock extends CharacterClass {
 			{
 				title: 'Choose two skills from Arcana, Deception, History, Intimidation, Investigation, Nature, and Religion',
 				choose: {
-					from: ['Arcana', 'Deception', 'History', 'Intimidation'],
+					from: [
+						'Arcana',
+						'Deception',
+						'History',
+						'Intimidation',
+						'Investigation',
+						'Nature',
+						'Religion'
+					],
 					num: 2
 				},
 				skills: true
