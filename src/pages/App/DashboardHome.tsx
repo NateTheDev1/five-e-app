@@ -4,7 +4,7 @@ const DashboardHome = () => {
 	const history = useHistory();
 
 	return (
-		<div className="home px-5 mt-12 ">
+		<div className="home px-5 mt-12  ">
 			<h2 className="font-bold text-center text-lg">
 				Welcome back to 5E Sidekick
 			</h2>
