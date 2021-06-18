@@ -16,11 +16,11 @@ const Dashboard = () => {
 				<Route path="/app/soundboard">
 					<Soundboards />
 				</Route>
-				<Route path="/app/characters/:key">
-					<p>Character view in development</p>
-				</Route>
 				<Route path="/app/characters/new">
 					<NewCharacter />
+				</Route>
+				<Route path="/app/characters/:key">
+					<p>Character view in development</p>
 				</Route>
 				<Route exact path="/app/characters">
 					<CharactersView />
