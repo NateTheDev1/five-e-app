@@ -4,6 +4,7 @@ import { ChevronLeftIcon, ChevronDownIcon } from '@heroicons/react/solid';
 import Logo from './Logo';
 import { Fragment } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
+import { Capacitor } from '@capacitor/core';
 
 //@ts-ignore
 function classNames(...classes) {
@@ -15,8 +16,14 @@ const Navbar = () => {
 	const history = useHistory();
 	const location = useLocation();
 
+	console.log(Capacitor.getPlatform());
+
 	return (
-		<nav className="w-screen bg-white text-black shadow-lg px-3 h-12 flex items-center justify-between">
+		<nav
+			className={`w-screen bg-white text-black shadow-lg px-3 ${
+				Capacitor.getPlatform() === 'ios' ? 'h-24' : 'h-12'
+			} flex items-center justify-between`}
+		>
 			<div className="left w-4/12 flex items-center">
 				<Logo />
 			</div>
