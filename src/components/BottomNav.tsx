@@ -1,25 +1,22 @@
 import { UserActions } from '../redux/User/actions';
 import { Menu, Transition } from '@headlessui/react';
-import { ChevronLeftIcon, ChevronDownIcon } from '@heroicons/react/solid';
+import { ChevronLeftIcon, ChevronUpIcon } from '@heroicons/react/solid';
 import Logo from './Logo';
 import { Fragment } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
-import { Capacitor } from '@capacitor/core';
 
 //@ts-ignore
 function classNames(...classes) {
 	return classes.filter(Boolean).join(' ');
 }
 
-const Navbar = () => {
+const BottomNav = () => {
 	const logout = UserActions.useLogout();
 	const history = useHistory();
 	const location = useLocation();
 
 	return (
-		<nav
-			className={`w-screen bg-white text-black shadow-lg px-3 ${'h-12'} flex items-center justify-between`}
-		>
+		<div className="w-screen fixed bottom-0 py-3 bg-white shadow-lg px-3 flex items-center justify-between h-22">
 			<div className="left w-4/12 flex items-center">
 				<Logo />
 			</div>
@@ -41,7 +38,7 @@ const Navbar = () => {
 								)}
 								<Menu.Button className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-white">
 									Navigate
-									<ChevronDownIcon
+									<ChevronUpIcon
 										className="-mr-1 ml-2 h-5 w-5"
 										aria-hidden="true"
 									/>
@@ -60,7 +57,7 @@ const Navbar = () => {
 							>
 								<Menu.Items
 									static
-									className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+									className="origin-top-right absolute right-0 bottom-10 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
 								>
 									<div className="py-1">
 										<Menu.Item>
@@ -208,8 +205,8 @@ const Navbar = () => {
 					)}
 				</Menu>
 			</div>
-		</nav>
+		</div>
 	);
 };
 
-export default Navbar;
+export default BottomNav;

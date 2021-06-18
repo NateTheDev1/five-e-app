@@ -1,5 +1,7 @@
+import { Capacitor } from '@capacitor/core';
 import { lazy } from 'react';
 import { Route, Switch } from 'react-router';
+import BottomNav from '../../components/BottomNav';
 import Navbar from '../../components/Navbar';
 import NotFound from '../../components/NotFound';
 
@@ -11,7 +13,7 @@ const Soundboards = lazy(() => import('./Soundboard'));
 const Dashboard = () => {
 	return (
 		<div className=" bg-gray-800 h-screen pb-10 w-screen text-white">
-			<Navbar />
+			{/* {Capacitor.getPlatform() === 'web' && <Navbar />} */}
 			<Switch>
 				<Route path="/app/soundboard">
 					<Soundboards />
@@ -30,6 +32,9 @@ const Dashboard = () => {
 				</Route>
 				<Route component={NotFound} />
 			</Switch>
+			<div className="pb-20"></div>
+			{/* {Capacitor.getPlatform() !== 'web' && <BottomNav />} */}
+			<BottomNav />
 		</div>
 	);
 };
