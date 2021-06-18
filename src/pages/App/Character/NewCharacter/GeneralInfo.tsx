@@ -76,7 +76,7 @@ const GeneralInfo = () => {
 
 	return (
 		<Animate duration={0.2} play={play} {...animProps}>
-			<div className=" mt-5 container w-full max-w-prose mx-auto ">
+			<div className=" mt-5 container w-full md:max-w-screen-lg e mx-auto ">
 				<div className="bg-white p-3 text-black rounded-md">
 					<h3 className="text-lg mb-3 font-light opacity-80">
 						General Info

@@ -11,6 +11,14 @@ export class Character {
 	class?: CharacterClass;
 
 	languages: string[] = [];
+	stats: { [key: string]: number } = {
+		Strength: -1,
+		Dexterity: -1,
+		Constitution: -1,
+		Intelligence: -1,
+		Wisdom: -1,
+		Charisma: -1
+	};
 	bonuses: StatBonus[] = [];
 	level: number = 1;
 	xp: number = 0;

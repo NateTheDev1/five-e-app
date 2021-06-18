@@ -1,155 +1,286 @@
-import { useState } from 'react';
-import { useHistory } from 'react-router';
 import { Animate } from 'react-simple-animate';
-import reference from '../../../../core/reference';
-import Util from '../../../../core/util';
-import { CharacterActions } from '../../../../redux/Character/actions';
-import { CharacterSelectors } from '../../../../redux/Character/selectors';
+import { useState } from 'react';
+import { useEffect } from 'react';
 import { animProps } from '../../../Onboarding/Login';
+import { core } from '../../../../corev2/core';
+import Select from 'react-select';
+import { useHistory } from 'react-router';
+import { CharacterSelectors } from '../../../../redux/Character/selectors';
+import { CharacterActions } from '../../../../redux/Character/actions';
+import { Character } from '../../../../corev2/Character';
 
 const Stats = () => {
-	// const history = useHistory();
+	const [play, setPlay] = useState(false);
 
-	// const newCharacter = CharacterSelectors.useSelectNewCharacter();
-	// const updateCharacter = CharacterActions.useUpdateNewCharacter();
+	const history = useHistory();
 
-	// const [genMethod, setGenMethod] = useState('Standard Array');
-	// const [rolls, setRolls] = useState<number[]>(reference.standardStatArray);
-	// const [statRolls, setStatRolls] = useState({
-	// 	Strength: -1,
-	// 	Dexterity: -1,
-	// 	Constitution: -1,
-	// 	Intelligence: -1,
-	// 	Wisdom: -1,
-	// 	Charisma: -1
-	// });
+	const newCharacter = CharacterSelectors.useSelectNewCharacter();
+	const updateCharacter = CharacterActions.useUpdateNewCharacter();
 
-	// const rollStats = () => {
-	// 	const tmpRolls: number[] = [];
-	// 	for (let i = 0; i < reference.statBlocks.length; i++) {
-	// 		tmpRolls.push(Util.statRoll());
-	// 	}
-	// 	setRolls(tmpRolls);
-	// };
+	useEffect(() => {
+		if (!play) {
+			setPlay(true);
+		}
+	}, [play, setPlay]);
 
-	// return (
-	// 	<Animate duration={0.2} play {...animProps}>
-	// 		<div className="px-5 mt-10 container w-full max-w-prose mx-auto">
-	// 			<h3 className="text-lg mb-3 font-bold">Build your stats</h3>
-	// 			<hr />
-	// 			<div className="stats flex flex-col mt-8">
-	// 				<h4 className="font-bold">Choose a generation method</h4>
-	// 				<select
-	// 					className="mt-5 px-2 py-2 rounded text-black"
-	// 					value={genMethod}
-	// 					onChange={e => {
-	// 						setGenMethod(e.target.value);
-	// 						if (e.target.value === 'Standard Array') {
-	// 							setStatRolls({
-	// 								Strength: -1,
-	// 								Dexterity: -1,
-	// 								Constitution: -1,
-	// 								Intelligence: -1,
-	// 								Wisdom: -1,
-	// 								Charisma: -1
-	// 							});
-	// 							setRolls(reference.standardStatArray);
-	// 						}
-	// 						if (e.target.value === 'Rolled') {
-	// 							setStatRolls({
-	// 								Strength: -1,
-	// 								Dexterity: -1,
-	// 								Constitution: -1,
-	// 								Intelligence: -1,
-	// 								Wisdom: -1,
-	// 								Charisma: -1
-	// 							});
-	// 							rollStats();
-	// 						}
-	// 					}}
-	// 				>
-	// 					<option value="Standard Array">Standard Array</option>
-	// 					<option value="Rolled">Rolled</option>
-	// 				</select>
-	// 				<p className="text-left mt-8 font-bold">Rolls</p>
+	const [genMethod, setGenMethod] = useState('Standard Array');
+	const [rolls, setRolls] = useState<number[]>(core.standardStatArray);
+	const [statRolls, setStatRolls] = useState<{ [key: string]: number }>({
+		Strength: newCharacter?.stats['Strength'] ?? -1,
+		Dexterity: newCharacter?.stats['Dexterity'] ?? -1,
+		Constitution: newCharacter?.stats['Constitution'] ?? -1,
+		Intelligence: newCharacter?.stats['Intelligence'] ?? -1,
+		Wisdom: newCharacter?.stats['Wisdom'] ?? -1,
+		Charisma: newCharacter?.stats['Charisma'] ?? -1
+	});
 
-	// 				<div className="rolls flex items-center justify-between w-full  bg-white text-black rounded-md p-4 shadow-lg mt-3">
-	// 					{rolls.map((rollnum, key) => (
-	// 						<div key={key}>{rollnum}</div>
-	// 					))}
-	// 				</div>
-	// 				{genMethod === 'Rolled' && (
-	// 					<button
-	// 						onClick={() => rollStats()}
-	// 						className="bg-red-500 w-50 h-auto mb-4 hover:bg-red-500 text-white font-bold py-2 px-4 mt-5 rounded"
-	// 					>
-	// 						Roll
-	// 					</button>
-	// 				)}
-	// 			</div>
-	// 			<form
-	// 				className="stats mt-8"
-	// 				onSubmit={() => {
-	// 					const newChar = newCharacter;
+	const rollStats = () => {
+		const tmpRolls: number[] = [];
+		for (let i = 0; i < core.statBlocks.length; i++) {
+			tmpRolls.push(core.statRoll());
+		}
+		setRolls(tmpRolls);
+	};
 
-	// 					if (newChar) {
-	// 						newChar.statArray = Array.from(
-	// 							Object.values(statRolls)
-	// 						);
-	// 						newChar.statModifiers = Array.from(
-	// 							newChar.race.bonuses
-	// 						);
-	// 						updateCharacter(newChar);
-	// 						history.push('/app/characters/new/finish');
-	// 					}
-	// 				}}
-	// 			>
-	// 				{reference.statBlocks.map((stat, key) => (
-	// 					<div
-	// 						className="stat flex justify-between mt-8"
-	// 						key={key}
-	// 					>
-	// 						<h4 className="text-lg">
-	// 							{stat.text} +{newCharacter?.race.bonuses[key]}
-	// 						</h4>
-	// 						<input
-	// 							required
-	// 							type="number"
-	// 							className=" text-gray-500 text-center w-2/5 md:w-3/5 "
-	// 							placeholder="0"
-	// 							//@ts-ignore
-	// 							onChange={e =>
-	// 								setStatRolls({
-	// 									...statRolls,
-	// 									[stat.text]: e.target.value
-	// 								})
-	// 							}
-	// 							//@ts-ignore
+	const filterRollSelects = (r: any) => {
+		let found = false;
 
-	// 							value={
-	// 								//@ts-ignore
+		for (let i = 0; i < core.statBlocks.length; i++) {
+			if (statRolls[core.statBlocks[i].text] === r) {
+				found = true;
+			}
+		}
 
-	// 								statRolls[stat.text] > 0
-	// 									? //@ts-ignore
+		return found;
+	};
 
-	// 									  Number(statRolls[stat.text])
-	// 									: ''
-	// 							}
-	// 						/>
-	// 					</div>
-	// 				))}
-	// 				<button
-	// 					type="submit"
-	// 					className="bg-red-500 w-full h-auto mb-4 hover:bg-red-500 text-white font-bold py-2 px-4 mt-8 rounded"
-	// 				>
-	// 					Continue
-	// 				</button>
-	// 			</form>
-	// 		</div>
-	// 	</Animate>
-	// );
+	const getOgStat = (stat: string) => {
+		const bons = newCharacter?.bonuses.filter(b => b.stat === stat) ?? [];
 
-	return null;
+		let amt: number = 0;
+
+		if (bons.length > 0) {
+			amt = bons.reduce(
+				//@ts-ignore
+				(acc = 0, cur) => acc.amount + cur.amount
+			).amount;
+		}
+
+		if (amt === -1) {
+			amt = 0;
+		}
+
+		return amt;
+	};
+
+	return (
+		<Animate duration={0.2} play={play} {...animProps}>
+			<div className=" mt-5 container w-full md:max-w-screen-lg mx-auto">
+				<div className="bg-white p-3 text-black rounded-md">
+					<h3 className="text-lg mb-3 font-light opacity-90">
+						Ability Score Allocation
+					</h3>
+					<p className="text-sm my-3 opacity-50 font-light leading-10">
+						The higher the number in the box the better your Player
+						Character (PC) is at that ability. The lower the score
+						the less able you are at that ability.
+					</p>
+					<hr className=" border-gray-300" />
+					<div className="mt-2 mb-2">
+						<h4 className="font-bold mb-2 text-center">
+							Choose a generation method
+						</h4>
+
+						<Select
+							isSearchable={false}
+							value={{
+								value: genMethod,
+								label: genMethod
+							}}
+							options={[
+								{
+									value: 'Standard Array',
+									label: 'Standard Array'
+								},
+								{ value: 'Rolled', label: 'Rolled' }
+							]}
+							onChange={e => {
+								if (e) {
+									if (e.value === 'Standard Array') {
+										setGenMethod(e.value);
+										setRolls(core.standardStatArray);
+									} else {
+										setGenMethod(e.value);
+										rollStats();
+									}
+								}
+							}}
+						/>
+						<button
+							className="bg-red-500 w-full mt-3 h-auto hover:bg-red-500 text-white font-bold py-1 px-2 text-sm rounded"
+							onClick={() => {
+								rollStats();
+								setStatRolls({
+									Strength:
+										newCharacter?.stats['Strength'] ?? -1,
+									Dexterity:
+										newCharacter?.stats['Dexterity'] ?? -1,
+									Constitution:
+										newCharacter?.stats['Constitution'] ??
+										-1,
+									Intelligence:
+										newCharacter?.stats['Intelligence'] ??
+										-1,
+									Wisdom: newCharacter?.stats['Wisdom'] ?? -1,
+									Charisma:
+										newCharacter?.stats['Charisma'] ?? -1
+								});
+							}}
+						>
+							Roll Again
+						</button>
+
+						<div className="flex justify-between mt-8 w-80 mx-auto text-xs font-semibold">
+							{rolls.map((roll, key) => (
+								<p key={key}>{roll}</p>
+							))}
+						</div>
+
+						<div className="mt-8">
+							{core.statBlocks.map((stat, key) => (
+								<div
+									className="stat flex flex-col justify-center text-center  mt-8 w-full mb-8 rounded-md bg-gray-200 text-whiteshadow-lg p-4 shadow-xl"
+									key={key}
+								>
+									<h4
+										className="font-medium text-red-500 uppercase leading-10"
+										style={{ letterSpacing: '0.5rem' }}
+									>
+										{stat.text}
+									</h4>
+
+									<Select
+										isSearchable={false}
+										//@ts-ignore
+										value={
+											//@ts-ignore
+											statRolls[stat.text] !== -1
+												? {
+														//@ts-ignore
+														value: statRolls[
+															stat.text
+														],
+														//@ts-ignore
+														label: statRolls[
+															stat.text
+														]
+												  }
+												: ''
+										}
+										isClearable={true}
+										options={[
+											...rolls
+												.filter(
+													r =>
+														filterRollSelects(r) !==
+														true
+												)
+												.map(roll => ({
+													value: roll as any,
+													label: roll as any
+												}))
+										]}
+										onChange={(e, eq) => {
+											if (eq['action'] === 'clear') {
+												setStatRolls({
+													...statRolls,
+													[stat.text]: -1
+												});
+											} else {
+												if (e) {
+													setStatRolls({
+														...statRolls,
+														[stat.text]: e.value
+													});
+												}
+											}
+										}}
+									/>
+
+									<p className="text-sm opacity-70 font-bold mt-4">
+										Bonuses
+									</p>
+
+									<div>
+										{newCharacter?.bonuses
+											.filter(b => b.stat === stat.text)
+											.map((b, key) => (
+												<p
+													key={key}
+													className="mt-2 text-xs"
+												>
+													{b.stat} +{b.amount}
+												</p>
+											))}
+									</div>
+
+									<p className="text-sm opacity-70 font-bold mt-8">
+										Total
+									</p>
+									{statRolls[stat.text] !== -1 && (
+										<p>
+											{getOgStat(stat.text) +
+												statRolls[stat.text]}
+										</p>
+									)}
+								</div>
+							))}
+						</div>
+					</div>
+					<button
+						className="bg-red-500 w-full mt-3 h-auto hover:bg-red-500 text-white font-bold py-1 px-2 text-sm rounded"
+						onClick={() => {
+							const newChar = newCharacter;
+
+							if (newChar) {
+								newChar.stats = statRolls;
+								updateCharacter(newChar);
+
+								let previousChars = localStorage.getItem(
+									'sidekick_characters' ?? []
+								);
+
+								if (previousChars && previousChars.length > 0) {
+									localStorage.setItem(
+										'sidekick_characters',
+										JSON.stringify([
+											...JSON.parse(previousChars),
+											newChar
+										])
+									);
+
+									localStorage.removeItem(
+										'characterInProgress'
+									);
+								} else {
+									localStorage.setItem(
+										'sidekick_characters',
+										JSON.stringify([newChar])
+									);
+								}
+
+								updateCharacter(new Character());
+							}
+
+							history.push('/app/characters');
+						}}
+					>
+						Finish
+					</button>
+				</div>
+			</div>
+		</Animate>
+	);
 };
 
 export default Stats;
