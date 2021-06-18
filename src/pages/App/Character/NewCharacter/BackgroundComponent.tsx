@@ -250,6 +250,7 @@ const BackgroundComponent = ({
 						</h5>
 						{backgroundRef.languagesChoices.map((l, key) => (
 							<Select
+								key={key}
 								value={selectedLanguages || ''}
 								isSearchable={false}
 								onChange={(e, eb) => {
@@ -321,6 +322,7 @@ const BackgroundComponent = ({
 						</h5>
 						{backgroundRef.equipmentChoices.map((eq, key) => (
 							<Select
+								key={key}
 								value={selectedEquipment || ''}
 								isSearchable={false}
 								onChange={(e, eb) => {
@@ -406,6 +408,7 @@ const BackgroundComponent = ({
 					Random Roll
 				</button>
 				<Select
+					isSearchable={false}
 					value={[selectedTrait] ?? ''}
 					isMulti={false}
 					options={[
@@ -448,6 +451,7 @@ const BackgroundComponent = ({
 					Random Roll
 				</button>
 				<Select
+					isSearchable={false}
 					value={[selectedFlaw] ?? ''}
 					isMulti={false}
 					options={[
@@ -490,6 +494,7 @@ const BackgroundComponent = ({
 					Random Roll
 				</button>
 				<Select
+					isSearchable={false}
 					value={[selectedBond] ?? ''}
 					isMulti={false}
 					options={[
@@ -530,6 +535,7 @@ const BackgroundComponent = ({
 					Random Roll
 				</button>
 				<Select
+					isSearchable={false}
 					value={[selectedIdeal] ?? ''}
 					isMulti={false}
 					options={[

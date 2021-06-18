@@ -13,6 +13,9 @@ const CharactersView = () => {
 
 	const newCharacterRef = CharacterSelectors.useSelectNewCharacter();
 	const resetCharacter = CharacterActions.useUpdateNewCharacter();
+	const characters: Character[] = JSON.parse(
+		localStorage.getItem('sidekick_characters') ?? '[]'
+	);
 
 	const [noteOpen, setNoteOpen] = useState(true);
 
@@ -65,9 +68,54 @@ const CharactersView = () => {
 								duration={0.2}
 								{...animProps}
 							>
-								<h3 className="text-lg font-bold ">
-									You don't have any existing characters yet.
-								</h3>
+								{characters.length < 0 && (
+									<h3 className="text-lg font-bold ">
+										You don't have any existing characters
+										yet.
+									</h3>
+								)}
+								<div className="flex flex-col md:flex-row md:justify-between flex-wrap flex-grow">
+									{characters.map((char, key) => (
+										<div
+											key={key}
+											className="sm:w-full text-black p-4 md:w-3/6 mb-4 cursor-pointer"
+										>
+											<div className="bg-white flex flex-col p-4 rounded-md text-left">
+												<h4
+													className="text-red-500 font-semibold uppercase text-sm"
+													style={{
+														letterSpacing: '0.5rem',
+														lineHeight: 2
+													}}
+												>
+													{char.characterName}
+												</h4>
+												<p className="mt-2 opacity-50 font-bold">
+													Level {char.level}
+												</p>
+												<p className="mt-2 opacity-50 font-bold">
+													{char.race?.name}{' '}
+													{char.class?.name}
+												</p>
+
+												<p className="mt-2 opacity-50 font-bold">
+													{char.xp} XP
+												</p>
+												<button
+													className="bg-red-500 w-full mt-3 h-auto hover:bg-red-500 text-white font-bold py-1 px-2 text-md rounded"
+													onClick={() =>
+														history.push(
+															'/app/characters/' +
+																key
+														)
+													}
+												>
+													View
+												</button>
+											</div>
+										</div>
+									))}
+								</div>
 							</Animate>
 							<Animate
 								sequenceIndex={1}
@@ -80,7 +128,7 @@ const CharactersView = () => {
 										resetCharacter(new Character());
 										history.push('/app/characters/new');
 									}}
-									className="md:w-10/12 w-full mt-8 mr-5 rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-white"
+									className="md:w-10/12 w-full mt-8 mr-5 mb-8 rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-white"
 								>
 									Create One
 								</button>
@@ -100,7 +148,7 @@ const CharactersView = () => {
 													'/app/characters/new'
 												);
 											}}
-											className="md:w-10/12 w-full mt-8 mr-5 rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-white"
+											className="md:w-10/12 w-full mt-2 mr-5 rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-white"
 										>
 											Continue Character In Progress
 										</button>

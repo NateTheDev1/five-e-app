@@ -92,8 +92,8 @@ const Navbar = () => {
 										</Menu.Item>
 										<Menu.Item>
 											{({ active }) => (
-												<a
-													href="g"
+												<Link
+													to="/app/soundboard"
 													className={classNames(
 														active
 															? 'bg-gray-100 text-gray-900'
@@ -101,8 +101,8 @@ const Navbar = () => {
 														'block px-4 py-2 text-sm'
 													)}
 												>
-													Soundboard
-												</a>
+													Soundboards
+												</Link>
 											)}
 										</Menu.Item>
 										<Menu.Item>

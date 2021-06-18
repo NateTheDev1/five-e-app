@@ -77,7 +77,7 @@ const BackgroundView = () => {
 
 	return (
 		<Animate duration={0.2} play={play} {...animProps}>
-			<div className=" mt-5 container w-full max-w-prose mx-auto">
+			<div className=" mt-5 container w-full md:max-w-screen-lg mx-auto">
 				<div className="bg-white p-3 text-black rounded-md">
 					<h3 className="text-lg mb-3 font-light opacity-90">
 						Background selection and other character details
@@ -90,20 +90,14 @@ const BackgroundView = () => {
 						your character’s identity. The most important question
 						to ask about your background is what changed? Why did
 						you stop doing whatever your background describes and
-						start adventuring? Where did you get the money to
-						purchase your starting gear, or, if you come from a
-						wealthy background, why don’t you have more money? How
-						did you learn the skills of your class? What sets you
-						apart from ordinary people who share your background?
+						start adventuring?
 					</p>
 					<hr className=" border-gray-300" />
 					<div className="mt-8">
 						{selectedBackground && (
 							<button
 								onClick={() => {
-									history.push(
-										'/app/characters/new/background'
-									);
+									history.push('/app/characters/new/stats');
 								}}
 								className="bg-red-500 w-full h-auto mb-4 hover:bg-red-500 text-white font-bold py-2 px-4 rounded"
 							>

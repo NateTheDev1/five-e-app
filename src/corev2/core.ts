@@ -84,7 +84,16 @@ export class Core {
 		];
 	}
 
-	public static d6() {
+	public statBlocks = [
+		{ text: 'Strength' },
+		{ text: 'Dexterity' },
+		{ text: 'Constitution' },
+		{ text: 'Intelligence' },
+		{ text: 'Wisdom' },
+		{ text: 'Charisma' }
+	];
+
+	public d6() {
 		// D6 roll
 		return Math.floor(Math.random() * 6) + 1;
 	}
@@ -94,7 +103,7 @@ export class Core {
 		return Math.floor(Math.random() * x) + 1;
 	}
 
-	public static statRoll(): number {
+	public statRoll(): number {
 		// Standard stat roll: 4d6, subtract lowest, get total of remaining
 		var diceArray = [...new Array(4)]
 			.map(() => this.d6())
