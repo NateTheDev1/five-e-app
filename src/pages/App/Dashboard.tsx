@@ -4,11 +4,12 @@ import { Route, Switch } from 'react-router';
 import BottomNav from '../../components/BottomNav';
 import Navbar from '../../components/Navbar';
 import NotFound from '../../components/NotFound';
+import DashboardHome from './DashboardHome';
 
-const DashboardHome = lazy(() => import('./DashboardHome'));
 const CharactersView = lazy(() => import('./Character/CharactersView'));
 const NewCharacter = lazy(() => import('./Character/NewCharacter'));
 const Soundboards = lazy(() => import('./Soundboard'));
+const CharacterSheet = lazy(() => import('./Character/CharacterSheet'));
 
 const Dashboard = () => {
 	return (
@@ -21,8 +22,8 @@ const Dashboard = () => {
 				<Route path="/app/characters/new">
 					<NewCharacter />
 				</Route>
-				<Route path="/app/characters/:key">
-					<p>Character view in development</p>
+				<Route path="/app/characters/:charKey">
+					<CharacterSheet />
 				</Route>
 				<Route exact path="/app/characters">
 					<CharactersView />

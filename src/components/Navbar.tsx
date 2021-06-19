@@ -4,7 +4,6 @@ import { ChevronLeftIcon, ChevronDownIcon } from '@heroicons/react/solid';
 import Logo from './Logo';
 import { Fragment } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
-import { Capacitor } from '@capacitor/core';
 
 //@ts-ignore
 function classNames(...classes) {

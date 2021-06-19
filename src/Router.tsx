@@ -1,13 +1,10 @@
-// import { lazy } from "react";
-import { lazy } from 'react';
 import { Route, Switch, useLocation } from 'react-router';
 import GoogleAd from './components/GoogleAd';
 import NotFound from './components/NotFound';
 import { PrivateRoute } from './components/PrivateRoute';
 import { PublicRoute } from './components/PublicRoute';
+import Dashboard from './pages/App/Dashboard';
 import Home from './pages/Home';
-
-const Dashboard = lazy(() => import('./pages/App/Dashboard'));
 
 const Router = () => {
 	const location = useLocation();
