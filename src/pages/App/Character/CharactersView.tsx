@@ -74,11 +74,11 @@ const CharactersView = () => {
 										yet.
 									</h3>
 								)}
-								<div className="flex flex-col md:flex-row md:justify-between flex-wrap flex-grow">
+								<div className="flex flex-col md:flex-row md:justify-between flex-wrap">
 									{characters.map((char, key) => (
 										<div
 											key={key}
-											className="sm:w-full text-black p-4 md:w-3/6 mb-4 cursor-pointer"
+											className="sm:w-full text-black p-4 md:w-3/6 mb-4 cursor-pointer flex-grow"
 										>
 											<div className="bg-white flex flex-col p-4 rounded-md text-left">
 												<h4
