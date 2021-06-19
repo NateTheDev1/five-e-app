@@ -13,7 +13,7 @@ const Soundboards = lazy(() => import('./Soundboard'));
 const Dashboard = () => {
 	return (
 		<div className=" bg-gray-800 h-screen pb-10 w-screen text-white">
-			{/* {Capacitor.getPlatform() === 'web' && <Navbar />} */}
+			{Capacitor.getPlatform() === 'web' && <Navbar />}
 			<Switch>
 				<Route path="/app/soundboard">
 					<Soundboards />
@@ -33,8 +33,7 @@ const Dashboard = () => {
 				<Route component={NotFound} />
 			</Switch>
 			<div className="pb-20"></div>
-			{/* {Capacitor.getPlatform() !== 'web' && <BottomNav />} */}
-			<BottomNav />
+			{Capacitor.getPlatform() !== 'web' && <BottomNav />}
 		</div>
 	);
 };
