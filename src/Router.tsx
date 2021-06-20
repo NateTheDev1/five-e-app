@@ -10,7 +10,7 @@ const Router = () => {
 	const location = useLocation();
 
 	return (
-		<div className="bg-dark">
+		<div className="bg-bgmain app">
 			<Switch location={location}>
 				<PrivateRoute path="/app">
 					<Dashboard />

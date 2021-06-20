@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router';
 import BottomNav from '../../components/BottomNav';
 import Navbar from '../../components/Navbar';
 import NotFound from '../../components/NotFound';
+import TopBarMobile from '../../components/TopBarMobile';
 import DashboardHome from './DashboardHome';
 
 const CharactersView = lazy(() => import('./Character/CharactersView'));
@@ -13,8 +14,10 @@ const CharacterSheet = lazy(() => import('./Character/CharacterSheet'));
 
 const Dashboard = () => {
 	return (
-		<div className=" bg-gray-800 h-screen pb-10 w-screen text-white">
+		<div className=" bg-bgmain h-screen pb-10 w-screen text-white">
 			{Capacitor.getPlatform() === 'web' && <Navbar />}
+			{Capacitor.getPlatform() !== 'web' && <TopBarMobile title="Home" />}
+
 			<Switch>
 				<Route path="/app/soundboard">
 					<Soundboards />

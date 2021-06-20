@@ -1,30 +1,31 @@
-import { ApolloProvider } from "@apollo/client";
-import { hydrate, render } from "react-dom";
-import { BrowserRouter as Router } from "react-router-dom";
-import { apolloClient } from "./client";
-import App from "./App";
+import { ApolloProvider } from '@apollo/client';
+import { hydrate, render } from 'react-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { apolloClient } from './client';
+import App from './App';
 
-import "./normalize.scss";
-import "./tailwind.css";
+import './normalize.scss';
+import './tailwind.css';
+import './components/Navbars.scss';
 
-const rootElement = document.getElementById("root")!;
+const rootElement = document.getElementById('root')!;
 
 if (rootElement.hasChildNodes()) {
-  hydrate(
-    <ApolloProvider client={apolloClient}>
-      <Router>
-        <App />
-      </Router>
-    </ApolloProvider>,
-    rootElement
-  );
+	hydrate(
+		<ApolloProvider client={apolloClient}>
+			<Router>
+				<App />
+			</Router>
+		</ApolloProvider>,
+		rootElement
+	);
 } else {
-  render(
-    <ApolloProvider client={apolloClient}>
-      <Router>
-        <App />
-      </Router>
-    </ApolloProvider>,
-    rootElement
-  );
+	render(
+		<ApolloProvider client={apolloClient}>
+			<Router>
+				<App />
+			</Router>
+		</ApolloProvider>,
+		rootElement
+	);
 }
