@@ -17,7 +17,7 @@ const Navbar = () => {
 
 	return (
 		<nav
-			className={`w-screen bg-white text-black shadow-lg px-3 ${'h-12'} flex items-center justify-between`}
+			className={`w-screen bg-white text-black shadow-lg px-3 flex items-center justify-between navbar h-12`}
 		>
 			<div className="left w-4/12 flex items-center">
 				<Logo />

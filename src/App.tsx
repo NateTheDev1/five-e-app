@@ -1,5 +1,6 @@
 import { Suspense } from 'react';
 import { Provider } from 'react-redux';
+
 import BaseSchema from './components/BaseSchema';
 import Loading from './components/Loading';
 import ErrorBoundary from './ErrorBoundary';

@@ -7,6 +7,10 @@ module.exports = {
 			...theme('colors'),
 			DEFAULT: theme('colors.gray.300', 'currentColor'),
 			dndRed: '#E6010A'
+		}),
+		backgroundColor: theme => ({
+			...theme('colors'),
+			bgmain: '#101519'
 		})
 	},
 	variants: {

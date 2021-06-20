@@ -1,209 +1,70 @@
-import { UserActions } from '../redux/User/actions';
-import { Menu, Transition } from '@headlessui/react';
-import { ChevronLeftIcon, ChevronUpIcon } from '@heroicons/react/solid';
-import Logo from './Logo';
-import { Fragment } from 'react';
-import { Link, useHistory, useLocation } from 'react-router-dom';
-
-//@ts-ignore
-function classNames(...classes) {
-	return classes.filter(Boolean).join(' ');
-}
+import {
+	BookOpenIcon,
+	UserGroupIcon,
+	HomeIcon,
+	VolumeUpIcon
+} from '@heroicons/react/solid';
+import { useHistory } from 'react-router-dom';
 
 const BottomNav = () => {
-	const logout = UserActions.useLogout();
 	const history = useHistory();
-	const location = useLocation();
 
 	return (
-		<div className="w-screen fixed bottom-0 py-3 bg-white shadow-lg px-3 flex items-center justify-between h-22">
-			<div className="left w-4/12 flex items-center">
-				<Logo />
+		<div
+			className="w-screen fixed bottom-0  bg-white shadow-lg flex items-center justify-between pb-8 px-1 py-3 "
+			style={{ background: '#22272A' }}
+		>
+			<div
+				className="tab flex flex-col items-center justify-between text-center w-1/4"
+				onClick={() => history.push('/app')}
+			>
+				<HomeIcon
+					className={`${
+						window.location.pathname === '/app'
+							? 'text-red-700'
+							: 'opacity-50'
+					}   h-5 `}
+				/>
+				<p className="text-xs mt-1 opacity-50">Home</p>
 			</div>
-			<div className="right">
-				<Menu as="div" className="relative inline-block text-left">
-					{({ open }) => (
-						<>
-							<div className="flex">
-								{location.pathname !== '/app' && (
-									<button
-										onClick={() => history.goBack()}
-										className="inline-flex justify-between w-full mr-5 rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-white"
-									>
-										<ChevronLeftIcon
-											className="-h-5 w-5"
-											aria-hidden="true"
-										/>
-									</button>
-								)}
-								<Menu.Button className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-white">
-									Navigate
-									<ChevronUpIcon
-										className="-mr-1 ml-2 h-5 w-5"
-										aria-hidden="true"
-									/>
-								</Menu.Button>
-							</div>
-
-							<Transition
-								show={open}
-								as={Fragment}
-								enter="transition ease-out duration-100"
-								enterFrom="transform opacity-0 scale-95"
-								enterTo="transform opacity-100 scale-100"
-								leave="transition ease-in duration-75"
-								leaveFrom="transform opacity-100 scale-100"
-								leaveTo="transform opacity-0 scale-95"
-							>
-								<Menu.Items
-									static
-									className="origin-top-right absolute right-0 bottom-10 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
-								>
-									<div className="py-1">
-										<Menu.Item>
-											{({ active }) => (
-												<Link
-													to="/app"
-													className={classNames(
-														active
-															? 'bg-gray-100 text-gray-900'
-															: 'text-gray-700',
-														'block px-4 py-2 text-sm'
-													)}
-												>
-													Home
-												</Link>
-											)}
-										</Menu.Item>
-										<Menu.Item>
-											{({ active }) => (
-												<Link
-													to="/app/characters"
-													className={classNames(
-														active
-															? 'bg-gray-100 text-gray-900'
-															: 'text-gray-700',
-														'block px-4 py-2 text-sm'
-													)}
-												>
-													Characters
-												</Link>
-											)}
-										</Menu.Item>
-										<Menu.Item>
-											{({ active }) => (
-												<Link
-													to="/app/soundboard"
-													className={classNames(
-														active
-															? 'bg-gray-100 text-gray-900'
-															: 'text-gray-700',
-														'block px-4 py-2 text-sm'
-													)}
-												>
-													Soundboards
-												</Link>
-											)}
-										</Menu.Item>
-										<Menu.Item>
-											{({ active }) => (
-												<a
-													href="g"
-													className={classNames(
-														active
-															? 'bg-gray-100 text-gray-900'
-															: 'text-gray-700',
-														'block px-4 py-2 text-sm'
-													)}
-												>
-													Party Manager
-												</a>
-											)}
-										</Menu.Item>
-										<Menu.Item>
-											{({ active }) => (
-												<a
-													href="g"
-													className={classNames(
-														active
-															? 'bg-gray-100 text-gray-900'
-															: 'text-gray-700',
-														'block px-4 py-2 text-sm'
-													)}
-												>
-													Homebrewing
-												</a>
-											)}
-										</Menu.Item>
-										<Menu.Item>
-											{({ active }) => (
-												<a
-													href="g"
-													className={classNames(
-														active
-															? 'bg-gray-100 text-gray-900'
-															: 'text-gray-700',
-														'block px-4 py-2 text-sm'
-													)}
-												>
-													Notebook
-												</a>
-											)}
-										</Menu.Item>
-										<Menu.Item>
-											{({ active }) => (
-												<a
-													href="g"
-													className={classNames(
-														active
-															? 'bg-gray-100 text-gray-900'
-															: 'text-gray-700',
-														'block px-4 py-2 text-sm'
-													)}
-												>
-													5E Compendium
-												</a>
-											)}
-										</Menu.Item>
-
-										<Menu.Item>
-											{({ active }) => (
-												<a
-													href="g"
-													className={classNames(
-														active
-															? 'bg-gray-100 text-gray-900'
-															: 'text-gray-700',
-														'block px-4 py-2 text-sm'
-													)}
-												>
-													Account
-												</a>
-											)}
-										</Menu.Item>
-
-										<Menu.Item>
-											{({ active }) => (
-												<button
-													onClick={() => logout()}
-													type="submit"
-													className={classNames(
-														active
-															? 'bg-gray-100 text-gray-900'
-															: 'text-gray-700',
-														'block w-full text-left px-4 py-2 text-sm'
-													)}
-												>
-													Sign out
-												</button>
-											)}
-										</Menu.Item>
-									</div>
-								</Menu.Items>
-							</Transition>
-						</>
-					)}
-				</Menu>
+			<div
+				className="tab flex flex-col items-center justify-between text-center w-1/4"
+				onClick={() => history.push('/app/characters')}
+			>
+				<UserGroupIcon
+					className={`${
+						window.location.pathname.includes('character')
+							? 'text-red-700'
+							: 'opacity-50'
+					}  h-5`}
+				/>
+				<p className="text-xs mt-1 opacity-50">Characters</p>
+			</div>
+			<div
+				className="tab flex flex-col items-center justify-between text-center w-1/4"
+				onClick={() => history.push('/app/soundboard')}
+			>
+				<VolumeUpIcon
+					className={`${
+						window.location.pathname.includes('soundboard')
+							? 'text-red-700'
+							: 'opacity-50'
+					}  h-5`}
+				/>
+				<p className="text-xs mt-1 opacity-50">Soundboard</p>
+			</div>
+			<div
+				className="tab flex flex-col items-center justify-between text-center w-1/4"
+				onClick={() => history.push('/app/compendium')}
+			>
+				<BookOpenIcon
+					className={`${
+						window.location.pathname === '/compendium'
+							? 'text-red-700'
+							: 'opacity-50'
+					}  h-5`}
+				/>
+				<p className="text-xs mt-1 opacity-50">Compendium</p>
 			</div>
 		</div>
 	);
