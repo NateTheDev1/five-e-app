@@ -32,7 +32,7 @@ const TopBarMobile = ({ title }: { title: string }) => {
 				}}
 			/>
 			<div className=" w-screen flex items-center justify-center">
-				<div className="w-1/3">
+				<div className="w-1/3 mt-2">
 					<Logo type="dark" />
 				</div>
 			</div>
