@@ -36,7 +36,7 @@ const Signup = () => {
 
 	return (
 		<Animate play {...animProps} duration={0.2}>
-			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 400">
 				<path
 					fill="#E6000B"
 					fill-opacity="0.7"

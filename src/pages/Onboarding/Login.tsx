@@ -4,6 +4,10 @@ import Logo from '../../components/Logo';
 import { useLoginMutation } from '../../graphql';
 import { Animate, AnimateGroup } from 'react-simple-animate';
 import { UserActions } from '../../redux/User/actions';
+import {
+	SignInWithApple,
+	SignInWithAppleResponse
+} from '@capacitor-community/apple-sign-in';
 
 export const animProps = {
 	start: { opacity: 0 },
@@ -34,9 +38,24 @@ const Login = () => {
 		});
 	};
 
+	const appleSignIn = () => {
+		SignInWithApple.authorize({
+			clientId: 'com.dnd.sidekick',
+			redirectURI: 'https://www.dndsidekick.com',
+			scopes: 'email name'
+		})
+			.then((result: SignInWithAppleResponse) => {
+				// TODO: Handle user information
+				localStorage.setItem('fivetoken', 'apple_test_token');
+			})
+			.catch(error => {
+				// Handle error
+			});
+	};
+
 	return (
 		<Animate play {...animProps} duration={0.2}>
-			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 400">
 				<path
 					fill="#E6000B"
 					fill-opacity="0.7"
@@ -117,6 +136,21 @@ const Login = () => {
 										Continue
 									</button>
 								</Animate>
+								<Animate
+									sequenceIndex={2}
+									duration={0.4}
+									{...animProps}
+								>
+									<button
+										onClick={appleSignIn}
+										type="button"
+										className=" w-full mt-5  text-white font-bold py-2 px-4 rounded"
+										style={{ background: 'black' }}
+									>
+										Sign In With Apple
+									</button>
+								</Animate>
+
 								<div className="bottom w-full flex flex-col items-center justify-center mt-5">
 									{data.error && (
 										<span className="flex items-center font-medium tracking-wide text-red-500 mb-4 mt-1 text-sm ml-1">
