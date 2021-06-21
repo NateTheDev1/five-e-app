@@ -4,6 +4,10 @@ import Logo from '../../components/Logo';
 import { useLoginMutation } from '../../graphql';
 import { Animate, AnimateGroup } from 'react-simple-animate';
 import { UserActions } from '../../redux/User/actions';
+import {
+	SignInWithApple,
+	SignInWithAppleResponse
+} from '@capacitor-community/apple-sign-in';
 
 export const animProps = {
 	start: { opacity: 0 },
@@ -34,16 +38,38 @@ const Login = () => {
 		});
 	};
 
+	const appleSignIn = () => {
+		SignInWithApple.authorize({
+			clientId: 'com.dnd.sidekick',
+			redirectURI: 'https://www.dndsidekick.com',
+			scopes: 'email name'
+		})
+			.then((result: SignInWithAppleResponse) => {
+				// TODO: Handle user information
+				localStorage.setItem('fivetoken', 'apple_test_token');
+			})
+			.catch(error => {
+				// Handle error
+			});
+	};
+
 	return (
 		<Animate play {...animProps} duration={0.2}>
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 400">
+				<path
+					fill="#E6000B"
+					fill-opacity="0.7"
+					d="M0,224L80,186.7C160,149,320,75,480,85.3C640,96,800,192,960,229.3C1120,267,1280,245,1360,234.7L1440,224L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"
+				></path>
+			</svg>
 			<div className="flex items-center justify-center h-screen">
 				<div className="w-full">
 					<form
-						className="bg-white shadow-lg rounded px-4 pt-6 pb-8 mb-4 max-w-screen-md w-11/12 m-auto"
+						className="px-2 pt-6 pb-8 mb-4 max-w-screen-md w-11/12 m-auto text-white"
 						onSubmit={onSubmit}
 					>
 						<div className="mb-6 flex justify-center flex-col items-center">
-							<Logo />
+							<Logo type="dark" />
 							<h2 className="mt-5 font-light opacity-50 text-lg">
 								Welcome Back
 							</h2>
@@ -106,10 +132,25 @@ const Login = () => {
 									duration={0.4}
 									{...animProps}
 								>
-									<button className="bg-red-500 w-full hover:bg-red-500 text-white font-bold py-2 px-4 rounded">
+									<button className="bg-red-500 w-full mt-5 hover:bg-red-500 text-white font-bold py-2 px-4 rounded">
 										Continue
 									</button>
 								</Animate>
+								<Animate
+									sequenceIndex={2}
+									duration={0.4}
+									{...animProps}
+								>
+									<button
+										onClick={appleSignIn}
+										type="button"
+										className=" w-full mt-5  text-white font-bold py-2 px-4 rounded"
+										style={{ background: 'black' }}
+									>
+										Sign In With Apple
+									</button>
+								</Animate>
+
 								<div className="bottom w-full flex flex-col items-center justify-center mt-5">
 									{data.error && (
 										<span className="flex items-center font-medium tracking-wide text-red-500 mb-4 mt-1 text-sm ml-1">
