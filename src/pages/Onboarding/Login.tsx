@@ -52,6 +52,7 @@ const Login = () => {
 			.then((result: SignInWithAppleResponse) => {
 				// TODO: Handle user information
 				localStorage.setItem('fivetoken', 'apple_test_token');
+				setLoggedIn('apple_test_token');
 			})
 			.catch(error => {
 				// Handle error
