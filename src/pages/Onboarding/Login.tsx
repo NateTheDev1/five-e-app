@@ -8,6 +8,7 @@ import {
 	SignInWithApple,
 	SignInWithAppleResponse
 } from '@capacitor-community/apple-sign-in';
+import { Capacitor } from '@capacitor/core';
 
 export const animProps = {
 	start: { opacity: 0 },
@@ -136,20 +137,22 @@ const Login = () => {
 										Continue
 									</button>
 								</Animate>
-								<Animate
-									sequenceIndex={2}
-									duration={0.4}
-									{...animProps}
-								>
-									<button
-										onClick={appleSignIn}
-										type="button"
-										className=" w-full mt-5  text-white font-bold py-2 px-4 rounded"
-										style={{ background: 'black' }}
+								{Capacitor.getPlatform() === 'ios' && (
+									<Animate
+										sequenceIndex={2}
+										duration={0.4}
+										{...animProps}
 									>
-										Sign In With Apple
-									</button>
-								</Animate>
+										<button
+											onClick={appleSignIn}
+											type="button"
+											className=" w-full mt-5  text-white font-bold py-2 px-4 rounded"
+											style={{ background: 'black' }}
+										>
+											Sign In With Apple
+										</button>
+									</Animate>
+								)}
 
 								<div className="bottom w-full flex flex-col items-center justify-center mt-5">
 									{data.error && (
