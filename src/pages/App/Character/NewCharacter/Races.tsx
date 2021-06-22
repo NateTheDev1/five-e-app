@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Redirect, useHistory } from 'react-router';
+import { Redirect } from 'react-router';
 import { Animate } from 'react-simple-animate';
 import { races } from '../../../../corev2/core';
 import { Race as RaceType } from '../../../../corev2/Race';
@@ -7,7 +7,7 @@ import { CharacterActions } from '../../../../redux/Character/actions';
 import { CharacterSelectors } from '../../../../redux/Character/selectors';
 import { animProps } from '../../../Onboarding/Login';
 import Race from './Race';
-import Select from 'react-select';
+import { ChevronRightIcon, CheckCircleIcon } from '@heroicons/react/solid';
 
 const raceOptions = Object.keys(races).map(race => ({
 	value: races[race],
@@ -15,14 +15,15 @@ const raceOptions = Object.keys(races).map(race => ({
 }));
 
 const Races = () => {
-	const history = useHistory();
 	const newCharacter = CharacterSelectors.useSelectNewCharacter();
 	const updateCharacter = CharacterActions.useUpdateNewCharacter();
 	const [play, setPlay] = useState(false);
 
 	const [selectedRace, setSelectedRace] = useState<RaceType | undefined>(
-		newCharacter?.race
+		newCharacter?.race ?? races['halfelf']
 	);
+
+	const [raceOpen, setRaceOpen] = useState<RaceType | undefined>(undefined);
 
 	useEffect(() => {
 		if (!play) {
@@ -36,12 +37,12 @@ const Races = () => {
 
 	return (
 		<Animate duration={0.2} play={play} {...animProps}>
-			<div className=" mt-5 container w-full md:max-w-screen-lg mx-auto">
-				<div className="bg-white p-3 text-black rounded-md">
-					<h3 className="text-lg mb-3 font-light opacity-90">
+			<div className="mt-5 container w-full md:max-w-screen-lg mx-auto">
+				<div className=" p-3 rounded-md text-white">
+					<h3 className="text-lg mb-3 font-light opacity-90 text-center">
 						Race selection
 					</h3>
-					<p className="text-sm my-3 opacity-50 font-light leading-10">
+					<p className="text-sm my-3 opacity-50 font-light leading-10  text-center">
 						Your choice of character race provides you with a basic
 						set of advantages and special abilities. If you’re a
 						fighter, are you a stubborn dwarf monster-slayer, a
@@ -52,47 +53,63 @@ const Races = () => {
 						powers but also provides the first cues for building
 						your character’s story.
 					</p>
-					<hr className=" border-gray-300" />
-					<div className="mt-8">
-						{selectedRace && (
-							<button
+
+					{selectedRace && (
+						<div className="rounded-md bg-gray-800 text-white p-3 shadow-xl mb-5 ">
+							<div
+								className="flex items-center justify-between cursor-pointer"
 								onClick={() => {
-									window.scrollTo(0, 0);
-
-									history.push('/app/characters/new/classes');
+									setRaceOpen(selectedRace);
 								}}
-								className="bg-red-500 w-full h-auto mb-4 hover:bg-red-500 text-white font-bold py-2 px-4 rounded"
 							>
-								Continue
-							</button>
-						)}
-						<Select
-							value={{
-								label: selectedRace?.name,
-								value: selectedRace
-							}}
-							isSearchable={false}
-							options={raceOptions}
-							onChange={e => {
-								if (e) {
-									const newChar = newCharacter;
-									newChar.race = e.value;
-									newChar.bonuses = [];
-									newChar.languages = [];
+								<h4>{selectedRace.name}</h4>
+								<div className="flex">
+									<CheckCircleIcon className="w-5 h-5 text-green-400" />
+									<ChevronRightIcon className="w-5 h-5" />
+								</div>
+							</div>
 
-									updateCharacter(newCharacter);
-									setSelectedRace(e.value);
-								}
-							}}
-						/>
-					</div>
+							{raceOpen === selectedRace && (
+								<Race
+									selectedRace={selectedRace}
+									race={raceOpen}
+									setRaceOpen={setRaceOpen}
+									setSelectedRace={setSelectedRace}
+								/>
+							)}
+						</div>
+					)}
 					<div className="mt-8">
-						{!selectedRace && (
-							<p className="text-center opacity-50">
-								Select a race to see more information.
-							</p>
-						)}
-						{selectedRace && <Race race={selectedRace} />}
+						{raceOptions.map((race, key) => (
+							<div
+								className="rounded-md bg-gray-800 text-white p-3 shadow-xl mb-5 "
+								key={key}
+							>
+								<div
+									className="flex items-center justify-between cursor-pointer"
+									onClick={() => {
+										setRaceOpen(race.value);
+									}}
+								>
+									<h4>{race.label}</h4>
+									<div className="flex">
+										{selectedRace === race.value && (
+											<CheckCircleIcon className="w-5 h-5 text-green-400" />
+										)}
+										<ChevronRightIcon className="w-5 h-5" />
+									</div>
+								</div>
+
+								{raceOpen === race.value && (
+									<Race
+										selectedRace={selectedRace}
+										race={raceOpen}
+										setRaceOpen={setRaceOpen}
+										setSelectedRace={setSelectedRace}
+									/>
+								)}
+							</div>
+						))}
 					</div>
 				</div>
 			</div>
