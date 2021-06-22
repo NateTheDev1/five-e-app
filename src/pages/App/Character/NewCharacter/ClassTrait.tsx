@@ -11,7 +11,7 @@ const ClassTrait = ({
 	const [open, setOpen] = useState(false);
 	return (
 		<div
-			className="bg-white my-3 rounded p-4 cursor-pointer"
+			className="bg-white my-3 rounded p-4 cursor-pointer text-black"
 			onClick={() => setOpen(!open)}
 		>
 			<div className="top flex justify-between items-center">

@@ -37,9 +37,12 @@ const Races = () => {
 
 	return (
 		<Animate duration={0.2} play={play} {...animProps}>
-			<div className="mt-5 container w-full md:max-w-screen-lg mx-auto">
+			<div
+				className="mt-5 container w-full md:max-w-screen-lg mx-auto"
+				style={{ marginTop: '15px' }}
+			>
 				<div className=" p-3 rounded-md text-white">
-					<h3 className="text-lg mb-3 font-light opacity-90 text-center">
+					<h3 className="text-lg mb-3 mt-4 font-light opacity-90 text-center">
 						Race selection
 					</h3>
 					<p className="text-sm my-3 opacity-50 font-light leading-10  text-center">
@@ -55,7 +58,7 @@ const Races = () => {
 					</p>
 
 					{selectedRace && (
-						<div className="rounded-md bg-gray-800 text-white p-3 shadow-xl mb-5 ">
+						<div className="rounded-md bg-gray-800 text-white p-3 shadow-xl mb-5 mt-4 ">
 							<div
 								className="flex items-center justify-between cursor-pointer"
 								onClick={() => {
@@ -79,6 +82,7 @@ const Races = () => {
 							)}
 						</div>
 					)}
+					{selectedRace && <hr className="mt-8" />}
 					<div className="mt-8">
 						{raceOptions.map((race, key) => (
 							<div
