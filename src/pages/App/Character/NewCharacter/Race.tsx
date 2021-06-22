@@ -149,13 +149,16 @@ const Race = ({
 	return (
 		<Dialog
 			fullScreen
-			className="bg-bgmain"
+			className="bg-bgmain max-h-screen overflow-x-hidden"
 			open={true}
 			onClose={() => setRaceOpen(undefined)}
 			TransitionComponent={Transition as any}
 		>
 			<Animate play {...animProps}>
-				<div className="top flex justify-between w-100  bg-gray-800 h-12 items-center shadow-2xl p-4 text-white">
+				<div
+					className="top flex justify-between w-100  bg-gray-800 h-12 items-center shadow-2xl p-4 text-white"
+					style={{ paddingTop: '60px' }}
+				>
 					<h4
 						className="font-medium text-red-500 uppercase leading-10"
 						style={{ letterSpacing: '1rem' }}
@@ -192,7 +195,7 @@ const Race = ({
 						/>
 					</svg>
 				</div>
-				<div className=" p-4 bg-bgmain h-screen overflow-scroll text-white ">
+				<div className=" p-4 bg-bgmain h-screen overflow-scroll text-white pb-8">
 					<p className="mt-2 leading-10 font-light sm: text-sm">
 						{race.description}
 					</p>
