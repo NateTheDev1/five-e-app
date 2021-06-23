@@ -1,10 +1,8 @@
 import { useState } from 'react';
 import { OptionsType } from 'react-select';
 import Select from 'react-select';
-import { Animate } from 'react-simple-animate';
 import { CharacterClass } from '../../../../corev2/CharacterClasses/CharacterClass';
 import { instruments, SkillConstants } from '../../../../corev2/core';
-import { animProps } from '../../../Onboarding/Login';
 import { useEffect } from 'react';
 import ClassTrait from './ClassTrait';
 import { CharacterSelectors } from '../../../../redux/Character/selectors';
@@ -73,10 +71,12 @@ export const ClassView = ({
 		const newChar = newCharacter;
 
 		if (newChar) {
-			newChar.proficiencies = [
+			const newProfs = [
 				...selectedInstruments.map(s => s.value),
 				...selectedSkills.map(s => s.value)
-			];
+			].filter(prof => !newChar.proficiencies.includes(prof));
+
+			newChar.proficiencies = [...newChar.proficiencies, ...newProfs];
 
 			for (const [, val] of Object.entries(selectedProfs)) {
 				//@ts-ignore
@@ -162,10 +162,9 @@ export const ClassView = ({
 
 						if (newChar && selectedClass !== classRef) {
 							setSelectedClass(undefined);
-							newChar.race = undefined;
+							newChar.class = undefined;
 
-							newChar.bonuses = [];
-							newChar.languages = [];
+							newChar.inventory = [];
 
 							updateCharacter(newChar);
 						}
@@ -224,24 +223,50 @@ export const ClassView = ({
 								<Select
 									className="text-black"
 									isSearchable={false}
-									onChange={e => {
+									onChange={(e, a) => {
 										if (e) {
+											console.log(e, a);
 											setSelectedSkills(e);
+										}
+
+										if (a.action === 'remove-value') {
+											const index = newCharacter?.proficiencies.indexOf(
+												a.removedValue.value
+											);
+
+											if (index) {
+												newCharacter?.proficiencies.splice(
+													index,
+													1
+												);
+											}
 										}
 									}}
 									value={selectedSkills || ''}
 									options={
 										!p.choose?.all
-											? p.choose?.from.map(el => ({
-													label: el,
-													value: el
-											  }))
-											: Object.values(SkillConstants).map(
-													el => ({
+											? p.choose?.from
+													.map(el => ({
 														label: el,
 														value: el
-													})
-											  )
+													}))
+													.filter(
+														prof =>
+															!newCharacter?.proficiencies.includes(
+																prof.value
+															)
+													)
+											: Object.values(SkillConstants)
+													.map(el => ({
+														label: el,
+														value: el
+													}))
+													.filter(
+														prof =>
+															!newCharacter?.proficiencies.includes(
+																prof.value
+															)
+													)
 									}
 									isMulti={true}
 									isOptionDisabled={option =>
@@ -383,9 +408,6 @@ export const ClassView = ({
 
 							updateCharacter(newChar);
 						}
-
-						newChar.bonuses = [];
-						newChar.languages = [];
 
 						updateCharacter(newChar);
 

@@ -188,6 +188,7 @@ const Race = ({
 
 							newChar.bonuses = [];
 							newChar.languages = [];
+							newChar.proficiencies = [];
 
 							updateCharacter(newChar);
 						}

@@ -5,7 +5,7 @@ import { CharacterClass } from '../../../../corev2/CharacterClasses/CharacterCla
 import { CharacterActions } from '../../../../redux/Character/actions';
 import { CharacterSelectors } from '../../../../redux/Character/selectors';
 import { animProps } from '../../../Onboarding/Login';
-import { Redirect, useHistory } from 'react-router';
+import { Redirect } from 'react-router';
 import { classes } from '../../../../corev2/core';
 import ClassView from './ClassView';
 import { CheckCircleIcon, ChevronRightIcon } from '@heroicons/react/solid';
@@ -16,7 +16,6 @@ const classOptions = Object.keys(classes).map(cls => ({
 }));
 
 const Classes = () => {
-	const history = useHistory();
 	const [play, setPlay] = useState(false);
 
 	const newCharacter = CharacterSelectors.useSelectNewCharacter();
@@ -66,55 +65,7 @@ const Classes = () => {
 						of Dungeons & Dragons. A class is more than a
 						profession; it is your character’s calling.
 					</p>
-					<div className="mt-8">
-						{/* {selectedClass && (
-							<button
-								onClick={() => {
-									if (
-										selectedClass &&
-										selectedClass.equipmentChoices
-									) {
-										const newChar = newCharacter;
-										newChar.inventory = [
-											...newCharacter.inventory,
-											...selectedClass.equipmentChoices
-												.filter(eq => !eq.choose)
-												.map((item: any) => ({
-													name: item.title,
-													quantity: item.quantity
-												}))
-										];
-										updateCharacter(newChar);
-									}
-
-									window.scrollTo(0, 0);
-
-									history.push(
-										'/app/characters/new/background'
-									);
-								}}
-								className="bg-red-500 w-full h-auto mb-4 hover:bg-red-500 text-white font-bold py-2 px-4 rounded"
-							>
-								Continue
-							</button>
-						)} */}
-						{/* <Select
-							value={{
-								label: selectedClass?.name,
-								value: selectedClass
-							}}
-							isSearchable={false}
-							options={classOptions}
-							onChange={e => {
-								if (e) {
-									const newChar = newCharacter;
-									newChar.class = e.value;
-									updateCharacter(newCharacter);
-									setSelectedClass(e.value);
-								}
-							}}
-						/> */}
-					</div>
+					<div className="mt-8"></div>
 					{selectedClass && (
 						<div className="rounded-md bg-gray-800 text-white p-3 shadow-xl mb-5 mt-4 ">
 							<div
