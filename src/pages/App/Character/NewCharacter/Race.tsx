@@ -14,6 +14,7 @@ import { useHistory } from 'react-router-dom';
 import { Capacitor } from '@capacitor/core';
 import { Fab } from '@material-ui/core';
 import { useEffect } from 'react';
+import { SkillConstants } from '../../../../corev2/core';
 
 const Race = ({
 	race,
@@ -45,6 +46,22 @@ const Race = ({
 			.map(l => ({
 				label: l,
 				value: l,
+				disabled: false
+			})) ?? []
+	);
+
+	const [selectedProfs, setSelectedProfs] = useState<
+		OptionsType<{
+			label: any;
+			value: any;
+			disabled: boolean;
+		}>
+	>(
+		newCharacter?.proficiencies
+			.filter(prof => !race.proficiencies.includes(prof))
+			.map(prof => ({
+				label: prof,
+				value: prof,
 				disabled: false
 			})) ?? []
 	);
@@ -101,10 +118,27 @@ const Race = ({
 						disabled: false
 					}));
 
+	const profsOptions =
+		race.extraProficiencies && !race.extraProficiencies.all
+			? race.extraProficiencies.skills
+					.filter(skill => !race.proficiencies.find(s => s === skill))
+					.map(skill => ({
+						label: skill,
+						value: skill,
+						disabled: false
+					}))
+			: Object.values(SkillConstants)
+					.filter(skill => !race.proficiencies.find(s => s === skill))
+					.map(skill => ({
+						label: skill,
+						value: skill,
+						disabled: false
+					}));
+
 	useEffect(() => {
 		let bonuses = false;
 		let languages = false;
-		// let profs = false;
+		let profs = false;
 
 		if (selectedBonuses.length === (race.extraBonuses?.choose ?? 0)) {
 			bonuses = true;
@@ -114,9 +148,15 @@ const Race = ({
 			languages = true;
 		}
 
-		setStepComplete(bonuses === true && languages === true);
+		if (selectedProfs.length === (race.extraProficiencies?.choose ?? 0)) {
+			profs = true;
+		}
+
+		setStepComplete(
+			bonuses === true && languages === true && profs === true
+		);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [selectedLanguages, selectedBonuses]);
+	}, [selectedLanguages, selectedBonuses, selectedProfs]);
 
 	return (
 		<Dialog
@@ -214,6 +254,34 @@ const Race = ({
 						</>
 					)}
 				</div>
+				{race.extraProficiencies && (
+					<div className="mt-8 mb-4">
+						<p className="mb-2 font-light">
+							Select {race.extraProficiencies.choose} additional
+							skill proficiencies
+						</p>
+						<Select
+							closeMenuOnSelect={false}
+							className="text-black"
+							isSearchable={false}
+							onChange={e => {
+								if (e) {
+									setSelectedProfs(e);
+								}
+							}}
+							value={selectedProfs}
+							options={profsOptions}
+							isMulti={true}
+							isOptionDisabled={option =>
+								(!selectedProfs.includes(option) &&
+									race.extraProficiencies &&
+									selectedProfs.length ===
+										race.extraProficiencies.choose) ??
+								false
+							}
+						/>
+					</div>
+				)}
 				<h5 className="font-semibold mt-5">Languages</h5>
 				{race.languages.map((l, key) => (
 					<p className="my-2 text-sm" key={key}>
@@ -288,6 +356,11 @@ const Race = ({
 						}
 
 						newChar.bonuses = [...race.bonuses];
+
+						newChar.proficiencies = [
+							...newChar.proficiencies,
+							...selectedProfs.map(prof => prof.value)
+						];
 
 						if (race && race.extraBonuses !== undefined) {
 							newChar.bonuses = [
