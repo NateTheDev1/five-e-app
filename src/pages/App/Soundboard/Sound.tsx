@@ -39,6 +39,7 @@ const Sound = ({
 			}}
 		>
 			<ReactPlayer
+                                autoPlay={true}
 				url={link.url}
 				playing={playing}
 				style={{ display: 'none' }}
