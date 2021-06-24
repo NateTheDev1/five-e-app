@@ -11,7 +11,7 @@ const Loading = () => {
 	}, [ref]);
 
 	return (
-		<div className="bg-bgmain h-screen w-screen">
+		<div className="bg-bgmain h-screen w-screen opacity-70">
 			<LoadingBar color="#3067FF" ref={ref} loaderSpeed={100} />
 		</div>
 	);

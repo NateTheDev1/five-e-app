@@ -1,0 +1,3 @@
+mutation AddSoundboardLink($link: SoundboardLinkInput!) {
+	addSoundboardLink(link: $link)
+}

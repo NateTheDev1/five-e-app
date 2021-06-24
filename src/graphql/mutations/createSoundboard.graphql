@@ -1,0 +1,5 @@
+mutation CreateSoundboard($title: String!) {
+	createSoundboard(title: $title) {
+		id
+	}
+}

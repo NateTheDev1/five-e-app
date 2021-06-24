@@ -11,6 +11,7 @@ const CharactersView = lazy(() => import('./Character/CharactersView'));
 const NewCharacter = lazy(() => import('./Character/NewCharacter'));
 const Soundboards = lazy(() => import('./Soundboard'));
 const CharacterSheet = lazy(() => import('./Character/CharacterSheet'));
+const Soundboard = lazy(() => import('./Soundboard/Soundboard'));
 
 const Dashboard = () => {
 	return (
@@ -19,6 +20,9 @@ const Dashboard = () => {
 			{Capacitor.getPlatform() !== 'web' && <TopBarMobile title="Home" />}
 
 			<Switch>
+				<Route path="/app/soundboard/:soundboardId">
+					<Soundboard />
+				</Route>
 				<Route path="/app/soundboard">
 					<Soundboards />
 				</Route>
