@@ -1,8 +1,12 @@
 import { ChevronDownIcon } from '@heroicons/react/solid';
 import { useState } from 'react';
+import { useGetSoundboardsQuery } from '../../../graphql';
+
+import ReactPlayer from 'react-player';
 
 export const Soundboards = () => {
 	const [noteOpen, setNoteOpen] = useState(true);
+	const { data, loading, error, refetch } = useGetSoundboardsQuery();
 
 	return (
 		<div className="px-5 mt-12">
@@ -43,6 +47,22 @@ export const Soundboards = () => {
 			</div>
 
 			<hr className="mt-5" />
+
+			<div className="container w-full mt-10 mx-auto">
+				{data && data.getSoundboards.length <= 0 && (
+					<h3 className="text-lg font-medium text-center">
+						You don't have any existing soundboards yet.
+					</h3>
+				)}
+
+				{/* <ReactPlayer
+					url="https://www.youtube.com/watch?v=lU1EmTA4J60"
+					width="100%"
+					playsinline
+					style={{ display: 'none' }}
+					controls={false}
+				/> */}
+			</div>
 		</div>
 	);
 };

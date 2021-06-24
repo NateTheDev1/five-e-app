@@ -1,0 +1,12 @@
+query GetSoundboards {
+	getSoundboards {
+		id
+		title
+		userId
+		links {
+			id
+			title
+			url
+		}
+	}
+}

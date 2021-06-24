@@ -1,0 +1,6 @@
+mutation AppleLogin($email: String!) {
+	appleLogin(email: $email) {
+		id
+		token
+	}
+}

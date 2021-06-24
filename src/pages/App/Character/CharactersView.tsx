@@ -68,8 +68,8 @@ const CharactersView = () => {
 								duration={0.2}
 								{...animProps}
 							>
-								{characters.length < 0 && (
-									<h3 className="text-lg font-bold ">
+								{characters.length <= 0 && (
+									<h3 className="text-lg font-medium ">
 										You don't have any existing characters
 										yet.
 									</h3>

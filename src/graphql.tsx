@@ -29,6 +29,7 @@ export type LoginInput = {
 export type Mutation = {
   signup: User;
   login: User;
+  appleLogin: User;
 };
 
 
@@ -41,7 +42,13 @@ export type MutationLoginArgs = {
   credentials: LoginInput;
 };
 
+
+export type MutationAppleLoginArgs = {
+  email: Scalars['String'];
+};
+
 export type Query = {
+  getSoundboards: Array<Maybe<Soundboard>>;
   getUser: User;
 };
 
@@ -56,6 +63,20 @@ export type SignupInput = {
   password: Scalars['String'];
 };
 
+export type Soundboard = {
+  id: Scalars['Int'];
+  title: Scalars['String'];
+  userId: Scalars['Int'];
+  links: Array<Maybe<SoundboardLink>>;
+};
+
+export type SoundboardLink = {
+  id: Scalars['Int'];
+  title: Scalars['String'];
+  url: Scalars['String'];
+  soundboardId: Scalars['Int'];
+};
+
 
 export type User = {
   id: Scalars['Int'];
@@ -64,6 +85,13 @@ export type User = {
   token?: Maybe<Scalars['String']>;
   createdAt: Scalars['String'];
 };
+
+export type AppleLoginMutationVariables = Exact<{
+  email: Scalars['String'];
+}>;
+
+
+export type AppleLoginMutation = { appleLogin: { id: number, token?: Maybe<string> } };
 
 export type LoginMutationVariables = Exact<{
   credentials: LoginInput;
@@ -79,6 +107,11 @@ export type SignupMutationVariables = Exact<{
 
 export type SignupMutation = { signup: { id: number, token?: Maybe<string> } };
 
+export type GetSoundboardsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetSoundboardsQuery = { getSoundboards: Array<Maybe<{ id: number, title: string, userId: number, links: Array<Maybe<{ id: number, title: string, url: string }>> }>> };
+
 export type GetUserQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
@@ -87,6 +120,40 @@ export type GetUserQueryVariables = Exact<{
 export type GetUserQuery = { getUser: { id: number, name: string, email: string, createdAt: string } };
 
 
+export const AppleLoginDocument = gql`
+    mutation AppleLogin($email: String!) {
+  appleLogin(email: $email) {
+    id
+    token
+  }
+}
+    `;
+export type AppleLoginMutationFn = Apollo.MutationFunction<AppleLoginMutation, AppleLoginMutationVariables>;
+
+/**
+ * __useAppleLoginMutation__
+ *
+ * To run a mutation, you first call `useAppleLoginMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAppleLoginMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [appleLoginMutation, { data, loading, error }] = useAppleLoginMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useAppleLoginMutation(baseOptions?: Apollo.MutationHookOptions<AppleLoginMutation, AppleLoginMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AppleLoginMutation, AppleLoginMutationVariables>(AppleLoginDocument, options);
+      }
+export type AppleLoginMutationHookResult = ReturnType<typeof useAppleLoginMutation>;
+export type AppleLoginMutationResult = Apollo.MutationResult<AppleLoginMutation>;
+export type AppleLoginMutationOptions = Apollo.BaseMutationOptions<AppleLoginMutation, AppleLoginMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($credentials: LoginInput!) {
   login(credentials: $credentials) {
@@ -155,6 +222,47 @@ export function useSignupMutation(baseOptions?: Apollo.MutationHookOptions<Signu
 export type SignupMutationHookResult = ReturnType<typeof useSignupMutation>;
 export type SignupMutationResult = Apollo.MutationResult<SignupMutation>;
 export type SignupMutationOptions = Apollo.BaseMutationOptions<SignupMutation, SignupMutationVariables>;
+export const GetSoundboardsDocument = gql`
+    query GetSoundboards {
+  getSoundboards {
+    id
+    title
+    userId
+    links {
+      id
+      title
+      url
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetSoundboardsQuery__
+ *
+ * To run a query within a React component, call `useGetSoundboardsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSoundboardsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSoundboardsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetSoundboardsQuery(baseOptions?: Apollo.QueryHookOptions<GetSoundboardsQuery, GetSoundboardsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetSoundboardsQuery, GetSoundboardsQueryVariables>(GetSoundboardsDocument, options);
+      }
+export function useGetSoundboardsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSoundboardsQuery, GetSoundboardsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetSoundboardsQuery, GetSoundboardsQueryVariables>(GetSoundboardsDocument, options);
+        }
+export type GetSoundboardsQueryHookResult = ReturnType<typeof useGetSoundboardsQuery>;
+export type GetSoundboardsLazyQueryHookResult = ReturnType<typeof useGetSoundboardsLazyQuery>;
+export type GetSoundboardsQueryResult = Apollo.QueryResult<GetSoundboardsQuery, GetSoundboardsQueryVariables>;
 export const GetUserDocument = gql`
     query GetUser($id: Int!) {
   getUser(id: $id) {
