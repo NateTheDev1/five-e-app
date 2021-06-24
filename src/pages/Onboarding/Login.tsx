@@ -51,19 +51,28 @@ const Login = () => {
 			nonce: 'nonce'
 		})
 			.then((result: SignInWithAppleResponse) => {
-				// TODO: Handle user information
-				if (result.response.email) {
+				// TODO: Handle user information\
+
+				if (result.response.authorizationCode) {
 					appleLogin({
-						variables: { email: result.response.email }
-					}).then(res => {
-						if (!res.errors && res.data) {
-							setLoggedIn(res.data.appleLogin.token as string);
-						}
-					});
+						variables: { email: result.response.authorizationCode }
+					})
+						.then(res => {
+							if (res.data) {
+								setLoggedIn(
+									res.data.appleLogin.token as string
+								);
+							}
+						})
+						.catch(e => {
+							throw new Error(JSON.stringify(e));
+						});
 				}
 			})
 			.catch(error => {
 				// Handle error
+
+				throw new Error(JSON.stringify(error));
 			});
 	};
 

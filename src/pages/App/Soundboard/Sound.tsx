@@ -47,6 +47,8 @@ const Sound = ({
 				onBufferEnd={() => setLoading(false)}
 				volume={volume / 100}
 				loop={loop}
+				playsinline={true}
+				onError={e => alert(JSON.stringify(e))}
 			/>
 			<div className="bg-white flex flex-col p-4 rounded-md text-center">
 				<div className="flex justify-between items-center">
