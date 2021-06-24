@@ -104,7 +104,7 @@ const BackgroundComponent = ({
 
 	return (
 		<Animate play {...animProps}>
-			<div className="w-full mb-8 rounded-md bg-gray-200 text-whiteshadow-lg p-4 shadow-xl">
+			<div className="w-full mb-8 rounded-md  text-whiteshadow-lg p-4 shadow-xl">
 				<h4
 					className="font-medium text-red-500 uppercase leading-10"
 					style={{ letterSpacing: '1rem' }}
@@ -135,6 +135,7 @@ const BackgroundComponent = ({
 						</h5>
 						{backgroundRef.skillProficiencyChoices.map((c, key) => (
 							<Select
+								className="text-black"
 								key={key}
 								value={selectedSkills || ''}
 								isSearchable={false}
@@ -184,6 +185,7 @@ const BackgroundComponent = ({
 						</h5>
 						{backgroundRef.gamingChoices.map((g, key) => (
 							<Select
+								className="text-black"
 								key={key}
 								value={selectedSkills || ''}
 								isSearchable={false}
@@ -194,10 +196,9 @@ const BackgroundComponent = ({
 											if (
 												eb['action'] === 'remove-value'
 											) {
-												const index =
-													newCharacter.proficiencies.indexOf(
-														eb['removedValue'].value
-													);
+												const index = newCharacter.proficiencies.indexOf(
+													eb['removedValue'].value
+												);
 												if (index) {
 													newCharacter.proficiencies.splice(
 														index,
@@ -250,6 +251,7 @@ const BackgroundComponent = ({
 						</h5>
 						{backgroundRef.languagesChoices.map((l, key) => (
 							<Select
+								className="text-black"
 								key={key}
 								value={selectedLanguages || ''}
 								isSearchable={false}
@@ -269,12 +271,11 @@ const BackgroundComponent = ({
 										eb['action'] === 'remove-value' &&
 										newCharacter
 									) {
-										newCharacter.languages =
-											newCharacter.languages.filter(
-												lang =>
-													lang !==
-													eb['removedValue'].value
-											);
+										newCharacter.languages = newCharacter.languages.filter(
+											lang =>
+												lang !==
+												eb['removedValue'].value
+										);
 									}
 
 									if (e) {
@@ -322,6 +323,7 @@ const BackgroundComponent = ({
 						</h5>
 						{backgroundRef.equipmentChoices.map((eq, key) => (
 							<Select
+								className="text-black"
 								key={key}
 								value={selectedEquipment || ''}
 								isSearchable={false}
@@ -331,12 +333,11 @@ const BackgroundComponent = ({
 										eb['action'] === 'remove-value' &&
 										newCharacter
 									) {
-										newCharacter.inventory =
-											newCharacter.inventory.filter(
-												item =>
-													item.name ===
-													(eb['removedValue'] as any)
-											);
+										newCharacter.inventory = newCharacter.inventory.filter(
+											item =>
+												item.name ===
+												(eb['removedValue'] as any)
+										);
 									}
 
 									if (
@@ -394,10 +395,14 @@ const BackgroundComponent = ({
 						if (newCharacter) {
 							const num = Math.floor(Math.random() * 7);
 							setSelectedTrait({
-								value: backgroundRef.traitsSelection
-									?.selections[num].text,
-								label: backgroundRef.traitsSelection
-									?.selections[num].text
+								value:
+									backgroundRef.traitsSelection?.selections[
+										num
+									].text,
+								label:
+									backgroundRef.traitsSelection?.selections[
+										num
+									].text
 							});
 							newCharacter.personalityTraits =
 								backgroundRef.traitsSelection?.selections[num]
@@ -408,6 +413,7 @@ const BackgroundComponent = ({
 					Random Roll
 				</button>
 				<Select
+					className="text-black"
 					isSearchable={false}
 					value={[selectedTrait] ?? ''}
 					isMulti={false}
@@ -435,12 +441,14 @@ const BackgroundComponent = ({
 						if (newCharacter) {
 							const num = Math.floor(Math.random() * 5);
 							setSelectedFlaw({
-								value: backgroundRef.flawsSelection?.selections[
-									num
-								].text,
-								label: backgroundRef.flawsSelection?.selections[
-									num
-								].text
+								value:
+									backgroundRef.flawsSelection?.selections[
+										num
+									].text,
+								label:
+									backgroundRef.flawsSelection?.selections[
+										num
+									].text
 							});
 							newCharacter.flaws =
 								backgroundRef.flawsSelection?.selections[num]
@@ -451,6 +459,7 @@ const BackgroundComponent = ({
 					Random Roll
 				</button>
 				<Select
+					className="text-black"
 					isSearchable={false}
 					value={[selectedFlaw] ?? ''}
 					isMulti={false}
@@ -478,12 +487,14 @@ const BackgroundComponent = ({
 						if (newCharacter) {
 							const num = Math.floor(Math.random() * 5);
 							setSelectedBond({
-								value: backgroundRef.bondsSelection?.selections[
-									num
-								].text,
-								label: backgroundRef.bondsSelection?.selections[
-									num
-								].text
+								value:
+									backgroundRef.bondsSelection?.selections[
+										num
+									].text,
+								label:
+									backgroundRef.bondsSelection?.selections[
+										num
+									].text
 							});
 							newCharacter.flaws =
 								backgroundRef.bondsSelection?.selections[num]
@@ -494,6 +505,7 @@ const BackgroundComponent = ({
 					Random Roll
 				</button>
 				<Select
+					className="text-black"
 					isSearchable={false}
 					value={[selectedBond] ?? ''}
 					isMulti={false}
@@ -521,10 +533,14 @@ const BackgroundComponent = ({
 						if (newCharacter) {
 							const num = Math.floor(Math.random() * 5);
 							setSelectedIdeal({
-								value: backgroundRef.idealsSelection
-									?.selections[num].text,
-								label: backgroundRef.idealsSelection
-									?.selections[num].text
+								value:
+									backgroundRef.idealsSelection?.selections[
+										num
+									].text,
+								label:
+									backgroundRef.idealsSelection?.selections[
+										num
+									].text
 							});
 							newCharacter.flaws =
 								backgroundRef.idealsSelection?.selections[num]
@@ -535,6 +551,7 @@ const BackgroundComponent = ({
 					Random Roll
 				</button>
 				<Select
+					className="text-black"
 					isSearchable={false}
 					value={[selectedIdeal] ?? ''}
 					isMulti={false}

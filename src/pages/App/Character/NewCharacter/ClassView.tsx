@@ -30,6 +30,8 @@ export const ClassView = ({
 	const history = useHistory();
 	const newCharacter = CharacterSelectors.useSelectNewCharacter();
 	const updateCharacter = CharacterActions.useUpdateNewCharacter();
+	const [stepComplete, setStepComplete] = useState(false);
+
 	const [selectedSkills, setSelectedSkills] = useState<
 		OptionsType<{
 			label: any;
@@ -135,6 +137,10 @@ export const ClassView = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [classRef]);
 
+	useEffect(() => {
+		setStepComplete(selectedSkills.length >= 2);
+	}, [selectedSkills, selectedProfs]);
+
 	return (
 		<Dialog
 			fullScreen
@@ -225,7 +231,6 @@ export const ClassView = ({
 									isSearchable={false}
 									onChange={(e, a) => {
 										if (e) {
-											console.log(e, a);
 											setSelectedSkills(e);
 										}
 
@@ -384,6 +389,7 @@ export const ClassView = ({
 				<div className="pb-12"></div>
 			</div>
 			<Fab
+				disabled={!stepComplete}
 				onClick={() => {
 					const newChar = newCharacter;
 

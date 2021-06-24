@@ -17,6 +17,8 @@ const Stats = () => {
 	const newCharacter = CharacterSelectors.useSelectNewCharacter();
 	const updateCharacter = CharacterActions.useUpdateNewCharacter();
 
+	const [stepComplete, setStepComplete] = useState(false);
+
 	useEffect(() => {
 		if (!play) {
 			setPlay(true);
@@ -34,6 +36,20 @@ const Stats = () => {
 		Charisma: newCharacter?.stats['Charisma'] ?? -1
 	});
 
+	useEffect(() => {
+		let comps: boolean[] = [];
+
+		for (const val of Object.values(statRolls)) {
+			if (val !== -1) {
+				comps.push(true);
+			} else {
+				comps.push(false);
+			}
+		}
+
+		setStepComplete(!comps.includes(false));
+	}, [statRolls]);
+
 	const rollStats = () => {
 		const tmpRolls: number[] = [];
 		for (let i = 0; i < core.statBlocks.length; i++) {
@@ -44,12 +60,23 @@ const Stats = () => {
 
 	const filterRollSelects = (r: any) => {
 		let found = false;
+		let supposedInstances = 0;
+		let instances = 0;
+
+		for (let i = 0; i < rolls.length; i++) {
+			if (rolls[i] === r) {
+				supposedInstances++;
+			}
+		}
 
 		for (let i = 0; i < core.statBlocks.length; i++) {
 			if (statRolls[core.statBlocks[i].text] === r) {
-				found = true;
+				instances++;
 			}
 		}
+
+		if (instances === supposedInstances) found = true;
+		if (instances < supposedInstances) found = false;
 
 		return found;
 	};
@@ -76,7 +103,7 @@ const Stats = () => {
 	return (
 		<Animate duration={0.2} play={play} {...animProps}>
 			<div className=" mt-5 container w-full md:max-w-screen-lg mx-auto">
-				<div className="bg-white p-3 text-black rounded-md">
+				<div className="bg-bgmain p-3 text-white ">
 					<h3 className="text-lg mb-3 font-light opacity-90">
 						Ability Score Allocation
 					</h3>
@@ -92,6 +119,7 @@ const Stats = () => {
 						</h4>
 
 						<Select
+							className="text-black"
 							isSearchable={false}
 							value={{
 								value: genMethod,
@@ -108,37 +136,78 @@ const Stats = () => {
 								if (e) {
 									if (e.value === 'Standard Array') {
 										setGenMethod(e.value);
-										setRolls(core.standardStatArray);
+										setRolls([...core.standardStatArray]);
 									} else {
 										setGenMethod(e.value);
 										rollStats();
 									}
+
+									if (newCharacter) {
+										newCharacter.stats = {
+											Strength: -1,
+											Dexterity: -1,
+											Constitution: -1,
+											Intelligence: -1,
+											Wisdom: -1,
+											Charisma: -1
+										};
+									}
+
+									setStatRolls({
+										Strength:
+											newCharacter?.stats['Strength'] ??
+											-1,
+										Dexterity:
+											newCharacter?.stats['Dexterity'] ??
+											-1,
+										Constitution:
+											newCharacter?.stats[
+												'Constitution'
+											] ?? -1,
+										Intelligence:
+											newCharacter?.stats[
+												'Intelligence'
+											] ?? -1,
+										Wisdom:
+											newCharacter?.stats['Wisdom'] ?? -1,
+										Charisma:
+											newCharacter?.stats['Charisma'] ??
+											-1
+									});
 								}
 							}}
 						/>
-						<button
-							className="bg-red-500 w-full mt-3 h-auto hover:bg-red-500 text-white font-bold py-1 px-2 text-sm rounded"
-							onClick={() => {
-								rollStats();
-								setStatRolls({
-									Strength:
-										newCharacter?.stats['Strength'] ?? -1,
-									Dexterity:
-										newCharacter?.stats['Dexterity'] ?? -1,
-									Constitution:
-										newCharacter?.stats['Constitution'] ??
-										-1,
-									Intelligence:
-										newCharacter?.stats['Intelligence'] ??
-										-1,
-									Wisdom: newCharacter?.stats['Wisdom'] ?? -1,
-									Charisma:
-										newCharacter?.stats['Charisma'] ?? -1
-								});
-							}}
-						>
-							Roll Again
-						</button>
+						{genMethod === 'Rolled' && (
+							<button
+								className="bg-red-500 w-full mt-3 h-auto hover:bg-red-500 text-white font-bold py-1 px-2 text-sm rounded"
+								onClick={() => {
+									rollStats();
+									setStatRolls({
+										Strength:
+											newCharacter?.stats['Strength'] ??
+											-1,
+										Dexterity:
+											newCharacter?.stats['Dexterity'] ??
+											-1,
+										Constitution:
+											newCharacter?.stats[
+												'Constitution'
+											] ?? -1,
+										Intelligence:
+											newCharacter?.stats[
+												'Intelligence'
+											] ?? -1,
+										Wisdom:
+											newCharacter?.stats['Wisdom'] ?? -1,
+										Charisma:
+											newCharacter?.stats['Charisma'] ??
+											-1
+									});
+								}}
+							>
+								Roll Again
+							</button>
+						)}
 
 						<div className="flex justify-between mt-8 w-80 mx-auto text-xs font-semibold">
 							{rolls.map((roll, key) => (
@@ -149,7 +218,7 @@ const Stats = () => {
 						<div className="mt-8">
 							{core.statBlocks.map((stat, key) => (
 								<div
-									className="stat flex flex-col justify-center text-center  mt-8 w-full mb-8 rounded-md bg-gray-200 text-whiteshadow-lg p-4 shadow-xl"
+									className="stat flex flex-col justify-center text-center text-white mt-8 w-full mb-8 rounded-md bg-gray-800 text-whiteshadow-lg p-4 shadow-xl"
 									key={key}
 								>
 									<h4
@@ -160,6 +229,7 @@ const Stats = () => {
 									</h4>
 
 									<Select
+										className="text-black"
 										isSearchable={false}
 										//@ts-ignore
 										value={
@@ -167,13 +237,13 @@ const Stats = () => {
 											statRolls[stat.text] !== -1
 												? {
 														//@ts-ignore
-														value: statRolls[
-															stat.text
-														],
+														value:
+															statRolls[
+																stat.text
+															],
 														//@ts-ignore
-														label: statRolls[
-															stat.text
-														]
+														label:
+															statRolls[stat.text]
 												  }
 												: ''
 										}
@@ -207,7 +277,7 @@ const Stats = () => {
 										}}
 									/>
 
-									<p className="text-sm opacity-70 font-bold mt-4">
+									<p className="text-sm opacity-70 font-bold mt-4 text-white">
 										Bonuses
 									</p>
 
@@ -217,18 +287,18 @@ const Stats = () => {
 											.map((b, key) => (
 												<p
 													key={key}
-													className="mt-2 text-xs"
+													className="mt-2 text-xs text-white"
 												>
 													{b.stat} +{b.amount}
 												</p>
 											))}
 									</div>
 
-									<p className="text-sm opacity-70 font-bold mt-8">
+									<p className="text-sm opacity-70 font-bold mt-8 text-white">
 										Total
 									</p>
 									{statRolls[stat.text] !== -1 && (
-										<p>
+										<p className="text-white">
 											{getOgStat(stat.text) +
 												statRolls[stat.text]}
 										</p>
@@ -238,7 +308,8 @@ const Stats = () => {
 						</div>
 					</div>
 					<button
-						className="bg-red-500 w-full mt-3 h-auto hover:bg-red-500 text-white font-bold py-1 px-2 text-sm rounded"
+						disabled={!stepComplete}
+						className="bg-red-500 w-full mt-3 h-auto hover:bg-red-500 text-white font-bold py-1 px-2 text-sm rounded disabled "
 						onClick={() => {
 							const newChar = newCharacter;
 
