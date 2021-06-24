@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Logo from '../../components/Logo';
-import { useLoginMutation } from '../../graphql';
+import { useAppleLoginMutation, useLoginMutation } from '../../graphql';
 import { Animate, AnimateGroup } from 'react-simple-animate';
 import { UserActions } from '../../redux/User/actions';
 import {
@@ -24,6 +24,7 @@ const Login = () => {
 	const setLoggedIn = UserActions.useLogin();
 
 	const [loginUser, data] = useLoginMutation();
+	const [appleLogin, appleLogindata] = useAppleLoginMutation();
 
 	const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setCredentials({ ...credentials, [e.target.name]: e.target.value });
@@ -50,12 +51,28 @@ const Login = () => {
 			nonce: 'nonce'
 		})
 			.then((result: SignInWithAppleResponse) => {
-				// TODO: Handle user information
-				localStorage.setItem('fivetoken', 'apple_test_token');
-				setLoggedIn('apple_test_token');
+				// TODO: Handle user information\
+
+				if (result.response.authorizationCode) {
+					appleLogin({
+						variables: { email: result.response.authorizationCode }
+					})
+						.then(res => {
+							if (res.data) {
+								setLoggedIn(
+									res.data.appleLogin.token as string
+								);
+							}
+						})
+						.catch(e => {
+							throw new Error(JSON.stringify(e));
+						});
+				}
 			})
 			.catch(error => {
 				// Handle error
+
+				throw new Error(JSON.stringify(error));
 			});
 	};
 
@@ -64,7 +81,7 @@ const Login = () => {
 			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 400">
 				<path
 					fill="#E6000B"
-					fill-opacity="0.7"
+					fillOpacity="0.7"
 					d="M0,224L80,186.7C160,149,320,75,480,85.3C640,96,800,192,960,229.3C1120,267,1280,245,1360,234.7L1440,224L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"
 				></path>
 			</svg>
@@ -142,24 +159,23 @@ const Login = () => {
 										Continue
 									</button>
 								</Animate>
-
-								{Capacitor.getPlatform() === 'web' ||
-									(Capacitor.getPlatform() === 'ios' && (
-										<Animate
-											sequenceIndex={2}
-											duration={0.4}
-											{...animProps}
+								{(Capacitor.getPlatform() === 'web' ||
+									Capacitor.getPlatform() === 'ios') && (
+									<Animate
+										sequenceIndex={2}
+										duration={0.4}
+										{...animProps}
+									>
+										<button
+											onClick={appleSignIn}
+											type="button"
+											className=" w-full mt-8  text-white font-bold py-2 px-4 rounded"
+											style={{ background: 'black' }}
 										>
-											<button
-												onClick={appleSignIn}
-												type="button"
-												className=" w-full mt-8  text-white font-bold py-2 px-4 rounded"
-												style={{ background: 'black' }}
-											>
-												Sign In With Apple
-											</button>
-										</Animate>
-									))}
+											Sign In With Apple
+										</button>
+									</Animate>
+								)}
 
 								<div className="bottom w-full flex flex-col items-center justify-center mt-5">
 									{data.error && (

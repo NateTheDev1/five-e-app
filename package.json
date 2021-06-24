@@ -33,12 +33,14 @@
 		"react-csp": "^1.1.1",
 		"react-dom": "^17.0.2",
 		"react-lazy-load-image-component": "^1.5.1",
+		"react-player": "^2.9.0",
 		"react-redux": "^7.2.4",
 		"react-router-dom": "^5.2.0",
 		"react-schemaorg": "^1.3.3",
 		"react-scripts": "4.0.3",
 		"react-select": "^4.3.1",
 		"react-simple-animate": "^3.3.12",
+		"react-spinners": "^0.11.0",
 		"react-swipeable": "^6.1.2",
 		"react-top-loading-bar": "^2.0.1",
 		"redux": "^4.1.0",
@@ -49,6 +51,7 @@
 		"schema-dts": "^0.8.3",
 		"subscriptions-transport-ws": "^0.9.19",
 		"typescript": "^4.3.2",
+		"validator": "^13.6.0",
 		"web-vitals": "^1.1.2"
 	},
 	"scripts": {
@@ -59,7 +62,9 @@
 		"typecheck": "tsc -p . --noEmit true",
 		"codegen:build": "graphql-codegen --config codegen.yml",
 		"csp:dev": "react-csp dev",
-		"csp:prod": "react-csp prod"
+		"csp:prod": "react-csp prod",
+		"copy:ios": "npx cap copy ios",
+		"open:ios": "npx cap open ios"
 	},
 	"eslintConfig": {
 		"extends": [
@@ -92,6 +97,7 @@
 		"@types/react-router-dom": "^5.1.7",
 		"@types/react-select": "^4.0.15",
 		"@types/redux-logger": "^3.0.8",
+		"@types/validator": "^13.1.4",
 		"autoprefixer": "^9.8.6",
 		"postcss": "^7.0.35",
 		"prettier": "^2.3.1",

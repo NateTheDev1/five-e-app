@@ -1,0 +1,3 @@
+mutation DeleteSoundboard($soundboardId: Int!) {
+	deleteSoundboard(soundboardId: $soundboardId)
+}

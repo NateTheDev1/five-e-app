@@ -1,0 +1,11 @@
+query GetSoundboard($soundboardId: Int!) {
+	getSoundboard(soundboardId: $soundboardId) {
+		title
+		userId
+		links {
+			id
+			title
+			url
+		}
+	}
+}
