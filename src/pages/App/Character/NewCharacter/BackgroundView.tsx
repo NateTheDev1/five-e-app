@@ -1,4 +1,4 @@
-import { lazy, useState } from 'react';
+import { useState } from 'react';
 import { useEffect } from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
 import Select from 'react-select';
@@ -8,8 +8,7 @@ import { alignments, backgrounds, lifestyles } from '../../../../corev2/core';
 import { CharacterActions } from '../../../../redux/Character/actions';
 import { CharacterSelectors } from '../../../../redux/Character/selectors';
 import { animProps } from '../../../Onboarding/Login';
-
-const BackgroundComponent = lazy(() => import('./BackgroundComponent'));
+import BackgroundComponent from './BackgroundComponent';
 
 const backgroundOptions = Object.keys(backgrounds).map(bg => ({
 	value: backgrounds[bg],
@@ -77,12 +76,15 @@ const BackgroundView = () => {
 
 	return (
 		<Animate duration={0.2} play={play} {...animProps}>
-			<div className=" mt-5 container w-full md:max-w-screen-lg mx-auto">
-				<div className="bg-white p-3 text-black rounded-md">
-					<h3 className="text-lg mb-3 font-light opacity-90">
-						Background selection and other character details
+			<div
+				className=" mt-5 container w-full md:max-w-screen-lg mx-auto"
+				style={{ marginTop: '15px' }}
+			>
+				<div className="p-3 text-white rounded-md mt-4">
+					<h3 className="text-lg mb-3 font-light opacity-90 text-center">
+						Background selection and other details
 					</h3>
-					<p className="text-sm my-3 opacity-50 font-light leading-10">
+					<p className="text-sm my-3 opacity-50 font-light leading-10 text-center">
 						Every story has a beginning. Your character’s background
 						reveals where you came from, how you became an
 						adventurer, and your place in the world. Choosing a
@@ -92,23 +94,29 @@ const BackgroundView = () => {
 						you stop doing whatever your background describes and
 						start adventuring?
 					</p>
-					<hr className=" border-gray-300" />
+					<div className="mt-8"></div>
 					<div className="mt-8">
 						{selectedBackground && (
 							<button
 								onClick={() => {
 									history.push('/app/characters/new/stats');
 								}}
-								className="bg-red-500 w-full h-auto mb-4 hover:bg-red-500 text-white font-bold py-2 px-4 rounded"
+								className="bg-red-500 w-full h-auto mb-8 hover:bg-red-500 text-white font-bold py-2 px-4 rounded"
 							>
 								Continue
 							</button>
 						)}
 						<Select
-							value={{
-								label: selectedBackground?.name,
-								value: selectedBackground
-							}}
+							value={
+								selectedBackground
+									? {
+											label: selectedBackground?.name,
+											value: selectedBackground
+									  }
+									: ('' as any)
+							}
+							className="text-black"
+							placeholder="Select a background..."
 							isSearchable={false}
 							options={backgroundOptions}
 							onChange={e => {
@@ -121,7 +129,7 @@ const BackgroundView = () => {
 							}}
 						/>
 					</div>
-					<div className="mt-8">
+					<div className="mt-8 mb-8 ">
 						{!selectedBackground && (
 							<p className="text-center opacity-50">
 								Select a background to see more information.
@@ -133,15 +141,16 @@ const BackgroundView = () => {
 							/>
 						)}
 					</div>
-					<div className="w-full mb-8 rounded-md bg-gray-200 text-whiteshadow-lg p-4 shadow-xl">
+					<div className="w-full mb-8 rounded-md text-white p-4 ">
 						<div className="mb-8">
 							<label
-								className="block mt-5 text-black text-sm font-bold mb-4"
+								className="block mt-5 text-whitetext-sm font-bold mb-4"
 								htmlFor="alignment"
 							>
 								Alignment
 							</label>
 							<Select
+								className="text-black"
 								isSearchable={false}
 								name="alignment"
 								onChange={ev => {
@@ -168,12 +177,13 @@ const BackgroundView = () => {
 						</div>
 						<div className="mb-8">
 							<label
-								className="block mt-5 text-black text-sm font-bold mb-4"
+								className="block mt-5 text-white text-sm font-bold mb-4"
 								htmlFor="lifestyle"
 							>
 								Lifestyle
 							</label>
 							<Select
+								className="text-black"
 								isSearchable={false}
 								name="lifestyle"
 								onChange={ev => {
@@ -200,7 +210,7 @@ const BackgroundView = () => {
 						</div>
 						<div className="mb-8">
 							<label
-								className="block mt-5 text-black text-sm font-bold mb-2"
+								className="block mt-5 text-white text-sm font-bold mb-2"
 								htmlFor="faith"
 							>
 								Faith
@@ -219,7 +229,7 @@ const BackgroundView = () => {
 						</div>
 						<div className="mb-4">
 							<label
-								className="block mt-5 text-black text-sm font-bold mb-4"
+								className="block mt-5 text-white text-sm font-bold mb-4"
 								htmlFor="backstory"
 							>
 								Backstory
@@ -241,7 +251,7 @@ const BackgroundView = () => {
 						<div className="mb-8 w-full flex justify-between items-center">
 							<div className="left w-2/5">
 								<label
-									className="block mt-5 text-black text-sm font-bold mb-4"
+									className="block mt-5 text-white text-sm font-bold mb-4"
 									htmlFor="height"
 								>
 									Height
@@ -259,7 +269,7 @@ const BackgroundView = () => {
 							</div>
 							<div className="left w-2/5">
 								<label
-									className="block mt-5 text-black text-sm font-bold mb-4"
+									className="block mt-5 text-white text-sm font-bold mb-4"
 									htmlFor="weight"
 								>
 									Weight (lbs)
@@ -279,7 +289,7 @@ const BackgroundView = () => {
 						<div className="mb-8 w-full flex justify-between items-center">
 							<div className="left w-2/5">
 								<label
-									className="block mt-5 text-black text-sm font-bold mb-4"
+									className="block mt-5 text-white text-sm font-bold mb-4"
 									htmlFor="eyes"
 								>
 									Eye Color
@@ -297,7 +307,7 @@ const BackgroundView = () => {
 							</div>
 							<div className="left w-2/5">
 								<label
-									className="block mt-5 text-black text-sm font-bold mb-4"
+									className="block mt-5 text-white text-sm font-bold mb-4"
 									htmlFor="hair"
 								>
 									Hair Color
@@ -317,7 +327,7 @@ const BackgroundView = () => {
 						<div className="mb-8 w-full flex justify-between items-center">
 							<div className="left w-2/5">
 								<label
-									className="block mt-5 text-black text-sm font-bold mb-4"
+									className="block mt-5 text-white text-sm font-bold mb-4"
 									htmlFor="skin"
 								>
 									Skin Color
@@ -335,7 +345,7 @@ const BackgroundView = () => {
 							</div>
 							<div className="left w-2/5">
 								<label
-									className="block mt-5 text-black text-sm font-bold mb-4"
+									className="block mt-5 text-white text-sm font-bold mb-4"
 									htmlFor="age"
 								>
 									Age
@@ -352,6 +362,16 @@ const BackgroundView = () => {
 								/>
 							</div>
 						</div>
+						{selectedBackground && (
+							<button
+								onClick={() => {
+									history.push('/app/characters/new/stats');
+								}}
+								className="bg-red-500 w-full h-auto mb-8 mt-8 hover:bg-red-500 text-white font-bold py-2 px-4 rounded"
+							>
+								Continue
+							</button>
+						)}
 					</div>
 				</div>
 			</div>

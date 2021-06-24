@@ -5,21 +5,16 @@ import {
 	Race as RaceType,
 	StatConstants
 } from '../../../../corev2/Race';
-import { animProps } from '../../../Onboarding/Login';
 import RaceTrait from './RaceTraits';
-import { Animate } from 'react-simple-animate';
 import { CharacterActions } from '../../../../redux/Character/actions';
 import { CharacterSelectors } from '../../../../redux/Character/selectors';
-import { useEffect } from 'react';
 
-import Slide from '@material-ui/core/Slide';
 import Dialog from '@material-ui/core/Dialog';
 import { useHistory } from 'react-router-dom';
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-	//@ts-ignore
-	return <Slide direction="up" ref={ref} {...props} />;
-});
+import { Capacitor } from '@capacitor/core';
+import { Fab } from '@material-ui/core';
+import { useEffect } from 'react';
+import { SkillConstants } from '../../../../corev2/core';
 
 const Race = ({
 	race,
@@ -37,6 +32,8 @@ const Race = ({
 	const newCharacter = CharacterSelectors.useSelectNewCharacter();
 	const updateCharacter = CharacterActions.useUpdateNewCharacter();
 
+	const [stepComplete, setStepComplete] = useState(false);
+
 	const [selectedLanguages, setSelectedLanguages] = useState<
 		OptionsType<{
 			label: any;
@@ -49,6 +46,22 @@ const Race = ({
 			.map(l => ({
 				label: l,
 				value: l,
+				disabled: false
+			})) ?? []
+	);
+
+	const [selectedProfs, setSelectedProfs] = useState<
+		OptionsType<{
+			label: any;
+			value: any;
+			disabled: boolean;
+		}>
+	>(
+		newCharacter?.proficiencies
+			.filter(prof => !race.proficiencies.includes(prof))
+			.map(prof => ({
+				label: prof,
+				value: prof,
 				disabled: false
 			})) ?? []
 	);
@@ -105,214 +118,285 @@ const Race = ({
 						disabled: false
 					}));
 
-	useEffect(() => {
-		const newChar = newCharacter;
-
-		if (newChar) {
-			newChar.languages = [
-				...race.languages,
-				...selectedLanguages.map(lang => lang.label)
-			];
-
-			if (race.abilityIncrease) {
-				if (race.abilityIncrease.all) {
-					newChar.bonuses = [
-						...Object.keys(StatConstants).map(stat => ({
-							amount: 1,
-							stat: stat
-						}))
-					];
-				}
-			}
-
-			newChar.bonuses = [...race.bonuses];
-
-			if (race && race.extraBonuses !== undefined) {
-				newChar.bonuses = [
-					...race.bonuses,
-					...selectedBonuses.map(bonus => ({
-						amount: race.extraBonuses?.increase ?? 0,
-						stat: bonus.label
+	const profsOptions =
+		race.extraProficiencies && !race.extraProficiencies.all
+			? race.extraProficiencies.skills
+					.filter(skill => !race.proficiencies.find(s => s === skill))
+					.map(skill => ({
+						label: skill,
+						value: skill,
+						disabled: false
 					}))
-				];
-			}
-			updateCharacter(newChar);
+			: Object.values(SkillConstants)
+					.filter(skill => !race.proficiencies.find(s => s === skill))
+					.map(skill => ({
+						label: skill,
+						value: skill,
+						disabled: false
+					}));
+
+	useEffect(() => {
+		let bonuses = false;
+		let languages = false;
+		let profs = false;
+
+		if (selectedBonuses.length === (race.extraBonuses?.choose ?? 0)) {
+			bonuses = true;
 		}
-	}, [
-		selectedBonuses,
-		selectedLanguages,
-		race,
-		updateCharacter,
-		newCharacter
-	]);
+
+		if (selectedLanguages.length === (race.extraLanguage?.choose ?? 0)) {
+			languages = true;
+		}
+
+		if (selectedProfs.length === (race.extraProficiencies?.choose ?? 0)) {
+			profs = true;
+		}
+
+		setStepComplete(
+			bonuses === true && languages === true && profs === true
+		);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [selectedLanguages, selectedBonuses, selectedProfs]);
 
 	return (
 		<Dialog
 			fullScreen
-			className="bg-bgmain max-h-screen overflow-x-hidden"
+			className="bg-bgmain h-full overflow-y-hidden"
 			open={true}
 			onClose={() => setRaceOpen(undefined)}
-			TransitionComponent={Transition as any}
 		>
-			<Animate play {...animProps}>
-				<div
-					className="top flex justify-between w-100  bg-gray-800 h-12 items-center shadow-2xl p-4 text-white"
-					style={{ paddingTop: '60px' }}
+			<div
+				className="top flex  justify-between w-100 pb-8 bg-gray-800 h-12 items-center shadow-2xl p-4 text-white "
+				style={{
+					paddingTop:
+						Capacitor.getPlatform() === 'ios' ? '60px' : '30px'
+				}}
+			>
+				<h4
+					className=" font-medium text-md text-red-500 uppercase leading-7"
+					style={{ letterSpacing: '1rem' }}
 				>
-					<h4
-						className="font-medium text-red-500 uppercase leading-10"
-						style={{ letterSpacing: '1rem' }}
-					>
-						{race.name}
-					</h4>
-					<svg
-						onClick={() => {
-							const newChar = newCharacter;
+					{race.name}
+				</h4>
+				<svg
+					onClick={() => {
+						const newChar = newCharacter;
 
-							if (newChar && selectedRace !== race) {
-								setSelectedRace(undefined);
-								newChar.race = undefined;
+						if (newChar && selectedRace !== race) {
+							setSelectedRace(undefined);
+							newChar.race = undefined;
 
-								newChar.bonuses = [];
-								newChar.languages = [];
+							newChar.bonuses = [];
+							newChar.languages = [];
+							newChar.proficiencies = [];
 
-								updateCharacter(newChar);
-							}
+							updateCharacter(newChar);
+						}
 
-							setRaceOpen(undefined);
-						}}
-						xmlns="http://www.w3.org/2000/svg"
-						className="h-6 w-6 cursor-pointer"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke="currentColor"
-					>
-						<path
-							strokeLinecap="round"
-							strokeLinejoin="round"
-							strokeWidth={2}
-							d="M6 18L18 6M6 6l12 12"
-						/>
-					</svg>
-				</div>
-				<div className=" p-4 bg-bgmain h-screen overflow-scroll text-white pb-8">
-					<p className="mt-2 leading-10 font-light sm: text-sm">
-						{race.description}
+						setRaceOpen(undefined);
+					}}
+					xmlns="http://www.w3.org/2000/svg"
+					className="h-6 w-6 cursor-pointer"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+				>
+					<path
+						strokeLinecap="round"
+						strokeLinejoin="round"
+						strokeWidth={2}
+						d="M6 18L18 6M6 6l12 12"
+					/>
+				</svg>
+			</div>
+			<div className=" p-4 bg-bgmain h-full overflow-scroll text-white flex flex-col">
+				<p className="mt-2 leading-10 font-light sm:text-sm">
+					{race.description}
+				</p>
+				<h5 className="font-semibold mt-5">Bonuses</h5>
+				{race.bonuses.map((b, key) => (
+					<p className="my-2 text-sm" key={key}>
+						- {b.stat} +{b.amount}
 					</p>
-					<h5 className="font-semibold mt-5">Bonuses</h5>
-					{race.bonuses.map((b, key) => (
-						<p className="my-2 text-sm" key={key}>
-							- {b.stat} +{b.amount}
-						</p>
-					))}
-					{race.bonuses.length < 1 && (
-						<p className="my-2 text-sm">None</p>
+				))}
+				{race.bonuses.length < 1 && (
+					<p className="my-2 text-sm">None</p>
+				)}
+				<div className="mt-4">
+					{race.extraBonuses && (
+						<>
+							<p className="mb-2 font-light">
+								Select {race.extraBonuses?.choose} additional{' '}
+								{race.extraBonuses.choose > 1
+									? 'bonuses'
+									: 'bonuse'}{' '}
+								to increase by {race.extraBonuses.increase}
+							</p>
+							<Select
+								closeMenuOnSelect={false}
+								className="text-black"
+								isSearchable={false}
+								onChange={e => {
+									if (e) {
+										setSelectedBonuses(e);
+									}
+								}}
+								value={selectedBonuses}
+								options={extraBonuses}
+								isMulti={true}
+								isOptionDisabled={option =>
+									(!selectedBonuses.includes(option) &&
+										race.extraBonuses &&
+										selectedBonuses.length ===
+											race.extraBonuses.choose) ??
+									false
+								}
+							/>
+						</>
 					)}
-					<div className="mt-8">
-						{race.extraBonuses && (
-							<>
-								<p className="mb-2 font-light">
-									Select {race.extraBonuses?.choose}{' '}
-									additional{' '}
-									{race.extraBonuses.choose > 1
-										? 'bonuses'
-										: 'bonuse'}{' '}
-									to increase by {race.extraBonuses.increase}
-								</p>
-								<Select
-									closeMenuOnSelect={false}
-									className="text-black"
-									isSearchable={false}
-									onChange={e => {
-										if (e) {
-											setSelectedBonuses(e);
-										}
-									}}
-									value={selectedBonuses}
-									options={extraBonuses}
-									isMulti={true}
-									isOptionDisabled={option =>
-										(!selectedBonuses.includes(option) &&
-											race.extraBonuses &&
-											selectedBonuses.length ===
-												race.extraBonuses.choose) ??
-										false
-									}
-								/>
-							</>
-						)}
-					</div>
-					<h5 className="font-semibold mt-5">Languages</h5>
-					{race.languages.map((l, key) => (
-						<p className="my-2 text-sm" key={key}>
-							- {l}
-						</p>
-					))}
-
-					<div className="mt-8">
-						{race.extraLanguage && (
-							<>
-								<p className="mb-2 font-light">
-									Select {race.extraLanguage?.choose}{' '}
-									additional{' '}
-									{race.extraLanguage.choose > 1
-										? 'languages'
-										: 'language'}
-								</p>
-								<Select
-									className="text-black"
-									onChange={e => {
-										if (e) {
-											setSelectedLanguages(e);
-										}
-									}}
-									isSearchable={false}
-									value={selectedLanguages}
-									options={extraLanguages}
-									isMulti={true}
-									isOptionDisabled={option =>
-										(!selectedLanguages.includes(option) &&
-											race.extraLanguage &&
-											selectedLanguages.length ===
-												race.extraLanguage.choose) ??
-										false
-									}
-								/>
-							</>
-						)}
-					</div>
-					<h5 className="font-semibold mt-5">Traits</h5>
-					<p className="mt-2 mb-4 text-sm">{race.traitDescription}</p>
-					{race.traits.map((trait, key) => (
-						<RaceTrait trait={trait} key={key} />
-					))}
-					<button
-						onClick={() => {
-							const newChar = newCharacter;
-
-							if (newChar) {
-								setSelectedRace(undefined);
-								newChar.race = undefined;
-
-								setSelectedRace(race);
-								newChar.race = race;
-
-								newChar.bonuses = [];
-								newChar.languages = [];
-
-								updateCharacter(newChar);
-
-								window.scrollTo(0, 0);
-
-								history.push('/app/characters/new/classes');
-							}
-						}}
-						className="bg-red-500 w-full   cursor-pointer hover:bg-red-500 text-white font-bold py-2 px-4 mt-8 rounded"
-					>
-						Continue
-					</button>
 				</div>
-			</Animate>
+				{race.extraProficiencies && (
+					<div className="mt-8 mb-4">
+						<p className="mb-2 font-light">
+							Select {race.extraProficiencies.choose} additional
+							skill proficiencies
+						</p>
+						<Select
+							closeMenuOnSelect={false}
+							className="text-black"
+							isSearchable={false}
+							onChange={e => {
+								if (e) {
+									setSelectedProfs(e);
+								}
+							}}
+							value={selectedProfs}
+							options={profsOptions}
+							isMulti={true}
+							isOptionDisabled={option =>
+								(!selectedProfs.includes(option) &&
+									race.extraProficiencies &&
+									selectedProfs.length ===
+										race.extraProficiencies.choose) ??
+								false
+							}
+						/>
+					</div>
+				)}
+				<h5 className="font-semibold mt-5">Languages</h5>
+				{race.languages.map((l, key) => (
+					<p className="my-2 text-sm" key={key}>
+						- {l}
+					</p>
+				))}
+
+				<div className="mt-4">
+					{race.extraLanguage && (
+						<>
+							<p className="mb-2 font-light">
+								Select {race.extraLanguage?.choose} additional{' '}
+								{race.extraLanguage.choose > 1
+									? 'languages'
+									: 'language'}
+							</p>
+							<Select
+								className="text-black"
+								onChange={e => {
+									if (e) {
+										setSelectedLanguages(e);
+									}
+								}}
+								isSearchable={false}
+								value={selectedLanguages}
+								options={extraLanguages}
+								isMulti={true}
+								isOptionDisabled={option =>
+									(!selectedLanguages.includes(option) &&
+										race.extraLanguage &&
+										selectedLanguages.length ===
+											race.extraLanguage.choose) ??
+									false
+								}
+							/>
+						</>
+					)}
+				</div>
+				<h5 className="font-semibold mt-4 ">Traits</h5>
+				<p className="mt-2 text-sm mb-2">{race.traitDescription}</p>
+				{race.traits.map((trait, key) => (
+					<RaceTrait trait={trait} key={key} />
+				))}
+				<div className="pb-12"></div>
+			</div>
+			<Fab
+				disabled={!stepComplete}
+				onClick={() => {
+					const newChar = newCharacter;
+
+					if (newChar) {
+						setSelectedRace(undefined);
+						newChar.race = undefined;
+
+						setSelectedRace(race);
+						newChar.race = race;
+
+						newChar.languages = [
+							...race.languages,
+							...selectedLanguages.map(lang => lang.label)
+						];
+
+						if (race.abilityIncrease) {
+							if (race.abilityIncrease.all) {
+								newChar.bonuses = [
+									...Object.keys(StatConstants).map(stat => ({
+										amount: 1,
+										stat: stat
+									}))
+								];
+							}
+						}
+
+						newChar.bonuses = [...race.bonuses];
+
+						newChar.proficiencies = [
+							...newChar.proficiencies,
+							...selectedProfs.map(prof => prof.value)
+						];
+
+						if (race && race.extraBonuses !== undefined) {
+							newChar.bonuses = [
+								...race.bonuses,
+								...selectedBonuses.map(bonus => ({
+									amount: race.extraBonuses?.increase ?? 0,
+									stat: bonus.label
+								}))
+							];
+						}
+
+						updateCharacter(newChar);
+
+						window.scrollTo(0, 0);
+
+						history.push('/app/characters/new/classes');
+					}
+				}}
+				aria-label="Continue"
+				style={{
+					margin: '0 auto',
+					top: 'auto',
+					right: 50,
+					bottom: 20,
+					left: 50,
+					position: 'fixed',
+					color: 'white',
+					background: '#EF4444',
+					width: '75vw'
+				}}
+				classes={{ disabled: 'fab-disabled' }}
+				variant="extended"
+			>
+				Continue
+			</Fab>
 		</Dialog>
 	);
 };
