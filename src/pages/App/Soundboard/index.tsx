@@ -20,6 +20,7 @@ export const Soundboards = () => {
 
 	useEffect(() => {
 		refetch();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (
@@ -112,9 +113,8 @@ export const Soundboards = () => {
 					}}
 					aria-label="Continue"
 					style={{
-						top: 'auto',
 						right: 20,
-						bottom: 75,
+						bottom: 90,
 						position: 'fixed',
 						color: 'white',
 						background: '#EF4444'

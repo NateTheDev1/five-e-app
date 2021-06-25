@@ -24,7 +24,7 @@ const Login = () => {
 	const setLoggedIn = UserActions.useLogin();
 
 	const [loginUser, data] = useLoginMutation();
-	const [appleLogin, appleLogindata] = useAppleLoginMutation();
+	const [appleLogin] = useAppleLoginMutation();
 
 	const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setCredentials({ ...credentials, [e.target.name]: e.target.value });
@@ -54,9 +54,16 @@ const Login = () => {
 				// TODO: Handle user information\
 
 				appleLogin({
-					variables: { email: result.response.email as string }
+					variables: {
+						email: result.response.email
+							? (result.response.email as string)
+							: ''
+					}
 				})
 					.then(res => {
+						if (res.errors && res.errors.length > 0) {
+							throw new Error('Sign In Error!');
+						}
 						if (res.data) {
 							setLoggedIn(res.data.appleLogin.token as string);
 						}

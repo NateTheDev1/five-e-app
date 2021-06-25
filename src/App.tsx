@@ -11,6 +11,9 @@ import Router from './Router';
 // import LogRocket from 'logrocket';
 // LogRocket.init('5e-sidekick/5e-sidekick');
 
+import { KeepAwake } from '@capacitor-community/keep-awake';
+KeepAwake.keepAwake();
+
 const App = () => {
 	return (
 		<ErrorBoundary>

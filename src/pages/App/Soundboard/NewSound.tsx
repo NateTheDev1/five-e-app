@@ -6,7 +6,6 @@ import {
 	Button
 } from '@material-ui/core';
 import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import { useAddSoundboardLinkMutation } from '../../../graphql';
 import { useValidateUrl } from '../../../hooks/useValidateUrl';
 

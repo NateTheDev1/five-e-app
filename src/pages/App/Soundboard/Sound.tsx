@@ -43,6 +43,8 @@ const Sound = ({
 		>
 			<ReactPlayer
 				url={link.url}
+				stopOnUnmount={false}
+				light={true}
 				playing={playing}
 				style={{ display: 'none' }}
 				controls={false}
