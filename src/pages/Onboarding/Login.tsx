@@ -52,9 +52,8 @@ const Login = () => {
 		})
 			.then((result: SignInWithAppleResponse) => {
 				// TODO: Handle user information\
-				console.log(result.response);
 
-				if (result.response.authorizationCode) {
+				if (result.response.email) {
 					appleLogin({
 						variables: { email: result.response.identityToken }
 					})
