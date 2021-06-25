@@ -1,21 +1,11 @@
 import Logo from './Logo';
-import { LogoutIcon } from '@heroicons/react/solid';
-import { Dialog } from '@capacitor/dialog';
-import { UserActions } from '../redux/User/actions';
+import { UserCircleIcon } from '@heroicons/react/solid';
+import { lazy, useState } from 'react';
+
+const AccountView = lazy(() => import('./AccountView'));
 
 const TopBarMobile = ({ title }: { title: string }) => {
-	const logout = UserActions.useLogout();
-
-	const showConfirm = async () => {
-		const { value } = await Dialog.confirm({
-			title: 'Confirm',
-			message: `Are you sure you want to logout?`
-		});
-
-		if (value === true) {
-			logout();
-		}
-	};
+	const [accountOpen, setAccountOpen] = useState(false);
 
 	return (
 		<div
@@ -35,13 +25,19 @@ const TopBarMobile = ({ title }: { title: string }) => {
 				}}
 			/>
 			<div className=" w-screen flex items-center justify-between px-2">
-				<div className="w-1/3 mt-2">
+				<div className="w-1/3 mt-2 w-full flex  justify-center">
 					<Logo type="dark" />
 				</div>
-				<div className="text-red-500" onClick={() => showConfirm()}>
-					<LogoutIcon className="w-6 h-6 mt-2" />
+				<div
+					className="text-white fixed right-2 cursor-pointer"
+					onClick={() => setAccountOpen(true)}
+				>
+					<UserCircleIcon className="w-6 h-6 mt-2" />
 				</div>
 			</div>
+			{accountOpen && (
+				<AccountView open={accountOpen} setOpen={setAccountOpen} />
+			)}
 		</div>
 	);
 };

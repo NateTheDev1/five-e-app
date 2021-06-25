@@ -154,8 +154,8 @@ const Navbar = () => {
 										</Menu.Item>
 										<Menu.Item>
 											{({ active }) => (
-												<a
-													href="g"
+												<Link
+													to="/app/compendium"
 													className={classNames(
 														active
 															? 'bg-gray-100 text-gray-900'
@@ -164,7 +164,7 @@ const Navbar = () => {
 													)}
 												>
 													5E Compendium
-												</a>
+												</Link>
 											)}
 										</Menu.Item>
 

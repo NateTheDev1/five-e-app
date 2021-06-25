@@ -5,6 +5,7 @@ import BottomNav from '../../components/BottomNav';
 import Navbar from '../../components/Navbar';
 import NotFound from '../../components/NotFound';
 import TopBarMobile from '../../components/TopBarMobile';
+import Compendium from './Compendium';
 import DashboardHome from './DashboardHome';
 
 const CharactersView = lazy(() => import('./Character/CharactersView'));
@@ -20,6 +21,9 @@ const Dashboard = () => {
 			{Capacitor.getPlatform() !== 'web' && <TopBarMobile title="Home" />}
 
 			<Switch>
+				<Route path="/app/compendium">
+					<Compendium />
+				</Route>
 				<Route path="/app/soundboard/:soundboardId">
 					<Soundboard />
 				</Route>

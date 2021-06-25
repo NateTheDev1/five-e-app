@@ -10,6 +10,11 @@ import {
 } from '@capacitor-community/apple-sign-in';
 import { Capacitor } from '@capacitor/core';
 
+// import axios from 'axios';
+// import jsonwebtoken from 'jsonwebtoken';
+// //@ts-ignore
+// import NodeRSA from 'node-rsa';
+
 export const animProps = {
 	start: { opacity: 0 },
 	end: { opacity: 1 }
@@ -49,34 +54,86 @@ const Login = () => {
 			redirectURI: 'https://www.dndsidekick.com',
 			scopes: 'name email',
 			nonce: 'nonce'
-		})
-			.then((result: SignInWithAppleResponse) => {
-				// TODO: Handle user information\
+		}).then((result: SignInWithAppleResponse) => {
+			// TODO: Handle user information\
+			const parts = result.response.identityToken.split('.');
+			let jwt = '';
+			try {
+				jwt = JSON.parse(
+					new Buffer(parts[1], 'base64').toString('ascii')
+				);
+			} catch (e) {
+				alert(e);
+			}
 
-				appleLogin({
-					variables: {
-						email: result.response.email
-							? (result.response.email as string)
-							: ''
-					}
-				})
-					.then(res => {
-						if (res.errors && res.errors.length > 0) {
-							throw new Error('Sign In Error!');
-						}
-						if (res.data) {
-							setLoggedIn(res.data.appleLogin.token as string);
-						}
-					})
-					.catch(e => {
-						throw new Error(JSON.stringify(e));
-					});
-			})
-			.catch(error => {
-				// Handle error
+			// axios
+			// 	.get('https://appleid.apple.com/auth/keys', {
+			// 		headers: {
+			// 			'Content-type': 'Application/json',
+			// 			Accept: 'Application/json'
+			// 		},
+			// 		data: {}
+			// 	})
+			// 	.then(response => response.data.keys)
+			// 	.catch(e => alert(e))
+			// 	.then(res => {
+			// 		const keys = res;
 
-				throw new Error(JSON.stringify(error));
-			});
+			// 		const decodedToken: any = jsonwebtoken.decode(jwt, {
+			// 			complete: true
+			// 		});
+
+			// 		alert(JSON.stringify(decodedToken));
+
+			// 		const kid = decodedToken.header.kid;
+			// 		const key = keys.find((k: any) => k.kid === kid);
+
+			// 		const pubKey = new NodeRSA();
+			// 		pubKey.importKey(
+			// 			{
+			// 				n: Buffer.from(key.n, 'base64'),
+			// 				e: Buffer.from(key.e, 'base64')
+			// 			},
+			// 			'components-public'
+			// 		);
+			// 		const userKey = pubKey.exportKey(['public']);
+
+			// 		const verified = jsonwebtoken.verify(
+			// 			jwt as any,
+			// 			userKey as any,
+			// 			{
+			// 				algorithms: ['RS256']
+			// 			}
+			// 		);
+
+			// 		alert(verified);
+			// 	})
+			// 	.catch(e => alert(e));
+
+			// appleLogin({
+			// 	variables: {
+			// 		email: result.response.email
+			// 			? (result.response.email as string)
+			// 			: ''
+			// 	}
+			// })
+			// 	.then(res => {
+			// 		if (res.errors && res.errors.length > 0) {
+			// 			throw new Error('Sign In Error!');
+			// 		}
+			// 		if (res.data) {
+			// 			setLoggedIn(res.data.appleLogin.token as string);
+			// 		}
+			// 	})
+			// 	.catch(e => {
+			// 		throw new Error(JSON.stringify(e));
+			// 	});
+		});
+		// .catch(error => {
+		// 	// Handle error
+
+		// 	throw new Error(JSON.stringify(error));
+		// });
 	};
 
 	return (
@@ -162,7 +219,7 @@ const Login = () => {
 										Continue
 									</button>
 								</Animate>
-								{(Capacitor.getPlatform() === 'web' ||
+								{/* {(Capacitor.getPlatform() === 'web' ||
 									Capacitor.getPlatform() === 'ios') && (
 									<Animate
 										sequenceIndex={2}
@@ -178,7 +235,7 @@ const Login = () => {
 											Sign In With Apple
 										</button>
 									</Animate>
-								)}
+								)} */}
 
 								<div className="bottom w-full flex flex-col items-center justify-center mt-5">
 									{data.error && (

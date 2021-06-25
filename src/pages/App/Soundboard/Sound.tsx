@@ -43,11 +43,10 @@ const Sound = ({
 		>
 			<ReactPlayer
 				url={link.url}
-				stopOnUnmount={false}
-				light={true}
 				playing={playing}
 				style={{ display: 'none' }}
 				controls={false}
+				onEnded={() => setPlaying(false)}
 				onBuffer={() => setLoading(true)}
 				onBufferEnd={() => setLoading(false)}
 				volume={volume / 100}
@@ -66,13 +65,13 @@ const Sound = ({
 					</h4>
 					{playing && (
 						<PauseIcon
-							className="h-8 w-8"
+							className="h-8 w-8 cursor-pointer"
 							onClick={() => setPlaying(!playing)}
 						/>
 					)}
 					{!playing && (
 						<PlayIcon
-							className="h-8 w-8"
+							className="h-8 w-8 cursor-pointer"
 							onClick={() => setPlaying(!playing)}
 						/>
 					)}
