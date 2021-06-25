@@ -114,7 +114,7 @@ export const Soundboards = () => {
 					aria-label="Continue"
 					style={{
 						right: 20,
-						bottom: 90,
+						bottom: 95,
 						position: 'fixed',
 						color: 'white',
 						background: '#EF4444'

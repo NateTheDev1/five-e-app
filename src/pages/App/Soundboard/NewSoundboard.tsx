@@ -26,6 +26,8 @@ const NewSoundboard = ({
 
 		createSoundboard({ variables: { title } }).then(res => {
 			if (!res.errors && res.data) {
+				window.scrollTo(0, 0);
+
 				history.push('/app/soundboard/' + res.data.createSoundboard.id);
 			}
 		});

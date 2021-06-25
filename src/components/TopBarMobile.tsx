@@ -9,7 +9,7 @@ const TopBarMobile = ({ title }: { title: string }) => {
 	const showConfirm = async () => {
 		const { value } = await Dialog.confirm({
 			title: 'Confirm',
-			message: `Are you sure you'd like to press the red button?`
+			message: `Are you sure you want to logout?`
 		});
 
 		if (value === true) {
@@ -34,7 +34,7 @@ const TopBarMobile = ({ title }: { title: string }) => {
 	`
 				}}
 			/>
-			<div className=" w-screen flex items-center justify-between">
+			<div className=" w-screen flex items-center justify-between px-2">
 				<div className="w-1/3 mt-2">
 					<Logo type="dark" />
 				</div>
