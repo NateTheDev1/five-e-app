@@ -47,15 +47,16 @@ const Login = () => {
 					? 'com.dnd.sidekick'
 					: 'dndsidekick',
 			redirectURI: 'https://www.dndsidekick.com',
-			scopes: 'email name',
+			scopes: 'email',
 			nonce: 'nonce'
 		})
 			.then((result: SignInWithAppleResponse) => {
 				// TODO: Handle user information\
+				console.log(result.response);
 
 				if (result.response.authorizationCode) {
 					appleLogin({
-						variables: { email: result.response.authorizationCode }
+						variables: { email: result.response.identityToken }
 					})
 						.then(res => {
 							if (res.data) {
