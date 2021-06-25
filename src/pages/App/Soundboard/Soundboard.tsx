@@ -16,7 +16,6 @@ const NewSound = lazy(() => import('./NewSound'));
 const Soundboard = () => {
 	const { soundboardId }: { soundboardId: string | undefined } = useParams();
 	const [creatingSound, setCreatingSound] = useState(false);
-	// const validURL = useValidateUrl(url);
 
 	const { data, loading, refetch } = useGetSoundboardQuery({
 		variables: {
@@ -32,11 +31,11 @@ const Soundboard = () => {
 	return (
 		<Animate duration={0.2} play {...animProps}>
 			<div
-				className=" mt-5 container w-full md:max-w-screen-lg mx-auto"
+				className=" mt-8 container w-full md:max-w-screen-lg mx-auto p-3"
 				style={{ marginTop: '15px' }}
 			>
 				<h1
-					className="font-semibold uppercase text-sm mb-2 text-center text-red-500"
+					className=" font-semibold uppercase text-sm mb-2 text-center text-red-500 mt-4"
 					style={{
 						letterSpacing: '0.5rem',
 						lineHeight: 2
@@ -73,7 +72,7 @@ const Soundboard = () => {
 				style={{
 					top: 'auto',
 					right: 20,
-					bottom: 20,
+					bottom: 75,
 					position: 'fixed',
 					color: 'white',
 					background: '#EF4444'

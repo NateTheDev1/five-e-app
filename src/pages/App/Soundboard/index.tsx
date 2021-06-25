@@ -114,7 +114,7 @@ export const Soundboards = () => {
 					style={{
 						top: 'auto',
 						right: 20,
-						bottom: 20,
+						bottom: 75,
 						position: 'fixed',
 						color: 'white',
 						background: '#EF4444'

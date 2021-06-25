@@ -53,21 +53,17 @@ const Login = () => {
 			.then((result: SignInWithAppleResponse) => {
 				// TODO: Handle user information\
 
-				if (result.response.email) {
-					appleLogin({
-						variables: { email: result.response.identityToken }
+				appleLogin({
+					variables: { email: result.response.email as string }
+				})
+					.then(res => {
+						if (res.data) {
+							setLoggedIn(res.data.appleLogin.token as string);
+						}
 					})
-						.then(res => {
-							if (res.data) {
-								setLoggedIn(
-									res.data.appleLogin.token as string
-								);
-							}
-						})
-						.catch(e => {
-							throw new Error(JSON.stringify(e));
-						});
-				}
+					.catch(e => {
+						throw new Error(JSON.stringify(e));
+					});
 			})
 			.catch(error => {
 				// Handle error

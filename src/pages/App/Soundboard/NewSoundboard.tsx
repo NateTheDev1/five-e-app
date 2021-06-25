@@ -19,7 +19,7 @@ const NewSoundboard = ({
 	const history = useHistory();
 	const [title, setTitle] = useState('');
 
-	const [createSoundboard, data] = useCreateSoundboardMutation();
+	const [createSoundboard] = useCreateSoundboardMutation();
 
 	const onSubmit = (e: any) => {
 		e.preventDefault();

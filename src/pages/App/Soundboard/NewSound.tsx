@@ -21,7 +21,6 @@ const NewSound = ({
 	setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 	soundboardId: number;
 }) => {
-	const history = useHistory();
 	const [details, setDetails] = useState<{ title: string; url: string }>({
 		title: '',
 		url: ''
@@ -29,7 +28,7 @@ const NewSound = ({
 
 	const validURL = useValidateUrl(details.url);
 
-	const [createSound, data] = useAddSoundboardLinkMutation();
+	const [createSound] = useAddSoundboardLinkMutation();
 
 	const onSubmit = (e: any) => {
 		e.preventDefault();

@@ -12,6 +12,7 @@ import Slider from '@material-ui/core/Slider';
 
 import CircleLoader from 'react-spinners/CircleLoader';
 import { useDeleteSoundboardLinkMutation } from '../../../graphql';
+import { Capacitor } from '@capacitor/core';
 
 const Sound = ({
 	link
@@ -26,7 +27,9 @@ const Sound = ({
 	const [moreDetails, setMoreDetails] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [loop, setLoop] = useState(false);
-	const [volume, setVolume] = useState(80);
+	const [volume, setVolume] = useState(
+		Capacitor.getPlatform() === 'ios' ? 80 : 100
+	);
 	const [deleteSound, data] = useDeleteSoundboardLinkMutation();
 
 	return (
@@ -39,7 +42,6 @@ const Sound = ({
 			}}
 		>
 			<ReactPlayer
-                                autoPlay={true}
 				url={link.url}
 				playing={playing}
 				style={{ display: 'none' }}
@@ -49,14 +51,12 @@ const Sound = ({
 				volume={volume / 100}
 				loop={loop}
 				playsinline={true}
-				onError={e => alert(JSON.stringify(e))}
 			/>
 			<div className="bg-white flex flex-col p-4 rounded-md text-center">
 				<div className="flex justify-between items-center">
 					<h4
-						className="text-black font-semibold uppercase text-sm mb-2"
+						className="text-black font-semibold opacity-80  text-md mb-2 text-left"
 						style={{
-							letterSpacing: '0.5rem',
 							lineHeight: 2
 						}}
 					>
@@ -78,7 +78,7 @@ const Sound = ({
 				{!loading && (
 					<>
 						<p
-							className="text-blue-500 text-left underline"
+							className="text-blue-500 text-left underline text-sm"
 							onClick={() => setMoreDetails(!moreDetails)}
 						>
 							{moreDetails ? 'Less' : 'More'} Options
@@ -89,26 +89,38 @@ const Sound = ({
 								<p className="text-md mb-2">
 									Volume - {volume}
 								</p>
-								<Grid container spacing={2}>
-									<Grid item>
-										<VolumeOffIcon />
+								{Capacitor.getPlatform() === 'web' && (
+									<Grid
+										container
+										spacing={2}
+										className="items-center"
+									>
+										<Grid item>
+											<VolumeOffIcon
+												style={{ width: '15px' }}
+											/>
+										</Grid>
+										<Grid item xs>
+											<Slider
+												classes={{
+													track: 'text-red-500'
+												}}
+												value={volume}
+												onChange={(e, newValue) =>
+													setVolume(
+														newValue as number
+													)
+												}
+												aria-labelledby="continuous-slider"
+											/>
+										</Grid>
+										<Grid item>
+											<VolumeUpIcon
+												style={{ width: '15px' }}
+											/>
+										</Grid>
 									</Grid>
-									<Grid item xs>
-										<Slider
-											classes={{
-												track: 'text-red-500'
-											}}
-											value={volume}
-											onChange={(e, newValue) =>
-												setVolume(newValue as number)
-											}
-											aria-labelledby="continuous-slider"
-										/>
-									</Grid>
-									<Grid item>
-										<VolumeOffIcon />
-									</Grid>
-								</Grid>
+								)}
 								<label className="inline-flex items-center mb-4">
 									<input
 										type="checkbox"
