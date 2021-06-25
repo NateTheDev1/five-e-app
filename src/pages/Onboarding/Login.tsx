@@ -47,7 +47,7 @@ const Login = () => {
 					? 'com.dnd.sidekick'
 					: 'dndsidekick',
 			redirectURI: 'https://www.dndsidekick.com',
-			scopes: 'name email',
+			scopes: 'name email user',
 			nonce: 'nonce'
 		})
 			.then((result: SignInWithAppleResponse) => {
