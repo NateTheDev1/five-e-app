@@ -46,6 +46,7 @@
 		"react-simple-animate": "^3.3.12",
 		"react-spinners": "^0.11.0",
 		"react-swipeable": "^6.1.2",
+		"react-toastify": "^7.0.4",
 		"react-top-loading-bar": "^2.0.1",
 		"redux": "^4.1.0",
 		"redux-devtools-extension": "^2.13.9",

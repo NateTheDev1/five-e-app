@@ -127,12 +127,12 @@ const Results = ({ data }: { data: any[] }) => {
 										</p>
 									</>
 								))}
-
 							<div className="mb-20"></div>
 						</div>
 					</div>
 				)}
 			</Dialog>
+			<div className="mb-20"></div>
 		</div>
 	);
 };

@@ -19,7 +19,7 @@ const Dashboard = () => {
 		<div className=" bg-bgmain h-screen pb-10 w-screen text-white">
 			{Capacitor.getPlatform() === 'web' && <Navbar />}
 			{Capacitor.getPlatform() !== 'web' && <TopBarMobile title="Home" />}
-
+			<TopBarMobile title="Home" />
 			<Switch>
 				<Route path="/app/compendium">
 					<Compendium />

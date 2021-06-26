@@ -54,7 +54,7 @@ const Compendium = () => {
 				className="w-screen  bg-gray-800 flex flex-col justify-center p-4"
 				style={{ paddingTop: '15px' }}
 			>
-				<BookOpenIcon className="h-12 w-12 self-center mb-4 text-red-500" />
+				<BookOpenIcon className="h-12 w-12 self-center mb-4 text-red-500 mt-8" />
 				<div className="md:w-5/6 md:mx-auto">
 					<form onSubmit={search}>
 						<p className="text-center mb-4">Category</p>

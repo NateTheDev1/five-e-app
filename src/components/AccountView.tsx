@@ -6,7 +6,6 @@ import { LogoutIcon } from '@heroicons/react/solid';
 import { useGetUserQuery } from '../graphql';
 import decode from 'jwt-decode';
 import SpinnerLoader from './SpinnerLoader';
-import { useEffect } from 'react';
 
 const AccountView = ({
 	open,
@@ -22,7 +21,7 @@ const AccountView = ({
 	);
 
 	const logout = UserActions.useLogout();
-	const { data, loading, refetch } = useGetUserQuery({
+	const { data, loading } = useGetUserQuery({
 		variables: { id: Number(user.userId) },
 		skip: !user.userId
 	});

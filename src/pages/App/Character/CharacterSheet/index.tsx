@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Character } from '../../../../corev2/Character';
-import { core, SkillConstants } from '../../../../corev2/core';
+import { core } from '../../../../corev2/core';
 import Top from './Top';
 
 const CharacterSheet = () => {
