@@ -50,7 +50,10 @@ const Compendium = () => {
 
 	return (
 		<Animate play {...animProps}>
-			<div className="w-screen  bg-gray-800 flex flex-col justify-center p-4">
+			<div
+				className="w-screen  bg-gray-800 flex flex-col justify-center p-4"
+				style={{ paddingTop: '15px' }}
+			>
 				<BookOpenIcon className="h-12 w-12 self-center mb-4 text-red-500" />
 				<div className="md:w-5/6 md:mx-auto">
 					<form onSubmit={search}>
