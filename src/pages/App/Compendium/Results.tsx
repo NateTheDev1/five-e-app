@@ -69,10 +69,66 @@ const Results = ({ data }: { data: any[] }) => {
 								/>
 							</svg>
 						</div>
-						<div className=" p-4 bg-bgmain h-full overflow-scroll text-white flex flex-col w-full">
-							<p style={{ lineHeight: 2 }}>
-								{selectedIndex.text}
+						<div className=" p-4 bg-bgmain h-full overflow-scroll text-white flex flex-col w-full ">
+							<a
+								className="mt-4 text-blue-500"
+								href={`https://www.dndbeyond.com/search?q=${selectedIndex.name}`}
+								target="__none"
+							>
+								Read More
+							</a>
+							<p className="mb-2 font-bold text-lg opacity-75 mt-8 text-red-500">
+								Description
 							</p>
+							{selectedIndex.text && (
+								<p style={{ lineHeight: 2 }}>
+									{selectedIndex.text.replace('&#39;', "'")}
+								</p>
+							)}
+							{!selectedIndex.text && (
+								<p style={{ lineHeight: 2 }}>N/A</p>
+							)}
+							{Object.entries(selectedIndex)
+								.filter(
+									([key, val]) =>
+										![
+											'document_slug',
+											'slug',
+											'title',
+											'text',
+											'document_title',
+											'name',
+											'route',
+											'highlighted',
+											'document__license_url',
+											'document__slug',
+											'document__title'
+										].includes(key)
+								)
+								.filter(([key, val]: [key: any, val: any]) => String(val).length > 0)
+								.map(([k, val], key) => (
+									<>
+										<p className="mb-2 font-bold text-lg opacity-75 mt-4 text-red-500">
+											{k
+												.toLowerCase()
+												.replace('_', ' ')
+												.split(' ')
+												.map(
+													s =>
+														s
+															.charAt(0)
+															.toUpperCase() +
+														s.substring(1)
+												)
+												.join(' ')}
+										</p>
+										<p style={{ lineHeight: 2 }}>
+											{val as any}
+										</p>
+									</>
+								))}
+
+							<div className="mb-20"></div>
 						</div>
 					</div>
 				)}
