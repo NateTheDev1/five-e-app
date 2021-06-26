@@ -170,6 +170,27 @@ export const SkillConstants = {
 	survival: 'Survival'
 };
 
+export const SkillModConstants = {
+	acrobatics: 'Dexterity',
+	animalHandling: 'Wisdom',
+	arcana: 'Intelligence',
+	athletics: 'Strength',
+	deception: 'Charisma',
+	history: 'Intelligence',
+	insight: 'Wisdom',
+	intimidation: 'Charisma',
+	investigation: 'Intelligence',
+	medicine: 'Wisdom',
+	nature: 'Intelligence',
+	perception: 'Wisdom',
+	performance: 'Charisma',
+	persuasion: 'Charisma',
+	religion: 'Intelligence',
+	sleightOfHand: 'Dexterity',
+	stealth: 'Dexterity',
+	survival: 'Wisdom'
+};
+
 export const instruments = {
 	bagpipes: 'Bagpipes',
 	drum: 'Drum',
