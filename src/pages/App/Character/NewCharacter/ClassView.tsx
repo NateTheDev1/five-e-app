@@ -397,6 +397,8 @@ export const ClassView = ({
 						setSelectedClass(classRef);
 						newChar.class = classRef;
 
+						newChar.saves = classRef.saves;
+
 						if (
 							selectedClass &&
 							selectedClass.equipmentChoices &&

@@ -42,20 +42,6 @@ const CharacterSheet = () => {
 		});
 	};
 
-	function isProficienct(skill: string): boolean {
-		let prof = false;
-
-		if (character) {
-			for (let i = 0; i < character.proficiencies.length; i++) {
-				if (character.proficiencies[i] === skill) {
-					prof = true;
-				}
-			}
-		}
-
-		return prof;
-	}
-
 	function getStatBonus(str: string) {
 		let bonus = 0;
 		const key = capitalizeFirstLetter(str);
@@ -98,7 +84,25 @@ const CharacterSheet = () => {
 			style={{ paddingTop: '15px' }}
 		>
 			<Top character={character} />
-			<div className="w-full mt-4  p-5 bg-white">
+			<div className="w-full mt-4  p-5 bg-white flex justify-between items-center rounded-md">
+				<div className="bg-gray-800 w-5/12 text-white text-center p-4 rounded-md shadow-lg h-24 flex flex-col items-center justify-between">
+					<p className="text-xs opacity-75">Proficiency</p>
+					<p className="text-xl font-medium mt-3 text-red-500">
+						+{getProfBonus(character.level)}
+					</p>
+				</div>
+				<div
+					className="bg-gray-800 w-5/12 text-white text-center p-4 rounded-md shadow-lg cursor-pointer h-24 flex flex-col items-center justify-between"
+					onClick={() => onStatRoll(getStatBonus('Dexterity'))}
+				>
+					<p className="text-xs opacity-75">Initiative</p>
+					<p className="text-xl font-medium mt-3 text-red-500">
+						+{getStatBonus('Dexterity')}
+					</p>
+				</div>
+			</div>
+
+			<div className="w-full mt-4  p-5 bg-white rounded-md">
 				<p
 					className="text-center uppercase font-light mb-2"
 					style={{ letterSpacing: '0.5rem' }}
@@ -109,10 +113,10 @@ const CharacterSheet = () => {
 					{Object.values(core.statBlocks).map((c, key) => (
 						<div
 							key={key}
-							className="w-1/3 mb-4 h-20 p-2 "
+							className="w-1/3 mb-4 h-20 p-2 cursor-pointer "
 							onClick={() => onStatRoll(getStatBonus(c.text))}
 						>
-							<div className="bg-gray-800 h-20 text-white flex flex-col justify-center items-center">
+							<div className="bg-gray-800 h-20 text-white flex flex-col justify-center items-center  rounded-md shadow-lg">
 								<p className="text-xs opacity-75">{c.text}</p>
 								<p>
 									{
@@ -134,23 +138,51 @@ const CharacterSheet = () => {
 					))}
 				</div>
 			</div>
-			<div className="w-full mt-4  p-5 bg-white">
+			<div className="w-full mt-4  p-5 bg-white rounded-md">
 				<p
 					className="text-center uppercase font-light mb-2"
 					style={{ letterSpacing: '0.5rem' }}
 				>
-					Skills
+					Saving Throws
 				</p>
-				<div className="flex flex-col">
-					{Object.entries(SkillConstants).map(([k, val], key) => (
-						<div className="w-full bg-gray-800 text-white mb-4 rounded shadow-md p-4 text-xs">
-							<div>
-								<p className="text-sm">{val}</p>
-								<p className="mt-4 text-yellow-500">
-									{
+				<div className="flex flex-wrap">
+					{Object.values(core.statBlocks).map((c, key) => (
+						<div
+							key={key}
+							className="w-1/3 mb-4 h-20 p-2 cursor-pointer "
+							onClick={() =>
+								onStatRoll(
+									getStatBonus(c.text) +
 										//@ts-ignore
-										SkillModConstants[k]
-									}
+
+										(character.saves.includes(c.text)
+											? getProfBonus(character.level)
+											: 0)
+								)
+							}
+						>
+							<div className="bg-gray-800 h-20 text-white flex flex-col justify-center items-center  rounded-md shadow-lg">
+								<p className="text-xs opacity-75">{c.text}</p>
+								<p>
+									{
+										character.stats[
+											capitalizeFirstLetter(c.text)
+										]
+									}{' '}
+									<span>
+										+{' '}
+										<span className="text-yellow-500">
+											{getStatBonus(c.text) +
+												//@ts-ignore
+												(character.saves.includes(
+													c.text
+												)
+													? getProfBonus(
+															character.level
+													  )
+													: 0)}
+										</span>{' '}
+									</span>
 								</p>
 							</div>
 						</div>

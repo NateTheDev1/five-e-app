@@ -6,6 +6,7 @@ export class Character {
 	characterName: string = '';
 	avatarImage: string = '';
 	factionImage: string = '';
+	saves: string[] = [];
 
 	race?: Race;
 	class?: CharacterClass;
