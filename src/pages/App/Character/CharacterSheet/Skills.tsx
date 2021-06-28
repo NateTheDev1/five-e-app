@@ -1,3 +1,4 @@
+import { BadgeCheckIcon } from '@heroicons/react/solid';
 import { Character } from '../../../../corev2/Character';
 import { SkillConstants, SkillModConstants } from '../../../../corev2/core';
 
@@ -26,7 +27,12 @@ const Skills = ({
 					key={key}
 				>
 					<p className="text-sm flex flex-col justify-start">
-						{val}
+						<p className="flex items-center">
+							{val}
+							{isProficienct(val) && (
+								<BadgeCheckIcon className="ml-2 h-4 w-4 text-green-500" />
+							)}
+						</p>
 						<span className="text-blue-500 uppercase opacity-60 text-xs">
 							{
 								//@ts-ignore

@@ -23,13 +23,13 @@ const Top = ({ character }: { character: Character }) => {
 				{character.race?.name}
 			</h4>
 			<h6
-				className="font-medium uppercase text-xs text-center mt-3 text-blue-500"
+				className=" mx-auto font-medium uppercase text-xs justify-center mt-3 text-blue-500 flex items-center"
 				style={{
 					letterSpacing: '0.5rem',
 					lineHeight: 2
 				}}
 			>
-				{character.xp}XP
+				{character.xp}XP{' '}
 			</h6>
 		</>
 	);

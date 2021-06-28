@@ -2,7 +2,10 @@ import { Capacitor } from '@capacitor/core';
 import {
 	ShieldCheckIcon,
 	HeartIcon,
-	BadgeCheckIcon
+	BadgeCheckIcon,
+	ShoppingBagIcon,
+	HomeIcon,
+	AnnotationIcon
 } from '@heroicons/react/solid';
 import { useEffect } from 'react';
 import { useState } from 'react';
@@ -13,10 +16,17 @@ import { core } from '../../../../corev2/core';
 import { CharacterActions } from '../../../../redux/Character/actions';
 import Skills from './Skills';
 import Top from './Top';
+import { SpeedDial, SpeedDialAction, SpeedDialIcon } from '@material-ui/lab';
 
 export function capitalizeFirstLetter(str: string) {
 	return str.charAt(0).toUpperCase() + str.slice(1);
 }
+
+const actions = [
+	{ icon: <HomeIcon className="w-5 h-5" />, name: 'Home' },
+	{ icon: <AnnotationIcon className="w-5 h-5" />, name: 'About' },
+	{ icon: <ShoppingBagIcon className="w-5 h-5" />, name: 'Inventory' }
+];
 
 const CharacterSheet = () => {
 	const { charKey }: { charKey: string } = useParams();
@@ -30,6 +40,10 @@ const CharacterSheet = () => {
 	const [rollLogs, setRollLogs] = useState<{ title: string; roll: number }[]>(
 		[]
 	);
+	const [tabPage, setTabPage] = useState<
+		'Home' | 'Description' | 'Inventory'
+	>('Home');
+	const [speedialOpen, setSpeedialOpen] = useState(false);
 
 	useEffect(() => {
 		if (charJSON) {
@@ -171,225 +185,311 @@ const CharacterSheet = () => {
 		>
 			<Top character={character} />
 
-			<div className="w-full mt-4   p-5 bg-gray-200 shadow-inner  flex flex-col justify-center rounded-md">
-				<p
-					className="text-center uppercase font-light mb-4"
-					style={{ letterSpacing: '0.5rem' }}
-				>
-					General
-				</p>
+			{tabPage === 'Home' && (
+				<>
+					<div className="w-full mt-4   p-5 bg-gray-200 shadow-inner  flex flex-col justify-center rounded-md">
+						<p
+							className="text-center uppercase font-light mb-4"
+							style={{ letterSpacing: '0.5rem' }}
+						>
+							General
+						</p>
 
-				<div>
-					<div className="flex justify-between items-center mb-4">
-						<p className="font-light text-sm">Hit Points</p>
-						<div className="flex items-center mr-2">
-							<HeartIcon className="text-red-500 w-5 h-5 mr-2" />
+						<div>
+							<div className="flex justify-between items-center mb-4">
+								<p className="font-light text-sm">Hit Points</p>
+								<div className="flex items-center mr-2">
+									<HeartIcon className="text-red-500 w-5 h-5 mr-2" />
 
-							<p className="text-red-500 opacity-75 font-bold text-lg">
-								{character.hp}/{character.maxHP}
+									<p className="text-red-500 opacity-75 font-bold text-lg">
+										{character.hp}/{character.maxHP}
+									</p>
+								</div>
+							</div>
+							<div className="flex justify-between items-center">
+								<input
+									min="0"
+									type="number"
+									className=" shadow appearance-none  rounded w-full px-2 text-center text-gray-700 focus:outline-none focus:shadow-outline"
+									placeholder="0"
+									value={healthChangeAmount.damage}
+									onChange={e =>
+										setHealthChangeAmount({
+											...healthChangeAmount,
+											damage: Number(e.target.value)
+										})
+									}
+								/>
+								<button
+									onClick={() => healthChange('damage')}
+									className="bg-red-500 text-white rounded-md p-2 w-1/4 ml-4 text-xs"
+								>
+									Damage
+								</button>
+							</div>
+							<div className="flex justify-between mt-4 items-center">
+								<input
+									min="0"
+									onChange={e =>
+										setHealthChangeAmount({
+											...healthChangeAmount,
+											heal: Number(e.target.value)
+										})
+									}
+									type="number"
+									className=" shadow appearance-none  rounded w-full px-2 text-center text-gray-700  focus:outline-none focus:shadow-outline"
+									placeholder="0"
+									value={healthChangeAmount.heal}
+								/>
+								<button
+									onClick={() => healthChange('heal')}
+									className="bg-green-500 text-white rounded-md p-2 w-1/4 ml-4 text-xs"
+								>
+									Heal
+								</button>
+							</div>
+						</div>
+
+						<hr className="mb-4 mt-4" />
+						<div className="flex justify-between items-center mb-4">
+							<p className="font-light text-sm">Armor Class</p>
+							<div className="flex items-center">
+								<ShieldCheckIcon className="text-blue-500 w-4 h-4 mr-2" />
+
+								<p className="text-red-500 opacity-75 font-bold mr-2 text-sm">
+									{10 +
+										getStatBonus('Dexterity') +
+										(character &&
+										character.race &&
+										character.race.name === 'Barbarian'
+											? getStatBonus('Constitution')
+											: 0) +
+										(character &&
+										character.race &&
+										character.race.name === 'Monk'
+											? getStatBonus('Wisdom')
+											: 0)}
+								</p>
+							</div>
+						</div>
+						<div className="flex justify-between items-center mb-4">
+							<p className="font-light text-sm">
+								Proficiency Bonus
 							</p>
+							<div className="flex items-center">
+								<p className="text-red-500 opacity-75 font-bold mr-2 text-sm">
+									+{getProfBonus(character.level)}
+								</p>
+							</div>
+						</div>
+						<div className="flex justify-between items-center mb-4">
+							<p className="font-light text-sm">
+								Passive Perception
+							</p>
+							<div className="flex items-center">
+								<p className="text-red-500 opacity-75 font-bold mr-2 text-sm">
+									{getPassivePerception(
+										getStatBonus('Wisdom')
+									)}
+								</p>
+							</div>
+						</div>
+						<hr className="mb-4" />
+						<div className="flex justify-between items-center mb-4">
+							<p className="font-light text-sm">Initiative</p>
+							<div className="flex items-center">
+								<p className="text-red-500 opacity-75 font-bold mr-2 text-sm">
+									+{getStatBonus('Dexterity')}
+								</p>
+								<button
+									className="bg-bgmain text-white rounded-md p-2 text-xs"
+									onClick={() =>
+										onStatRoll(getStatBonus('Dexterity'))
+									}
+								>
+									Roll
+								</button>
+							</div>
 						</div>
 					</div>
-					<div className="flex justify-between items-center">
-						<input
-							min="0"
-							type="number"
-							className=" shadow appearance-none  rounded w-full px-2 text-center text-gray-700 focus:outline-none focus:shadow-outline"
-							placeholder="0"
-							value={healthChangeAmount.damage}
-							onChange={e =>
-								setHealthChangeAmount({
-									...healthChangeAmount,
-									damage: Number(e.target.value)
-								})
-							}
-						/>
-						<button
-							onClick={() => healthChange('damage')}
-							className="bg-red-500 text-white rounded-md p-2 w-1/4 ml-4 text-xs"
-						>
-							Damage
-						</button>
-					</div>
-					<div className="flex justify-between mt-4 items-center">
-						<input
-							min="0"
-							onChange={e =>
-								setHealthChangeAmount({
-									...healthChangeAmount,
-									heal: Number(e.target.value)
-								})
-							}
-							type="number"
-							className=" shadow appearance-none  rounded w-full px-2 text-center text-gray-700  focus:outline-none focus:shadow-outline"
-							placeholder="0"
-							value={healthChangeAmount.heal}
-						/>
-						<button
-							onClick={() => healthChange('heal')}
-							className="bg-green-500 text-white rounded-md p-2 w-1/4 ml-4 text-xs"
-						>
-							Heal
-						</button>
-					</div>
-				</div>
 
-				<hr className="mb-4 mt-4" />
-				<div className="flex justify-between items-center mb-4">
-					<p className="font-light text-sm">Armor Class</p>
-					<div className="flex items-center">
-						<ShieldCheckIcon className="text-blue-500 w-4 h-4 mr-2" />
-
-						<p className="text-red-500 opacity-75 font-bold mr-2 text-sm">
-							{10 +
-								getStatBonus('Dexterity') +
-								(character &&
-								character.race &&
-								character.race.name === 'Barbarian'
-									? getStatBonus('Constitution')
-									: 0) +
-								(character &&
-								character.race &&
-								character.race.name === 'Monk'
-									? getStatBonus('Wisdom')
-									: 0)}
-						</p>
-					</div>
-				</div>
-				<div className="flex justify-between items-center mb-4">
-					<p className="font-light text-sm">Proficiency Bonus</p>
-					<div className="flex items-center">
-						<p className="text-red-500 opacity-75 font-bold mr-2 text-sm">
-							+{getProfBonus(character.level)}
-						</p>
-					</div>
-				</div>
-				<div className="flex justify-between items-center mb-4">
-					<p className="font-light text-sm">Passive Perception</p>
-					<div className="flex items-center">
-						<p className="text-red-500 opacity-75 font-bold mr-2 text-sm">
-							{getPassivePerception(getStatBonus('Wisdom'))}
-						</p>
-					</div>
-				</div>
-				<hr className="mb-4" />
-				<div className="flex justify-between items-center mb-4">
-					<p className="font-light text-sm">Initiative</p>
-					<div className="flex items-center">
-						<p className="text-red-500 opacity-75 font-bold mr-2 text-sm">
-							+{getStatBonus('Dexterity')}
-						</p>
-						<button
-							className="bg-bgmain text-white rounded-md p-2 text-xs"
-							onClick={() =>
-								onStatRoll(getStatBonus('Dexterity'))
-							}
+					<div className="w-full mt-4   p-5 bg-gray-200 shadow-inner  flex flex-col justify-center rounded-md">
+						<p
+							className="text-center uppercase font-light mb-2"
+							style={{ letterSpacing: '0.5rem' }}
 						>
-							Roll
-						</button>
-					</div>
-				</div>
-			</div>
-
-			<div className="w-full mt-4   p-5 bg-gray-200 shadow-inner  flex flex-col justify-center rounded-md">
-				<p
-					className="text-center uppercase font-light mb-2"
-					style={{ letterSpacing: '0.5rem' }}
-				>
-					Ability Scores
-				</p>
-				{Object.values(core.statBlocks).map((c, key) => (
-					<div
-						className="flex justify-between items-center mb-4"
-						key={key}
-					>
-						<p className="font-light text-sm">{c.text}</p>
-						<div className="flex items-center">
-							<p className="text-red-500 opacity-75 font-bold mr-2 text-sm">
-								{character.stats[capitalizeFirstLetter(c.text)]}
-								{getStatBonus(c.text) > 0 && (
-									<span>
-										+{' '}
-										<span className="text-blue-500">
-											{getStatBonus(c.text)}
-										</span>{' '}
-									</span>
-								)}
-							</p>
-							<button
-								className="bg-bgmain text-white rounded-md p-2 text-xs"
-								onClick={() => onStatRoll(getStatBonus(c.text))}
+							Ability Scores
+						</p>
+						{Object.values(core.statBlocks).map((c, key) => (
+							<div
+								className="flex justify-between items-center mb-4"
+								key={key}
 							>
-								Roll
-							</button>
-						</div>
+								<p className="font-light text-sm">{c.text}</p>
+								<div className="flex items-center">
+									<p className="text-red-500 opacity-75 font-bold mr-2 text-sm">
+										{
+											character.stats[
+												capitalizeFirstLetter(c.text)
+											]
+										}
+										{getStatBonus(c.text) > 0 && (
+											<span>
+												+{' '}
+												<span className="text-blue-500">
+													{getStatBonus(c.text)}
+												</span>{' '}
+											</span>
+										)}
+									</p>
+									<button
+										className="bg-bgmain text-white rounded-md p-2 text-xs"
+										onClick={() =>
+											onStatRoll(getStatBonus(c.text))
+										}
+									>
+										Roll
+									</button>
+								</div>
+							</div>
+						))}
 					</div>
-				))}
-			</div>
-			<div className="w-full mt-4   p-5 bg-gray-200 shadow-inner  flex flex-col justify-center rounded-md">
-				<p
-					className="text-center uppercase font-light mb-2"
-					style={{ letterSpacing: '0.5rem' }}
-				>
-					Saving Throws
-				</p>
-				{Object.values(core.statBlocks).map((c, key) => (
-					<div
-						className="flex justify-between items-center mb-4"
-						key={key}
-					>
-						<p className="font-light text-sm flex items-center">
-							{c.text}{' '}
-							{character.saves.includes(c.text) && (
-								<BadgeCheckIcon className="ml-2 h-4 w-4 text-green-500" />
-							)}
+					<div className="w-full mt-4   p-5 bg-gray-200 shadow-inner  flex flex-col justify-center rounded-md">
+						<p
+							className="text-center uppercase font-light mb-2"
+							style={{ letterSpacing: '0.5rem' }}
+						>
+							Saving Throws
 						</p>
-						<div className="flex items-center">
-							<p className="text-red-500 opacity-75 font-bold mr-2 text-sm">
-								{character.stats[capitalizeFirstLetter(c.text)]}
-								{(getStatBonus(c.text) > 0 ||
-									character.saves.includes(c.text)) && (
-									<span>
-										+{' '}
-										<span className="text-blue-500">
-											{getStatBonus(c.text) +
-												//@ts-ignore
-												(character.saves.includes(
-													c.text
-												)
-													? getProfBonus(
-															character.level
-													  )
-													: 0)}
-										</span>{' '}
-									</span>
-								)}
-							</p>
-							<button
-								className="bg-bgmain text-white rounded-md p-2 text-xs"
-								onClick={() =>
-									onStatRoll(
-										getStatBonus(c.text) +
-											//@ts-ignore
-
-											(character.saves.includes(c.text)
-												? getProfBonus(character.level)
-												: 0)
-									)
-								}
+						{Object.values(core.statBlocks).map((c, key) => (
+							<div
+								className="flex justify-between items-center mb-4"
+								key={key}
 							>
-								Roll
-							</button>
-						</div>
+								<p className="font-light text-sm flex items-center">
+									{c.text}{' '}
+									{character.saves.includes(c.text) && (
+										<BadgeCheckIcon className="ml-2 h-4 w-4 text-green-500" />
+									)}
+								</p>
+								<div className="flex items-center">
+									<p className="text-red-500 opacity-75 font-bold mr-2 text-sm">
+										{(getStatBonus(c.text) > 0 ||
+											character.saves.includes(
+												c.text
+											)) && (
+											<span>
+												+
+												<span>
+													{getStatBonus(c.text) +
+														//@ts-ignore
+														(character.saves.includes(
+															c.text
+														)
+															? getProfBonus(
+																	character.level
+															  )
+															: 0)}
+												</span>{' '}
+											</span>
+										)}
+									</p>
+									<button
+										className="bg-bgmain text-white rounded-md p-2 text-xs"
+										onClick={() =>
+											onStatRoll(
+												getStatBonus(c.text) +
+													//@ts-ignore
+
+													(character.saves.includes(
+														c.text
+													)
+														? getProfBonus(
+																character.level
+														  )
+														: 0)
+											)
+										}
+									>
+										Roll
+									</button>
+								</div>
+							</div>
+						))}
 					</div>
+					<Skills
+						character={character}
+						getStatBonus={getStatBonus}
+						isProficienct={isProficienct}
+						getProfBonus={getProfBonus}
+					/>
+				</>
+			)}
+			{tabPage === 'Description' && (
+				<>
+					<div className="w-full mt-4   p-5 bg-gray-200 shadow-inner  flex flex-col justify-center rounded-md">
+						<p
+							className="text-center uppercase font-light mb-4"
+							style={{ letterSpacing: '0.5rem' }}
+						>
+							About
+						</p>
+					</div>
+					<p
+						className="text-center uppercase font-light mb-4 text-sm"
+						style={{ letterSpacing: '0.5rem' }}
+					>
+						Background
+					</p>
+				</>
+			)}
+			{/* <Fab
+				disabled={!stepComplete}
+				onClick={() => setTabPage()}
+				aria-label="Continue"
+				style={{
+					margin: '0 auto',
+					top: 'auto',
+					right: 50,
+					bottom: 20,
+					left: 50,
+					position: 'fixed',
+					color: 'white',
+					background: '#EF4444',
+					width: '75vw'
+				}}
+				classes={{ disabled: 'fab-disabled' }}
+				variant="extended"
+			>
+				Continue
+			</Fab> */}
+			<SpeedDial
+				style={{
+					right: 20,
+					bottom: 95,
+					position: 'fixed',
+					color: 'black'
+				}}
+				FabProps={{
+					className: 'bg-red-500 focus:outline-none',
+					style: { background: '#EF4444' }
+				}}
+				ariaLabel="Tab Menu"
+				icon={<SpeedDialIcon />}
+				onClose={() => setSpeedialOpen(false)}
+				onOpen={() => setSpeedialOpen(true)}
+				open={speedialOpen}
+				direction="up"
+			>
+				{actions.map(action => (
+					<SpeedDialAction
+						key={action.name}
+						icon={action.icon}
+						tooltipTitle={action.name}
+						onClick={() => setTabPage(action.name as any)}
+					/>
 				))}
-			</div>
-			<Skills
-				character={character}
-				getStatBonus={getStatBonus}
-				isProficienct={isProficienct}
-				getProfBonus={getProfBonus}
-			/>
+			</SpeedDial>
 		</div>
 	);
 };
