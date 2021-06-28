@@ -21,6 +21,11 @@ export class Character {
 		Charisma: -1
 	};
 	bonuses: StatBonus[] = [];
+	hp: number = 0;
+	maxHP: number = 0;
+	tempHP: number = 0;
+	deathSaves: boolean[] = [];
+	condfitions: string[] = [];
 	level: number = 1;
 	xp: number = 0;
 	proficiencies: string[] = [];

@@ -1,19 +1,35 @@
+import { Capacitor } from '@capacitor/core';
+import {
+	ShieldCheckIcon,
+	HeartIcon,
+	BadgeCheckIcon
+} from '@heroicons/react/solid';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Flip, toast } from 'react-toastify';
 import { Character } from '../../../../corev2/Character';
-import {
-	core,
-	SkillConstants,
-	SkillModConstants
-} from '../../../../corev2/core';
+import { core } from '../../../../corev2/core';
+import { CharacterActions } from '../../../../redux/Character/actions';
+import Skills from './Skills';
 import Top from './Top';
+
+export function capitalizeFirstLetter(str: string) {
+	return str.charAt(0).toUpperCase() + str.slice(1);
+}
 
 const CharacterSheet = () => {
 	const { charKey }: { charKey: string } = useParams();
 	const charJSON = localStorage.getItem('sidekick_characters');
 	const [character, setCharacter] = useState<Character | undefined>();
+	const updateCharacter = CharacterActions.useUpdateNewCharacter();
+	const [healthChangeAmount, setHealthChangeAmount] = useState<{
+		damage: number;
+		heal: number;
+	}>({ damage: 0, heal: 0 });
+	const [rollLogs, setRollLogs] = useState<{ title: string; roll: number }[]>(
+		[]
+	);
 
 	useEffect(() => {
 		if (charJSON) {
@@ -26,10 +42,6 @@ const CharacterSheet = () => {
 
 	if (!character) return null;
 
-	function capitalizeFirstLetter(str: string) {
-		return str.charAt(0).toUpperCase() + str.slice(1);
-	}
-
 	const onStatRoll = (mod: number) => {
 		const roll = core.dX(20);
 		toast.dark(`You rolled a ${roll} + ${mod} = ${roll + mod} `, {
@@ -40,6 +52,24 @@ const CharacterSheet = () => {
 			progressClassName: 'bg-red-500',
 			bodyClassName: 'text-center'
 		});
+	};
+
+	const saveCharacter = () => {
+		const chars: Character[] = JSON.parse(
+			localStorage.getItem('sidekick_characters') as any
+		);
+
+		let newChars = [];
+
+		for (let i = 0; i < chars.length; i++) {
+			if (i === Number(charKey)) {
+				newChars.push(character);
+			} else {
+				newChars.push(chars[i]);
+			}
+		}
+
+		localStorage.setItem('sidekick_characters', JSON.stringify(newChars));
 	};
 
 	function getStatBonus(str: string) {
@@ -78,100 +108,250 @@ const CharacterSheet = () => {
 		}
 	};
 
+	function isProficienct(skill: string): boolean {
+		let prof = false;
+
+		if (character) {
+			for (let i = 0; i < character.proficiencies.length; i++) {
+				if (character.proficiencies[i] === skill) {
+					prof = true;
+				}
+			}
+		}
+
+		return prof;
+	}
+
+	const getPassivePerception = (perception: number) => {
+		const prof = isProficienct('Perception');
+		let perc = perception;
+
+		if (prof) {
+			perc += getProfBonus(character.level) ?? 0;
+		}
+
+		return 10 + perc;
+	};
+
+	const healthChange = (type: 'damage' | 'heal') => {
+		if (type === 'heal') {
+			let temp = character.hp;
+			temp += healthChangeAmount.heal;
+
+			if (temp > character.maxHP) {
+				character.hp = character.maxHP;
+			} else {
+				character.hp = temp;
+			}
+
+			setHealthChangeAmount({ ...healthChangeAmount, heal: 0 });
+
+			saveCharacter();
+		}
+
+		if (type === 'damage') {
+			let temp = character.hp;
+
+			temp -= healthChangeAmount.damage;
+
+			character.hp = temp;
+
+			setHealthChangeAmount({ ...healthChangeAmount, damage: 0 });
+
+			saveCharacter();
+		}
+	};
+
 	return (
 		<div
-			className=" mt-5 container w-full md:max-w-screen-lg e mx-auto p-4  rounded-md text-black"
+			className={`container w-full md:max-w-screen-lg e mx-auto p-4   text-black bg-white ${
+				Capacitor.getPlatform() === 'web' && 'mt-5'
+			}`}
 			style={{ paddingTop: '15px' }}
 		>
 			<Top character={character} />
-			<div className="w-full mt-4  p-5 bg-white flex justify-between items-center rounded-md">
-				<div className="bg-gray-800 w-5/12 text-white text-center p-4 rounded-md shadow-lg h-24 flex flex-col items-center justify-between">
-					<p className="text-xs opacity-75">Proficiency</p>
-					<p className="text-xl font-medium mt-3 text-red-500">
-						+{getProfBonus(character.level)}
-					</p>
-				</div>
-				<div
-					className="bg-gray-800 w-5/12 text-white text-center p-4 rounded-md shadow-lg cursor-pointer h-24 flex flex-col items-center justify-between"
-					onClick={() => onStatRoll(getStatBonus('Dexterity'))}
+
+			<div className="w-full mt-4   p-5 bg-gray-200 shadow-inner  flex flex-col justify-center rounded-md">
+				<p
+					className="text-center uppercase font-light mb-4"
+					style={{ letterSpacing: '0.5rem' }}
 				>
-					<p className="text-xs opacity-75">Initiative</p>
-					<p className="text-xl font-medium mt-3 text-red-500">
-						+{getStatBonus('Dexterity')}
-					</p>
+					General
+				</p>
+
+				<div>
+					<div className="flex justify-between items-center mb-4">
+						<p className="font-light text-sm">Hit Points</p>
+						<div className="flex items-center mr-2">
+							<HeartIcon className="text-red-500 w-5 h-5 mr-2" />
+
+							<p className="text-red-500 opacity-75 font-bold text-lg">
+								{character.hp}/{character.maxHP}
+							</p>
+						</div>
+					</div>
+					<div className="flex justify-between items-center">
+						<input
+							min="0"
+							type="number"
+							className=" shadow appearance-none  rounded w-full px-2 text-center text-gray-700 focus:outline-none focus:shadow-outline"
+							placeholder="0"
+							value={healthChangeAmount.damage}
+							onChange={e =>
+								setHealthChangeAmount({
+									...healthChangeAmount,
+									damage: Number(e.target.value)
+								})
+							}
+						/>
+						<button
+							onClick={() => healthChange('damage')}
+							className="bg-red-500 text-white rounded-md p-2 w-1/4 ml-4 text-xs"
+						>
+							Damage
+						</button>
+					</div>
+					<div className="flex justify-between mt-4 items-center">
+						<input
+							min="0"
+							onChange={e =>
+								setHealthChangeAmount({
+									...healthChangeAmount,
+									heal: Number(e.target.value)
+								})
+							}
+							type="number"
+							className=" shadow appearance-none  rounded w-full px-2 text-center text-gray-700  focus:outline-none focus:shadow-outline"
+							placeholder="0"
+							value={healthChangeAmount.heal}
+						/>
+						<button
+							onClick={() => healthChange('heal')}
+							className="bg-green-500 text-white rounded-md p-2 w-1/4 ml-4 text-xs"
+						>
+							Heal
+						</button>
+					</div>
+				</div>
+
+				<hr className="mb-4 mt-4" />
+				<div className="flex justify-between items-center mb-4">
+					<p className="font-light text-sm">Armor Class</p>
+					<div className="flex items-center">
+						<ShieldCheckIcon className="text-blue-500 w-4 h-4 mr-2" />
+
+						<p className="text-red-500 opacity-75 font-bold mr-2 text-sm">
+							{10 +
+								getStatBonus('Dexterity') +
+								(character &&
+								character.race &&
+								character.race.name === 'Barbarian'
+									? getStatBonus('Constitution')
+									: 0) +
+								(character &&
+								character.race &&
+								character.race.name === 'Monk'
+									? getStatBonus('Wisdom')
+									: 0)}
+						</p>
+					</div>
+				</div>
+				<div className="flex justify-between items-center mb-4">
+					<p className="font-light text-sm">Proficiency Bonus</p>
+					<div className="flex items-center">
+						<p className="text-red-500 opacity-75 font-bold mr-2 text-sm">
+							+{getProfBonus(character.level)}
+						</p>
+					</div>
+				</div>
+				<div className="flex justify-between items-center mb-4">
+					<p className="font-light text-sm">Passive Perception</p>
+					<div className="flex items-center">
+						<p className="text-red-500 opacity-75 font-bold mr-2 text-sm">
+							{getPassivePerception(getStatBonus('Wisdom'))}
+						</p>
+					</div>
+				</div>
+				<hr className="mb-4" />
+				<div className="flex justify-between items-center mb-4">
+					<p className="font-light text-sm">Initiative</p>
+					<div className="flex items-center">
+						<p className="text-red-500 opacity-75 font-bold mr-2 text-sm">
+							+{getStatBonus('Dexterity')}
+						</p>
+						<button
+							className="bg-bgmain text-white rounded-md p-2 text-xs"
+							onClick={() =>
+								onStatRoll(getStatBonus('Dexterity'))
+							}
+						>
+							Roll
+						</button>
+					</div>
 				</div>
 			</div>
 
-			<div className="w-full mt-4  p-5 bg-white rounded-md">
+			<div className="w-full mt-4   p-5 bg-gray-200 shadow-inner  flex flex-col justify-center rounded-md">
 				<p
 					className="text-center uppercase font-light mb-2"
 					style={{ letterSpacing: '0.5rem' }}
 				>
 					Ability Scores
 				</p>
-				<div className="flex flex-wrap">
-					{Object.values(core.statBlocks).map((c, key) => (
-						<div
-							key={key}
-							className="w-1/3 mb-4 h-20 p-2 cursor-pointer "
-							onClick={() => onStatRoll(getStatBonus(c.text))}
-						>
-							<div className="bg-gray-800 h-20 text-white flex flex-col justify-center items-center  rounded-md shadow-lg">
-								<p className="text-xs opacity-75">{c.text}</p>
-								<p>
-									{
-										character.stats[
-											capitalizeFirstLetter(c.text)
-										]
-									}{' '}
-									{getStatBonus(c.text) > 0 && (
-										<span>
-											+{' '}
-											<span className="text-yellow-500">
-												{getStatBonus(c.text)}
-											</span>{' '}
-										</span>
-									)}
-								</p>
-							</div>
+				{Object.values(core.statBlocks).map((c, key) => (
+					<div
+						className="flex justify-between items-center mb-4"
+						key={key}
+					>
+						<p className="font-light text-sm">{c.text}</p>
+						<div className="flex items-center">
+							<p className="text-red-500 opacity-75 font-bold mr-2 text-sm">
+								{character.stats[capitalizeFirstLetter(c.text)]}
+								{getStatBonus(c.text) > 0 && (
+									<span>
+										+{' '}
+										<span className="text-blue-500">
+											{getStatBonus(c.text)}
+										</span>{' '}
+									</span>
+								)}
+							</p>
+							<button
+								className="bg-bgmain text-white rounded-md p-2 text-xs"
+								onClick={() => onStatRoll(getStatBonus(c.text))}
+							>
+								Roll
+							</button>
 						</div>
-					))}
-				</div>
+					</div>
+				))}
 			</div>
-			<div className="w-full mt-4  p-5 bg-white rounded-md">
+			<div className="w-full mt-4   p-5 bg-gray-200 shadow-inner  flex flex-col justify-center rounded-md">
 				<p
 					className="text-center uppercase font-light mb-2"
 					style={{ letterSpacing: '0.5rem' }}
 				>
 					Saving Throws
 				</p>
-				<div className="flex flex-wrap">
-					{Object.values(core.statBlocks).map((c, key) => (
-						<div
-							key={key}
-							className="w-1/3 mb-4 h-20 p-2 cursor-pointer "
-							onClick={() =>
-								onStatRoll(
-									getStatBonus(c.text) +
-										//@ts-ignore
-
-										(character.saves.includes(c.text)
-											? getProfBonus(character.level)
-											: 0)
-								)
-							}
-						>
-							<div className="bg-gray-800 h-20 text-white flex flex-col justify-center items-center  rounded-md shadow-lg">
-								<p className="text-xs opacity-75">{c.text}</p>
-								<p>
-									{
-										character.stats[
-											capitalizeFirstLetter(c.text)
-										]
-									}{' '}
+				{Object.values(core.statBlocks).map((c, key) => (
+					<div
+						className="flex justify-between items-center mb-4"
+						key={key}
+					>
+						<p className="font-light text-sm flex items-center">
+							{c.text}{' '}
+							{character.saves.includes(c.text) && (
+								<BadgeCheckIcon className="ml-2 h-4 w-4 text-green-500" />
+							)}
+						</p>
+						<div className="flex items-center">
+							<p className="text-red-500 opacity-75 font-bold mr-2 text-sm">
+								{character.stats[capitalizeFirstLetter(c.text)]}
+								{(getStatBonus(c.text) > 0 ||
+									character.saves.includes(c.text)) && (
 									<span>
 										+{' '}
-										<span className="text-yellow-500">
+										<span className="text-blue-500">
 											{getStatBonus(c.text) +
 												//@ts-ignore
 												(character.saves.includes(
@@ -183,12 +363,33 @@ const CharacterSheet = () => {
 													: 0)}
 										</span>{' '}
 									</span>
-								</p>
-							</div>
+								)}
+							</p>
+							<button
+								className="bg-bgmain text-white rounded-md p-2 text-xs"
+								onClick={() =>
+									onStatRoll(
+										getStatBonus(c.text) +
+											//@ts-ignore
+
+											(character.saves.includes(c.text)
+												? getProfBonus(character.level)
+												: 0)
+									)
+								}
+							>
+								Roll
+							</button>
 						</div>
-					))}
-				</div>
+					</div>
+				))}
 			</div>
+			<Skills
+				character={character}
+				getStatBonus={getStatBonus}
+				isProficienct={isProficienct}
+				getProfBonus={getProfBonus}
+			/>
 		</div>
 	);
 };

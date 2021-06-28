@@ -1,5 +1,4 @@
 import { Character } from '../../../../corev2/Character';
-import { CogIcon } from '@heroicons/react/solid';
 
 const Top = ({ character }: { character: Character }) => {
 	return (
@@ -14,7 +13,7 @@ const Top = ({ character }: { character: Character }) => {
 				{character.characterName}
 			</h4>
 			<h4
-				className="font-medium uppercase text-xs text-white text-center"
+				className="font-medium uppercase text-xs text-black text-center"
 				style={{
 					letterSpacing: '0.5rem',
 					lineHeight: 2

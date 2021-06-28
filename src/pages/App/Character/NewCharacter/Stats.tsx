@@ -8,6 +8,7 @@ import { useHistory } from 'react-router';
 import { CharacterSelectors } from '../../../../redux/Character/selectors';
 import { CharacterActions } from '../../../../redux/Character/actions';
 import { Character } from '../../../../corev2/Character';
+import { capitalizeFirstLetter } from '../CharacterSheet';
 
 const Stats = () => {
 	const [play, setPlay] = useState(false);
@@ -99,6 +100,20 @@ const Stats = () => {
 
 		return amt;
 	};
+
+	function getStatBonus(str: string) {
+		let bonus = 0;
+		const key = capitalizeFirstLetter(str);
+
+		if (newCharacter) {
+			for (let i = 0; i < newCharacter.bonuses.length; i++) {
+				if (newCharacter.bonuses[i].stat === key) {
+					bonus += newCharacter.bonuses[i].amount;
+				}
+			}
+		}
+		return bonus;
+	}
 
 	return (
 		<Animate duration={0.2} play={play} {...animProps}>
@@ -315,6 +330,27 @@ const Stats = () => {
 
 							if (newChar) {
 								newChar.stats = statRolls;
+
+								let max = newChar.maxHP;
+
+								if (
+									newChar &&
+									newChar.class &&
+									newChar.level < 2
+								) {
+									max = newChar.class.hitPoints.levelOne.base;
+
+									const bonus = getStatBonus(
+										newChar.class.hitPoints.levelOne
+											.modifierKey
+									);
+
+									max += bonus;
+								}
+
+								newChar.maxHP = max;
+								newChar.hp = max;
+
 								updateCharacter(newChar);
 
 								let previousChars = localStorage.getItem(

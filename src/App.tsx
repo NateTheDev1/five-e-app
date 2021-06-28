@@ -12,7 +12,9 @@ import Router from './Router';
 // LogRocket.init('5e-sidekick/5e-sidekick');
 
 import { KeepAwake } from '@capacitor-community/keep-awake';
-KeepAwake.keepAwake();
+import { Capacitor } from '@capacitor/core';
+
+Capacitor.getPlatform() !== 'web' && KeepAwake.keepAwake();
 
 const App = () => {
 	return (
