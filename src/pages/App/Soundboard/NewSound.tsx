@@ -53,7 +53,7 @@ const NewSound = ({
 		>
 			<form onSubmit={onSubmit}>
 				<DialogTitle className="text-white">
-					Create a new soundboard
+					Add a new sound
 				</DialogTitle>
 				<DialogContent>
 					<label

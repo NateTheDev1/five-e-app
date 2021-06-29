@@ -6,12 +6,14 @@ const Skills = ({
 	character,
 	getStatBonus,
 	isProficienct,
-	getProfBonus
+	getProfBonus,
+	onStatRoll
 }: {
 	character: Character;
 	getStatBonus(str: string): number;
 	isProficienct(skill: string): boolean;
 	getProfBonus: (level: number) => 2 | 3 | 4 | 5 | 6 | undefined;
+	onStatRoll: (mod: number) => void;
 }) => {
 	return (
 		<div className="w-full mt-4   p-5 bg-gray-200 shadow-inner  flex flex-col justify-center rounded-md">
@@ -26,7 +28,7 @@ const Skills = ({
 					className="flex justify-between items-center mb-4"
 					key={key}
 				>
-					<p className="text-sm flex flex-col justify-start">
+					<div className="text-sm flex flex-col justify-start">
 						<p className="flex items-center">
 							{val}
 							{isProficienct(val) && (
@@ -39,7 +41,7 @@ const Skills = ({
 								SkillModConstants[k].substr(0, 3)
 							}
 						</span>
-					</p>
+					</div>
 					<div className="flex items-center">
 						<p className="text-red-500 opacity-75 font-bold mr-2 text-sm">
 							+{' '}
@@ -54,7 +56,17 @@ const Skills = ({
 
 						<button
 							className="bg-bgmain text-white rounded-md p-2 text-xs"
-							onClick={() => {}}
+							onClick={() => {
+								onStatRoll(
+									//@ts-ignore
+									getStatBonus(SkillModConstants[k]) +
+										//@ts-ignore
+										((isProficienct(val) &&
+											//@ts-ignore
+											getProfBonus(character.level)) ??
+											0)
+								);
+							}}
 						>
 							Roll
 						</button>

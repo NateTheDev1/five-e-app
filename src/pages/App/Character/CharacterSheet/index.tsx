@@ -5,7 +5,9 @@ import {
 	BadgeCheckIcon,
 	ShoppingBagIcon,
 	HomeIcon,
-	AnnotationIcon
+	AnnotationIcon,
+	DotsHorizontalIcon,
+	ClockIcon
 } from '@heroicons/react/solid';
 import { useEffect } from 'react';
 import { useState } from 'react';
@@ -16,7 +18,9 @@ import { core } from '../../../../corev2/core';
 import { CharacterActions } from '../../../../redux/Character/actions';
 import Skills from './Skills';
 import Top from './Top';
-import { SpeedDial, SpeedDialAction, SpeedDialIcon } from '@material-ui/lab';
+import { SpeedDial, SpeedDialAction } from '@material-ui/lab';
+import Description from './Description';
+import RollLog from './RollLog';
 
 export function capitalizeFirstLetter(str: string) {
 	return str.charAt(0).toUpperCase() + str.slice(1);
@@ -24,8 +28,21 @@ export function capitalizeFirstLetter(str: string) {
 
 const actions = [
 	{ icon: <HomeIcon className="w-5 h-5" />, name: 'Home' },
-	{ icon: <AnnotationIcon className="w-5 h-5" />, name: 'About' },
-	{ icon: <ShoppingBagIcon className="w-5 h-5" />, name: 'Inventory' }
+	{ icon: <AnnotationIcon className="w-5 h-5" />, name: 'Description' },
+	{
+		icon: (
+			<img
+				src="https://img.icons8.com/ios-glyphs/60/000000/school-backpack.png"
+				alt="backpack"
+				className="w-5 h-5 opacity-60"
+			/>
+		),
+		name: 'Inventory'
+	},
+	{
+		icon: <ClockIcon className="w-5 h-5" />,
+		name: 'Roll Log'
+	}
 ];
 
 const CharacterSheet = () => {
@@ -40,6 +57,8 @@ const CharacterSheet = () => {
 	const [rollLogs, setRollLogs] = useState<{ title: string; roll: number }[]>(
 		[]
 	);
+	const [rollLogOpen, setRollLogOpen] = useState(false);
+
 	const [tabPage, setTabPage] = useState<
 		'Home' | 'Description' | 'Inventory'
 	>('Home');
@@ -56,8 +75,9 @@ const CharacterSheet = () => {
 
 	if (!character) return null;
 
-	const onStatRoll = (mod: number) => {
+	const onStatRoll = (mod: number, title?: string) => {
 		const roll = core.dX(20);
+		rollLogs.push({ roll, title: title ?? '' });
 		toast.dark(`You rolled a ${roll} + ${mod} = ${roll + mod} `, {
 			position: 'bottom-center',
 			closeOnClick: true,
@@ -178,10 +198,10 @@ const CharacterSheet = () => {
 
 	return (
 		<div
-			className={`container w-full md:max-w-screen-lg e mx-auto p-4   text-black bg-white ${
+			className={`container w-full md:max-w-screen-lg e mx-auto p-4 text-black bg-white ${
 				Capacitor.getPlatform() === 'web' && 'mt-5'
 			}`}
-			style={{ paddingTop: '15px' }}
+			style={{ paddingTop: '40px' }}
 		>
 			<Top character={character} />
 
@@ -304,7 +324,10 @@ const CharacterSheet = () => {
 								<button
 									className="bg-bgmain text-white rounded-md p-2 text-xs"
 									onClick={() =>
-										onStatRoll(getStatBonus('Dexterity'))
+										onStatRoll(
+											getStatBonus('Dexterity'),
+											'Initiative Roll'
+										)
 									}
 								>
 									Roll
@@ -422,47 +445,16 @@ const CharacterSheet = () => {
 						getStatBonus={getStatBonus}
 						isProficienct={isProficienct}
 						getProfBonus={getProfBonus}
+						onStatRoll={onStatRoll}
 					/>
 				</>
 			)}
 			{tabPage === 'Description' && (
 				<>
-					<div className="w-full mt-4   p-5 bg-gray-200 shadow-inner  flex flex-col justify-center rounded-md">
-						<p
-							className="text-center uppercase font-light mb-4"
-							style={{ letterSpacing: '0.5rem' }}
-						>
-							About
-						</p>
-					</div>
-					<p
-						className="text-center uppercase font-light mb-4 text-sm"
-						style={{ letterSpacing: '0.5rem' }}
-					>
-						Background
-					</p>
+					<Description character={character} />
 				</>
 			)}
-			{/* <Fab
-				disabled={!stepComplete}
-				onClick={() => setTabPage()}
-				aria-label="Continue"
-				style={{
-					margin: '0 auto',
-					top: 'auto',
-					right: 50,
-					bottom: 20,
-					left: 50,
-					position: 'fixed',
-					color: 'white',
-					background: '#EF4444',
-					width: '75vw'
-				}}
-				classes={{ disabled: 'fab-disabled' }}
-				variant="extended"
-			>
-				Continue
-			</Fab> */}
+
 			<SpeedDial
 				style={{
 					right: 20,
@@ -475,7 +467,7 @@ const CharacterSheet = () => {
 					style: { background: '#EF4444' }
 				}}
 				ariaLabel="Tab Menu"
-				icon={<SpeedDialIcon />}
+				icon={<DotsHorizontalIcon className="w-5 h-5" />}
 				onClose={() => setSpeedialOpen(false)}
 				onOpen={() => setSpeedialOpen(true)}
 				open={speedialOpen}
@@ -486,10 +478,24 @@ const CharacterSheet = () => {
 						key={action.name}
 						icon={action.icon}
 						tooltipTitle={action.name}
-						onClick={() => setTabPage(action.name as any)}
+						onClick={() => {
+							setSpeedialOpen(false);
+							if (!['Roll Log'].includes(action.name)) {
+								setTabPage(action.name as any);
+							}
+
+							if (action.name === 'Roll Log') {
+								setRollLogOpen(true);
+							}
+						}}
 					/>
 				))}
 			</SpeedDial>
+			<RollLog
+				rollLogOpen={rollLogOpen}
+				rollLogs={rollLogs}
+				setRollLogOpen={setRollLogOpen}
+			/>
 		</div>
 	);
 };
