@@ -5,15 +5,24 @@ import { useState } from 'react';
 import WhatsNew from '../../components/WhatsNew';
 
 import Background from '../../assets/home-bg.png';
+import { useHistory } from 'react-router-dom';
+import { Capacitor } from '@capacitor/core';
 
 const DashboardHome = () => {
+	const history = useHistory();
+
 	const [whatsNewOpen, setWhatsNewOpen] = useState(false);
 
 	return (
 		<Animate play {...animProps}>
-			<div className="home mt-7 overflow-y-hidden flex flex-col max-h-screen h-screen">
+			<div
+				className={`home ${
+					Capacitor.getPlatform() !== 'web' && 'mt-7'
+				}  flex flex-col max-h-screen`}
+				style={{ overflowY: 'hidden' }}
+			>
 				<div
-					className="whats-new flex justify-center items-center h-10 font-bold"
+					className="whats-new flex justify-center items-center h-10 font-bold cursor-pointer"
 					style={{ background: '#12B981' }}
 					onClick={() => setWhatsNewOpen(true)}
 				>
@@ -27,7 +36,7 @@ const DashboardHome = () => {
 						backgroundPosition: 'center',
 						backgroundSize: 'cover',
 						backgroundRepeat: 'no-repeat',
-						height: '50%'
+						height: '40vh'
 					}}
 				>
 					<h1
@@ -49,8 +58,9 @@ const DashboardHome = () => {
 					}}
 				>
 					<div
-						className="w-full h-1/4 p-6 flex items-center"
+						className="w-full h-1/4 p-6 flex items-center cursor-pointer"
 						style={{ background: '#E60109' }}
+						onClick={() => history.push('/app/characters')}
 					>
 						<h3
 							className="uppercase font-light text-lg"
@@ -60,8 +70,9 @@ const DashboardHome = () => {
 						</h3>
 					</div>
 					<div
-						className="w-full h-1/4 p-6 flex items-center"
+						className="w-full h-1/4 p-6 flex items-center cursor-pointer"
 						style={{ background: '#909394' }}
+						onClick={() => history.push('/app/compendium')}
 					>
 						<h3
 							className="uppercase font-light text-lg"
@@ -71,8 +82,9 @@ const DashboardHome = () => {
 						</h3>
 					</div>
 					<div
-						className="w-full h-1/4 p-6 flex items-center"
+						className="w-full h-1/4 p-6 flex items-center cursor-pointer"
 						style={{ background: '#22272A' }}
+						onClick={() => history.push('/app/soundboard')}
 					>
 						<h3
 							className="uppercase font-light text-lg"
@@ -81,7 +93,7 @@ const DashboardHome = () => {
 							Soundboard
 						</h3>
 					</div>
-					<div className="w-full h-1/4 p-6 bg-white flex items-center text-black">
+					<div className="w-full h-1/4 p-6 bg-white flex items-center cursor-pointer text-black">
 						<h3
 							className="uppercase font-light text-lg"
 							style={{ letterSpacing: '0.12rem' }}

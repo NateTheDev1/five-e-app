@@ -4,6 +4,7 @@ import { lazy, useState } from 'react';
 import dice from '../assets/d20.png';
 import { toast, Flip } from 'react-toastify';
 import { core } from '../corev2/core';
+import { Capacitor } from '@capacitor/core';
 
 const AccountView = lazy(() => import('./AccountView'));
 
@@ -25,7 +26,7 @@ const TopBarMobile = ({ title }: { title: string }) => {
 		<div
 			className="w-full text-center pb-2 text-white shadow-xl fixed top-0 mb-12"
 			style={{
-				paddingTop: 50,
+				paddingTop: Capacitor.getPlatform() === 'web' ? 15 : 50,
 				background: '#22272A'
 			}}
 		>
@@ -33,7 +34,7 @@ const TopBarMobile = ({ title }: { title: string }) => {
 				dangerouslySetInnerHTML={{
 					__html: `
 					body {
-						padding-top: 70px;
+						padding-top: ${Capacitor.getPlatform() !== 'web' ? '70px' : '65px'};
 					}
 	`
 				}}

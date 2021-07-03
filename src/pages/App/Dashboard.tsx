@@ -1,8 +1,6 @@
-import { Capacitor } from '@capacitor/core';
 import { lazy } from 'react';
 import { Route, Switch } from 'react-router';
 import BottomNav from '../../components/BottomNav';
-import Navbar from '../../components/Navbar';
 import NotFound from '../../components/NotFound';
 import TopBarMobile from '../../components/TopBarMobile';
 import Compendium from './Compendium';
@@ -16,9 +14,8 @@ const Soundboard = lazy(() => import('./Soundboard/Soundboard'));
 
 const Dashboard = () => {
 	return (
-		<div className=" bg-bgmain h-screen pb-10 w-screen text-white">
-			{Capacitor.getPlatform() === 'web' && <Navbar />}
-			{Capacitor.getPlatform() !== 'web' && <TopBarMobile title="Home" />}
+		<div className=" bg-bgmain h-screen w-screen text-white overflow-hidden">
+			<TopBarMobile title="Home" />
 			<Switch>
 				<Route path="/app/compendium">
 					<Compendium />
@@ -43,8 +40,10 @@ const Dashboard = () => {
 				</Route>
 				<Route component={NotFound} />
 			</Switch>
-			<div className="pb-20"></div>
-			{Capacitor.getPlatform() !== 'web' && <BottomNav />}
+			<p className="opacity-50 mt-4 text-center text-white">
+				5E Sidekick 2021
+			</p>
+			<BottomNav />
 		</div>
 	);
 };
