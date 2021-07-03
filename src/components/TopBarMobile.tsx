@@ -1,5 +1,5 @@
 import Logo from './Logo';
-import { UserCircleIcon } from '@heroicons/react/solid';
+import { CogIcon } from '@heroicons/react/outline';
 import { lazy, useState } from 'react';
 import dice from '../assets/d20.png';
 import { toast, Flip } from 'react-toastify';
@@ -53,7 +53,7 @@ const TopBarMobile = ({ title }: { title: string }) => {
 					className="text-white fixed right-2 cursor-pointer"
 					onClick={() => setAccountOpen(true)}
 				>
-					<UserCircleIcon className="w-6 h-6 mt-2" />
+					<CogIcon className="w-6 h-6 mt-2" />
 				</div>
 			</div>
 			{accountOpen && (

@@ -1,13 +1,98 @@
-import { useHistory } from 'react-router-dom';
 import { animProps } from '../Onboarding/Login';
 import { Animate } from 'react-simple-animate';
+import { NewspaperIcon } from '@heroicons/react/solid';
+import { useState } from 'react';
+import WhatsNew from '../../components/WhatsNew';
+
+import Background from '../../assets/home-bg.png';
 
 const DashboardHome = () => {
-	const history = useHistory();
+	const [whatsNewOpen, setWhatsNewOpen] = useState(false);
 
 	return (
 		<Animate play {...animProps}>
-			<div className="home px-5 mt-12  ">
+			<div className="home mt-7 overflow-y-hidden flex flex-col max-h-screen h-screen">
+				<div
+					className="whats-new flex justify-center items-center h-10 font-bold"
+					style={{ background: '#12B981' }}
+					onClick={() => setWhatsNewOpen(true)}
+				>
+					<p>What's New?</p>
+					<NewspaperIcon className="w-5 h-5 ml-2" />
+				</div>
+				<div
+					className="home-screen flex flex-col items-center justify-center"
+					style={{
+						backgroundImage: `url(${Background})`,
+						backgroundPosition: 'center',
+						backgroundSize: 'cover',
+						backgroundRepeat: 'no-repeat',
+						height: '50%'
+					}}
+				>
+					<h1
+						className="uppercase font-bold text-3xl"
+						style={{ letterSpacing: '0.12rem' }}
+					>
+						Welcome Back
+					</h1>
+					<h2
+						className="uppercase font-bold text-sm mt-4"
+						style={{ letterSpacing: '0.12rem' }}
+					>
+						Make a selection to get started
+					</h2>
+				</div>
+				<div
+					style={{
+						height: '25%'
+					}}
+				>
+					<div
+						className="w-full h-1/4 p-6 flex items-center"
+						style={{ background: '#E60109' }}
+					>
+						<h3
+							className="uppercase font-light text-lg"
+							style={{ letterSpacing: '0.12rem' }}
+						>
+							Characters
+						</h3>
+					</div>
+					<div
+						className="w-full h-1/4 p-6 flex items-center"
+						style={{ background: '#909394' }}
+					>
+						<h3
+							className="uppercase font-light text-lg"
+							style={{ letterSpacing: '0.12rem' }}
+						>
+							Compendium
+						</h3>
+					</div>
+					<div
+						className="w-full h-1/4 p-6 flex items-center"
+						style={{ background: '#22272A' }}
+					>
+						<h3
+							className="uppercase font-light text-lg"
+							style={{ letterSpacing: '0.12rem' }}
+						>
+							Soundboard
+						</h3>
+					</div>
+					<div className="w-full h-1/4 p-6 bg-white flex items-center text-black">
+						<h3
+							className="uppercase font-light text-lg"
+							style={{ letterSpacing: '0.12rem' }}
+						>
+							More
+						</h3>
+					</div>
+				</div>
+			</div>
+			<WhatsNew open={whatsNewOpen} setOpen={setWhatsNewOpen} />
+			{/* <div className="home px-5 mt-12  ">
 				<h2 className="font-bold text-center text-lg">
 					Welcome back to 5E Sidekick
 				</h2>
@@ -124,7 +209,7 @@ const DashboardHome = () => {
 						</svg>
 					</div>
 				</div>
-			</div>
+			</div> */}
 		</Animate>
 	);
 };
