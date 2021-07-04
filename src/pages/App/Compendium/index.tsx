@@ -51,8 +51,11 @@ const Compendium = () => {
 	return (
 		<Animate play {...animProps}>
 			<div
-				className="w-screen  bg-gray-800 flex flex-col justify-center p-4"
-				style={{ paddingTop: '15px' }}
+				className="w-screen  bg-gray-800 flex flex-col justify-center p-4 "
+				style={{
+					paddingTop: '15px',
+					overflow: 'scroll !important'
+				}}
 			>
 				<BookOpenIcon className="h-12 w-12 self-center mb-4 text-red-500 mt-8" />
 				<div className="md:w-5/6 md:mx-auto">
@@ -146,10 +149,16 @@ const Compendium = () => {
 				{data.length < 1 && error.length > 0 && (
 					<p className="text-center">No results.</p>
 				)}
-				{data.length > 1 && (
-					<p className="text-center mb-4">{data.length} results</p>
-				)}
-				<div className="flex">
+
+				<div
+					className="flex overflow-scroll flex-col pb-20"
+					style={{ height: '50vh' }}
+				>
+					{data.length > 1 && !loading && (
+						<p className="text-center mb-4">
+							{data.length} results
+						</p>
+					)}
 					{loading && <SpinnerLoader loading={loading} />}
 
 					{!loading && <Results data={data} />}

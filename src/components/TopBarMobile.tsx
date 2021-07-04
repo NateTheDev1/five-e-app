@@ -1,16 +1,22 @@
 import Logo from './Logo';
-import { UserCircleIcon } from '@heroicons/react/solid';
+import { CogIcon } from '@heroicons/react/outline';
 import { lazy, useState } from 'react';
 import dice from '../assets/d20.png';
 import { toast, Flip } from 'react-toastify';
 import { core } from '../corev2/core';
+import { Capacitor } from '@capacitor/core';
+import useSound from 'use-sound';
+//@ts-ignore
+import dicesound from '../assets/dice-sound.mp3';
 
 const AccountView = lazy(() => import('./AccountView'));
 
 const TopBarMobile = ({ title }: { title: string }) => {
 	const [accountOpen, setAccountOpen] = useState(false);
+	const [playDiceRoll] = useSound(dicesound);
 
 	const onRoll = () => {
+		playDiceRoll();
 		toast.dark(`You rolled a ${core.dX(20)}`, {
 			position: 'bottom-center',
 			closeOnClick: true,
@@ -25,7 +31,7 @@ const TopBarMobile = ({ title }: { title: string }) => {
 		<div
 			className="w-full text-center pb-2 text-white shadow-xl fixed top-0 mb-12"
 			style={{
-				paddingTop: 50,
+				paddingTop: Capacitor.getPlatform() === 'web' ? 15 : 50,
 				background: '#22272A'
 			}}
 		>
@@ -33,7 +39,7 @@ const TopBarMobile = ({ title }: { title: string }) => {
 				dangerouslySetInnerHTML={{
 					__html: `
 					body {
-						padding-top: 70px;
+						padding-top: ${Capacitor.getPlatform() !== 'web' ? '70px' : '65px'};
 					}
 	`
 				}}
@@ -53,12 +59,10 @@ const TopBarMobile = ({ title }: { title: string }) => {
 					className="text-white fixed right-2 cursor-pointer"
 					onClick={() => setAccountOpen(true)}
 				>
-					<UserCircleIcon className="w-6 h-6 mt-2" />
+					<CogIcon className="w-6 h-6 mt-2" />
 				</div>
 			</div>
-			{accountOpen && (
-				<AccountView open={accountOpen} setOpen={setAccountOpen} />
-			)}
+			<AccountView open={accountOpen} setOpen={setAccountOpen} />
 		</div>
 	);
 };

@@ -15,7 +15,7 @@ const BottomNav = () => {
 			style={{ background: '#22272A' }}
 		>
 			<div
-				className="tab flex flex-col items-center justify-between text-center w-1/4"
+				className="tab flex flex-col items-center justify-between text-center w-1/4 cursor-pointer"
 				onClick={() => history.push('/app')}
 			>
 				<HomeIcon
@@ -28,7 +28,7 @@ const BottomNav = () => {
 				<p className="text-xs mt-1 opacity-50">Home</p>
 			</div>
 			<div
-				className="tab flex flex-col items-center justify-between text-center w-1/4"
+				className="tab flex flex-col items-center justify-between text-center w-1/4 cursor-pointer"
 				onClick={() => history.push('/app/characters')}
 			>
 				<UserGroupIcon
@@ -41,7 +41,7 @@ const BottomNav = () => {
 				<p className="text-xs mt-1 opacity-50">Characters</p>
 			</div>
 			<div
-				className="tab flex flex-col items-center justify-between text-center w-1/4"
+				className="tab flex flex-col items-center justify-between text-center w-1/4 cursor-pointer"
 				onClick={() => history.push('/app/soundboard')}
 			>
 				<VolumeUpIcon
@@ -54,7 +54,7 @@ const BottomNav = () => {
 				<p className="text-xs mt-1 opacity-50">Soundboard</p>
 			</div>
 			<div
-				className="tab flex flex-col items-center justify-between text-center w-1/4"
+				className="tab flex flex-col items-center justify-between text-center w-1/4 cursor-pointer"
 				onClick={() => history.push('/app/compendium')}
 			>
 				<BookOpenIcon

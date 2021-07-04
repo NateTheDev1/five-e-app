@@ -8,6 +8,8 @@
  * 2. Prevent adjustments of font size after orientation changes in iOS.
  */
 
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
 html {
 	line-height: 1.15; /* 1 */
 	-webkit-text-size-adjust: 100%; /* 2 */
@@ -354,6 +356,11 @@ body {
 	background: #101519;
 	-ms-overflow-style: none; /* IE and Edge */
 	scrollbar-width: none; /* Firefox */
+	overflow: hidden;
+}
+
+::-webkit-scrollbar {
+	display: none;
 }
 
 ::-webkit-scrollbar {
@@ -371,6 +378,7 @@ body {
 
 * {
 	box-sizing: border-box;
+	font-family: 'Noto Sans', sans-serif;
 }
 
 .MuiSlider-thumb {
