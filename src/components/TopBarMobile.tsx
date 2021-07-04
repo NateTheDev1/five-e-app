@@ -5,13 +5,18 @@ import dice from '../assets/d20.png';
 import { toast, Flip } from 'react-toastify';
 import { core } from '../corev2/core';
 import { Capacitor } from '@capacitor/core';
+import useSound from 'use-sound';
+//@ts-ignore
+import dicesound from '../assets/dice-sound.mp3';
 
 const AccountView = lazy(() => import('./AccountView'));
 
 const TopBarMobile = ({ title }: { title: string }) => {
 	const [accountOpen, setAccountOpen] = useState(false);
+	const [playDiceRoll] = useSound(dicesound);
 
 	const onRoll = () => {
+		playDiceRoll();
 		toast.dark(`You rolled a ${core.dX(20)}`, {
 			position: 'bottom-center',
 			closeOnClick: true,
@@ -57,9 +62,7 @@ const TopBarMobile = ({ title }: { title: string }) => {
 					<CogIcon className="w-6 h-6 mt-2" />
 				</div>
 			</div>
-			{accountOpen && (
-				<AccountView open={accountOpen} setOpen={setAccountOpen} />
-			)}
+			<AccountView open={accountOpen} setOpen={setAccountOpen} />
 		</div>
 	);
 };

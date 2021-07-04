@@ -12,7 +12,7 @@ const Results = ({ data }: { data: any[] }) => {
 	console.log(selectedIndex);
 
 	return (
-		<div className="flex flex-col w-full">
+		<div className="flex flex-col w-full " >
 			{data.map((d, key) => (
 				<div
 					key={key}
